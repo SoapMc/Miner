@@ -103,6 +103,7 @@ MonoBehaviour:
   _cargo: {fileID: 11400000, guid: b489b169d0e499449a1a1a6a2215693b, type: 2}
   _equipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}
   _usableItems: {fileID: 11400000, guid: a7bb70400748a294187ff383869701c2, type: 2}
+  _resistanceToHit: {fileID: 11400000, guid: 12d00c28f9a0cf04692248dd3b647a8a, type: 2}
   _initialMoney: 2500
   _initialHull: {fileID: 11400000, guid: 08012d68ee9096044bba99a274644f3c, type: 2}
   _initialBattery: {fileID: 0}

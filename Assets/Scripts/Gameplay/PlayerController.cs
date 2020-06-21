@@ -18,6 +18,7 @@ namespace Miner.Gameplay
         [SerializeField] private BoolReference _canDigRight = null;
         [SerializeField] private BoolReference _canDigDown = null;
         [SerializeField] private BoolReference _canDigLeft = null;
+        [SerializeField] private Vector2Reference _currentSpeed = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _digRequest = null;
@@ -89,6 +90,8 @@ namespace Miner.Gameplay
         private void Update()
         {
             _playerFuel.Value -= _playerFuelUsage * Time.deltaTime;
+            _currentSpeed.Value = _rigidbody.velocity;
+            _gridPosition.Value = (Vector2Int)_groundTilemap.WorldToCell(transform.position);
 
             if (_locked) return;
             _horizontalMove = Input.GetAxis("Horizontal") * _playerEnginePower.Value;
@@ -118,7 +121,6 @@ namespace Miner.Gameplay
                 Flip();
 
             _previousHorizontalMove = _rigidbody.velocity.x;
-            _gridPosition.Value = (Vector2Int)_groundTilemap.WorldToCell(transform.position);
 
             if(Input.GetKeyDown(KeyCode.Return))
             {

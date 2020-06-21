@@ -11,22 +11,26 @@ namespace Miner.Gameplay
         [SerializeField] private float _fuelUsage = 0;
 
         [Tooltip("Damaged permanently if engine worked in temperature above")]
-        [SerializeField, Range(100, 600)] private int _permaDamageTemperatureThreshold = 100;
+        [SerializeField, Range(100, 600)] private int _thermalVulnerability = 100;
         [Tooltip("Damaged permanently if engine worked with resources load above")]
         [SerializeField] private int _permaDamageLoadThreshold = 0;
 
         public int Power => _power;
         public float FuelUsage => _fuelUsage;
+        public int ThermalVulnerability => _thermalVulnerability;
+
 
         public override string[] GetSpecificDescription()
         {
-            return new string[1] { "Engine power: " + _power.ToString() + " HP" };
+            return new string[2] {  "Engine power: " + _power.ToString() + " HP",
+                                    "Operating temp. up to " + _thermalVulnerability.ToString() + " C deg"};
         }
 
         public override string[] GetPerformanceDescription()
         {
-            return new string[2] {  "Total performance: " + ((int)(_durability * 100)).ToString() + " %",
+            return new string[3] {  "Total performance: " + ((int)(_durability * 100)).ToString() + " %",
                                     "Engine power: " + _power.ToString() + " (" + (_power *_durability).ToString() + ")",
+                                    "Operating temp. up to " + _thermalVulnerability.ToString() + " C deg"
                                  };
         }
 

@@ -19,5 +19,5 @@ MonoBehaviour:
   _shortDescription: 
   _power: 100
   _fuelUsage: 0.09
-  _permaDamageTemperatureThreshold: 100
+  _thermalVulnerability: 100
   _permaDamageLoadThreshold: 0

@@ -32,6 +32,7 @@ namespace Miner.Management
         [SerializeField] private CargoTable _cargo = null;
         [SerializeField] private EquipmentTable _equipment = null;
         [SerializeField] private UsableItemTable _usableItems = null;
+        [SerializeField] private IntReference _resistanceToHit = null;
 
         [Header("Initial resources")]
         [SerializeField] private int _initialMoney = 0;
@@ -78,6 +79,7 @@ namespace Miner.Management
                     _equipment.Hull = hull;
                     _maxHull.Value = (int)(hull.MaxHull * part.Durability);
                     _hull.Value = _maxHull.Value;
+                    _resistanceToHit.Value = (int)(hull.ResistanceToHit * part.Durability);
                     break;
                 case EngineReferencePart engine:
                     _equipment.Engine = engine;
