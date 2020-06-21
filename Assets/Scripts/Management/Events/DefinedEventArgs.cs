@@ -116,6 +116,7 @@ namespace Miner.Management.Events
         public readonly List<ReferencePart> EquipmentChange = new List<ReferencePart>();
         public readonly List<UsableItemTable.Element> AddUsableItemsChange = new List<UsableItemTable.Element>();
         public readonly List<UsableItemTable.Element> RemoveUsableItemsChange = new List<UsableItemTable.Element>();
+        
     }
 
     public class WorldLoadedEA : EventArgs

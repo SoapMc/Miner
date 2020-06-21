@@ -19,4 +19,5 @@ MonoBehaviour:
   _shortDescription: Cheap hull designed to endure only low stresses.
   _maxHull: 10
   _resistanceToHit: 100
+  _thermalInsulation: 10
   _permaDamageThreshold: 0.3

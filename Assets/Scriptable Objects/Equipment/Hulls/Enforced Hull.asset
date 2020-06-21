@@ -19,4 +19,5 @@ MonoBehaviour:
   _shortDescription: 
   _maxHull: 25
   _resistanceToHit: 150
+  _thermalInsulation: 11
   _permaDamageThreshold: 0.4

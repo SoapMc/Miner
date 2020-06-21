@@ -50,6 +50,7 @@ MonoBehaviour:
   _effectiveCooling: {fileID: 11400000, guid: 9417b0fda5b82904babe23622a4c4f32, type: 2}
   _surfaceTemperature: {fileID: 11400000, guid: 35cf215deac673a48afa0723331c2ae7,
     type: 2}
+  _thermalInsulation: {fileID: 11400000, guid: 377cfe59ef2889a45a0701400a2049d5, type: 2}
   _currentSpeed: {fileID: 11400000, guid: cd5a1668e28522543a001d71fa84f429, type: 2}
   _resistanceToHit: {fileID: 11400000, guid: 12d00c28f9a0cf04692248dd3b647a8a, type: 2}
   _equipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}
