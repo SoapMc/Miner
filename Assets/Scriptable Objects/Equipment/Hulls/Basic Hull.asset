@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c0b148ab2fa0a40b524243bf6afd03, type: 3}
+  m_Name: Basic Hull
+  m_EditorClassIdentifier: 
+  _name: Basic Hull
+  _sprite: {fileID: 6987615213105630014, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _id: 600
+  _cost: 0
+  _shortDescription: Cheap hull designed to endure only low stresses.
+  _maxHull: 10
+  _permaDamageThreshold: 0.3
