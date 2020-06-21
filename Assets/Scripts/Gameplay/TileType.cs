@@ -13,10 +13,13 @@ namespace Miner.Gameplay
         [SerializeField, Range(0.01f, 10f)] private float _hardiness = 1f;
         [SerializeField] private int _value = 0;
         [SerializeField] private bool _isFuel = false;
+        [SerializeField] private bool _isDestroyable = true;
 
         public string Name => _name;
         public List<Tile> ClasifiedTiles => _tiles;
         public float Hardiness => _hardiness;
         public int Value => _value;
+        public bool IsDestroyable => _isDestroyable;
+
     }
 }

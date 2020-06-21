@@ -70,11 +70,14 @@ namespace Miner.Gameplay
                     if (elem.Amount >= item.Amount)
                     {
                         elem.Amount -= item.Amount;
+                        if(elem.Amount == 0)
+                            _content.Remove(item);
                         return true;
                     }
                     else
                     {
                         elem.Amount = 0;
+                        _content.Remove(item);
                         return false;
                     }
                 }
