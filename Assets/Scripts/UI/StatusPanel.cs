@@ -17,14 +17,26 @@ namespace Miner.UI
         [SerializeField] private Image _drillIcon = null;
         [SerializeField] private Image _batteryIcon = null;
         [SerializeField] private float _blinkPeriod = 0.3f;
+        [SerializeField] private Color _warningColor;
+        [SerializeField] private Color _failureColor;
 
         private Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine> _coroutines = new Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine>();
 
         private IEnumerator TriggerIcon(Image icon, float duration, TriggerStatusPanelEA.EMode mode)
         {
-            float elapsedTime = 0f;
+
+            if(mode == TriggerStatusPanelEA.EMode.Failure)
+            {
+                icon.color = _failureColor;
+            }
+            else
+            {
+                icon.color = _warningColor;
+            }
+
             if (duration > 0)
             {
+                float elapsedTime = 0f;
                 while (elapsedTime < duration)
                 {
                     icon.gameObject.SetActive(!icon.gameObject.activeSelf);
@@ -34,12 +46,13 @@ namespace Miner.UI
             }
             else
             {
-                while(true)
+                while (true)
                 {
                     icon.gameObject.SetActive(!icon.gameObject.activeSelf);
                     yield return new WaitForSeconds(_blinkPeriod);
                 }
             }
+            
             icon.gameObject.SetActive(false);
         }
 

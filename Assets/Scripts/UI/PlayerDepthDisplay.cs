@@ -13,7 +13,7 @@ namespace Miner.UI
 
         private void OnValueChanged(Vector2Int oldVal, Vector2Int newVal)
         {
-            _depthText.text = ((int)(newVal.y * GameRules.Instance.RealDimensionOfTile)).ToString() + " m";
+            _depthText.text = (-(int)(newVal.y * GameRules.Instance.RealDimensionOfTile)).ToString() + " m";
         }
 
         private void Start()

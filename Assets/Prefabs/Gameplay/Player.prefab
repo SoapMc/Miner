@@ -52,6 +52,7 @@ MonoBehaviour:
     type: 2}
   _currentSpeed: {fileID: 11400000, guid: cd5a1668e28522543a001d71fa84f429, type: 2}
   _resistanceToHit: {fileID: 11400000, guid: 12d00c28f9a0cf04692248dd3b647a8a, type: 2}
+  _equipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}
   _triggerStatusPanel: {fileID: 11400000, guid: f5490dfdc4123ba468946b8a69d649fc,
     type: 2}
 --- !u!1 &2314250434073995524
