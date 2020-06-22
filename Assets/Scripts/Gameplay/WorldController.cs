@@ -15,7 +15,9 @@ namespace Miner.Gameplay
     {
         [SerializeField] private TileTypes _tiles = null;
         [SerializeField] private TileType _tileEdges = null;
-        [SerializeField] private Tilemap _tilemap = null;
+        [SerializeField] private Tilemap _surfaceTilemap = null;
+        [SerializeField] private GroundLayerController _groundLayerPrefab = null;
+        [SerializeField] private Grid _grid = null;
         [SerializeField] private Transform _playerSpawnPoint = null;
         [SerializeField] private Vector2IntReference _playerGridPosition = null;
         [SerializeField] private FloatReference _playerExternalTemperature = null;
@@ -31,8 +33,9 @@ namespace Miner.Gameplay
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
         [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
         [SerializeField] private List<GroundLayer> _layers = new List<GroundLayer>();
-        private int _minimumLayerDepth = -2;
+        private int _surfaceDepth = -1;
 
+        private TilemapController _tilemapController = null;
         private TileIdentifier _tileIdentifier = null;
         private Vector2Int _dugCoords;
         private TileType _dugTile = null;
@@ -42,7 +45,7 @@ namespace Miner.Gameplay
             if(args is DigRequestEA dr)
             {
                 _dugCoords = dr.Coordinates;
-                if(_tilemap.GetTile<Tile>((Vector3Int)_dugCoords) is Tile tile)
+                if(_tilemapController.GetTile(_dugCoords) is Tile tile)
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
                     if(_dugTile != null && dr.DrillSharpness > 0.0001f)
@@ -80,7 +83,7 @@ namespace Miner.Gameplay
 
         public bool IsNotCollidableTile(Vector2Int gridPos)
         {
-            Tile t = _tilemap.GetTile<Tile>((Vector3Int)gridPos);
+            Tile t = _tilemapController.GetTile(gridPos);
             if (t == null) return true;
             if (t.colliderType == Tile.ColliderType.None)
             {
@@ -93,90 +96,89 @@ namespace Miner.Gameplay
         {
             try
             {
-                Vector3Int coords = (Vector3Int)gridPos;
                 bool up = IsNotCollidableTile(gridPos + Vector2Int.up);
                 bool down = IsNotCollidableTile(gridPos + Vector2Int.down);
                 bool left = IsNotCollidableTile(gridPos + Vector2Int.left);
                 bool right = IsNotCollidableTile(gridPos + Vector2Int.right);
-                //Debug.Log("Pos: " + gridPos + " u: " + up + " d:" + down + " l:" + left + " r:" + right);
+
                 if (up && down && left && right)
                 {
-                    _tilemap.SetTile(coords, null);
+                    _tilemapController.SetTile(gridPos, null);
                     return;
                 }
                 else if (up && down && right)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[10]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[10]);
                     return;
                 }
                 else if (up && down && left)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[12]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[12]);
                     return;
                 }
                 else if (down && left && right)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[11]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[11]);
                     return;
                 }
                 else if (up && left && right)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[9]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[9]);
                     return;
                 }
                 else if (down && left)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[8]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[8]);
                     return;
                 }
                 else if (down && right)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[7]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[7]);
                     return;
                 }
                 else if (up && right)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[6]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[6]);
                     return;
                 }
                 else if (up && left)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[5]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[5]);
                     return;
                 }
                 else if(up && down)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[14]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[14]);
                     return;
                 }
                 else if (right && left)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[15]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[15]);
                     return;
                 }
                 else if (up)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[4]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[4]);
                     return;
                 }
                 else if (right)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[3]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[3]);
                     return;
                 }
                 else if (down)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[2]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[2]);
                     return;
                 }
                 else if (left)
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[1]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[1]);
                     return;
                 }
                 else
                 {
-                    _tilemap.SetTile(coords, _tileEdges.ClasifiedTiles[0]);
+                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[0]);
                     return;
                 }
             }
@@ -191,25 +193,26 @@ namespace Miner.Gameplay
         {
             float prob;
             bool tileSet;
-            int minimumLayerDepthForCurrentLayer = _minimumLayerDepth;
+            int minimumLayerDepthForCurrentLayer = _surfaceDepth;
 
             int totalDepth = -_layers.Sum(x => x.Depth) + minimumLayerDepthForCurrentLayer;
             for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
             {
-                _tilemap.SetTile(new Vector3Int(x, 20, 0), _tileEdges.ClasifiedTiles[13]);
-                _tilemap.SetTile(new Vector3Int(x, totalDepth, 0), _tileEdges.ClasifiedTiles[13]);
+                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(x, 20), _tileEdges.ClasifiedTiles[13]);
+                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(x, totalDepth), _tileEdges.ClasifiedTiles[13]);
             }
             
             for (int y = 20; y > totalDepth - 1; --y)
             {
-                _tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.x - 1, y, 0), _tileEdges.ClasifiedTiles[13]);
-                _tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.y, y, 0), _tileEdges.ClasifiedTiles[13]);
+                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(_horizontalWorldBorders.Value.x - 1, y), _tileEdges.ClasifiedTiles[13]);
+                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(_horizontalWorldBorders.Value.y, y), _tileEdges.ClasifiedTiles[13]);
             }
-
+            _tilemapController.AddTilemap(_surfaceTilemap, _surfaceDepth);
+            /*
             foreach (var layer in _layers)
             {
-
-                for(int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
+                _tilemapController.AddTilemap(Instantiate(_groundLayerPrefab, _grid.transform));
+                for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
                 {
                     for (int y = minimumLayerDepthForCurrentLayer; y > (minimumLayerDepthForCurrentLayer - layer.Depth); --y)
                     {
@@ -244,7 +247,8 @@ namespace Miner.Gameplay
                     }
                 }
                 minimumLayerDepthForCurrentLayer -= layer.Depth;
-            }
+            }*/
+            
         }
 
         private IEnumerator UpdateExternalTemperature()
@@ -259,15 +263,16 @@ namespace Miner.Gameplay
         private void Awake()
         {
             _tileIdentifier = new TileIdentifier(_tiles);
+            _tilemapController = new TilemapController(_layers.Count, _surfaceTilemap);
             GenerateWorld();
         }
 
         private void Start()
         {
-            int totalDepth = -_layers.Sum(x => x.Depth) + _minimumLayerDepth;
+            int totalDepth = -_layers.Sum(x => x.Depth) + _surfaceDepth;
             _vecticalWorldBorders.Value = new Vector2Int(_vecticalWorldBorders.Value.x, totalDepth);
 
-            _worldLoaded.Raise(new WorldLoadedEA(_tilemap, _playerSpawnPoint));
+            _worldLoaded.Raise(new WorldLoadedEA(_grid, _playerSpawnPoint));
             StartCoroutine(UpdateExternalTemperature());
         }
 

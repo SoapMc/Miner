@@ -27,7 +27,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _digComplete = null;
         [SerializeField] private GameEvent _triggerInteraction = null;
 
-        private Tilemap _groundTilemap = null;
+        private Grid _worldGrid = null;
         private Rigidbody2D _rigidbody = null;
         private float _verticalMove = 0f;
         private float _horizontalMove = 0f;
@@ -45,7 +45,7 @@ namespace Miner.Gameplay
         {
             if (args is WorldLoadedEA wl)
             {
-                _groundTilemap = wl.Tilemap;
+                _worldGrid = wl.WorldGrid;
                 transform.position = wl.PlayerSpawnPoint.position;
                 _locked = false;
             }
@@ -75,7 +75,7 @@ namespace Miner.Gameplay
         public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
         {
             _locked = true;
-            Vector3 worldCoords = _groundTilemap.GetCellCenterWorld((Vector3Int) coords);
+            Vector3 worldCoords = _worldGrid.GetCellCenterWorld((Vector3Int) coords);
             float lerpCoeff = 0f;
             Vector3 startPosition = transform.position;
             while(Vector2.SqrMagnitude(worldCoords - transform.position) > 0.1f)
@@ -99,7 +99,7 @@ namespace Miner.Gameplay
         {
             _playerFuel.Value -= _playerFuelUsage * Time.deltaTime;
             _currentSpeed.Value = _rigidbody.velocity;
-            _gridPosition.Value = (Vector2Int)_groundTilemap.WorldToCell(transform.position);
+            _gridPosition.Value = (Vector2Int)_worldGrid.WorldToCell(transform.position);
 
             if (_locked) return;
             _horizontalMove = Input.GetAxis("Horizontal") * _playerEnginePower.Value;

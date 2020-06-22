@@ -40,6 +40,18 @@ namespace Miner.Management.Events
         }
     }
 
+    public class LayerTriggerEA : EventArgs
+    {
+        public readonly int LayerNumber;
+        public readonly bool LayerActivation;
+
+        public LayerTriggerEA(int layerNumber, bool layerActivation)
+        {
+            LayerNumber = layerNumber;
+            LayerActivation = layerActivation;
+        }
+    }
+
     public class LeadToDigPlaceEA : EventArgs
     {
         public readonly TileType Tile;
@@ -123,12 +135,12 @@ namespace Miner.Management.Events
 
     public class WorldLoadedEA : EventArgs
     {
-        public readonly Tilemap Tilemap;
+        public readonly Grid WorldGrid;
         public readonly Transform PlayerSpawnPoint;
 
-        public WorldLoadedEA(Tilemap tilemap, Transform playerSpawnPoint)
+        public WorldLoadedEA(Grid worldGrid, Transform playerSpawnPoint)
         {
-            Tilemap = tilemap;
+            WorldGrid = worldGrid;
             PlayerSpawnPoint = playerSpawnPoint;
         }
     }

@@ -48,7 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tiles: {fileID: 11400000, guid: 0cf9998c3ea5754459aca1dd53012051, type: 2}
   _tileEdges: {fileID: 11400000, guid: df8573f342788e244a7bdda32f063f47, type: 2}
-  _tilemap: {fileID: 2470983533128611354}
+  _surfaceTilemap: {fileID: 2470983533128611354}
+  _groundLayerPrefab: {fileID: 1568325284079918280, guid: 83f4565ec0b141640a1ec4a3b341b31e,
+    type: 3}
+  _grid: {fileID: 2470983532921997278}
   _playerSpawnPoint: {fileID: 2470983532336830613}
   _playerGridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d,
     type: 2}
@@ -230,7 +233,7 @@ GameObject:
   - component: {fileID: 2470983533128611353}
   - component: {fileID: 2470983533128611355}
   m_Layer: 20
-  m_Name: Tilemap
+  m_Name: Surface Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
