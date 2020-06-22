@@ -40,7 +40,7 @@ namespace Miner.Gameplay
             _previousSpeed = _currentSpeed.Value;
         }
 
-        private IEnumerator CheckTemperatures()
+        private IEnumerator CheckStatus()
         {
             while (true)
             {
@@ -58,13 +58,18 @@ namespace Miner.Gameplay
 
                 if (_equipment.Battery != null)
                 {
-                    if (_internalTemperature.Value > _equipment.Battery.ThermalVulnerability && (_elapsedTime - _lastBatteryTemperatureCheck) > 5f)
+                    if (_internalTemperature.Value > _equipment.Battery.ThermalVulnerability)
                     {
                         TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Battery, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
+                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning});
+                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Battery, Mode = TriggerStatusPanelEA.EMode.Warning});
                         _triggerStatusPanel.Raise(tsp);
-                        _lastBatteryTemperatureCheck = _elapsedTime;
+                    }
+                    else
+                    {
+                        TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
+                        tsp.DisableIcons.Add(TriggerStatusPanelEA.ESymbol.Battery);
+                        _triggerStatusPanel.Raise(tsp);
                     }
                 }
 
@@ -81,7 +86,7 @@ namespace Miner.Gameplay
 
         private void Start()
         {
-            StartCoroutine(CheckTemperatures());
+            StartCoroutine(CheckStatus());
         }
 
         private void OnDisable()

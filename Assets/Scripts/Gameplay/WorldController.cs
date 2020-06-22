@@ -7,6 +7,7 @@ using Miner.Management.Exceptions;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
@@ -45,8 +46,7 @@ namespace Miner.Gameplay
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
                     if(_dugTile != null && dr.DrillSharpness > 0.0001f)
-                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness, 1f));
-#warning wpisz formule szybkosci kopania
+                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f));
                 }
             }
             else

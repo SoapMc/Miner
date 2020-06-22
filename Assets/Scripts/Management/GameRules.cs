@@ -15,6 +15,11 @@ namespace Miner.Management
 
         public float RealDimensionOfTile => _realDimensionOfTile;
 
+        public float GetDrillSharpnessCoefficient(int gridDepth)
+        {
+            return 0.9f / (0.0005f * (Mathf.Abs(gridDepth) * _realDimensionOfTile) + 1) + 0.1f;
+        }
+
         private void OnEnable()
         {
             if (_instance == null)
