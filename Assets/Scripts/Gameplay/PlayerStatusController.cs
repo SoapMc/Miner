@@ -15,7 +15,7 @@ namespace Miner.Gameplay
         [SerializeField] private Vector2Reference _currentSpeed = null;
         [SerializeField] private IntReference _resistanceToHit = null;
         [SerializeField] private EquipmentTable _equipment = null;
-
+        [SerializeField] private FloatReference _heatFlow = null;
         [Header("Events")]
         [SerializeField] private GameEvent _triggerStatusPanel = null;
 
@@ -26,9 +26,9 @@ namespace Miner.Gameplay
 
         private void CalculateTemperatureFlow()
         {
+            _heatFlow.Value = (_externalTemperature.Value - _effectiveCooling.Value - _internalTemperature.Value) * Time.deltaTime / (float)(_thermalInsulation.Value + 1);
             if (_internalTemperature.Value > _externalTemperature) return;
-
-            _internalTemperature.Value += (_externalTemperature.Value - _effectiveCooling.Value) * Time.deltaTime / (float)(_thermalInsulation.Value + 1); 
+            _internalTemperature.Value += _heatFlow.Value; 
         }
 
         private void CheckForHit()

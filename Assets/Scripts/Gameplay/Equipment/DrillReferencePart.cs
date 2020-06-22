@@ -7,7 +7,7 @@ namespace Miner.Gameplay
     [CreateAssetMenu(menuName = "Equipment/Drill Reference Part")]
     public class DrillReferencePart : ReferencePart
     {
-        [SerializeField, Range(0.1f, 10f)] private float _sharpness = 0.1f;
+        [SerializeField, Range(0.001f, 0.4f)] private float _sharpness = 0.1f;
 
         public float Sharpness => _sharpness;
 

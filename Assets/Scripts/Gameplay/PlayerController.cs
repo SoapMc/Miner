@@ -19,6 +19,7 @@ namespace Miner.Gameplay
         [SerializeField] private BoolReference _canDigDown = null;
         [SerializeField] private BoolReference _canDigLeft = null;
         [SerializeField] private Vector2Reference _currentSpeed = null;
+        [SerializeField] private FloatReference _drillSharpness = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _digRequest = null;
@@ -102,17 +103,17 @@ namespace Miner.Gameplay
                 if(Input.GetAxis("Vertical") < -0.6f)
                 {
                     //dig down
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value));
                 }
                 else if (_canDigRight && _horizontalMove > 0.8f)
                 {
                     //dig right
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value));
                 }
                 else if (_canDigLeft && _horizontalMove < -0.8f)
                 {
                     //dig left
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value));
                 }
             }
             

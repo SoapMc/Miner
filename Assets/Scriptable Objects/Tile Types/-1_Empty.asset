@@ -33,3 +33,4 @@ MonoBehaviour:
   _hardiness: 0.01
   _value: 0
   _isFuel: 0
+  _isDestroyable: 0

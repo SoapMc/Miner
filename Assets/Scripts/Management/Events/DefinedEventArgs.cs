@@ -31,10 +31,12 @@ namespace Miner.Management.Events
     public class DigRequestEA : EventArgs
     {
         public readonly Vector2Int Coordinates;
-        
-        public DigRequestEA(Vector2Int coordinates)
+        public readonly float DrillSharpness;
+
+        public DigRequestEA(Vector2Int coordinates, float drillSharpness)
         {
             Coordinates = coordinates;
+            DrillSharpness = drillSharpness;
         }
     }
 

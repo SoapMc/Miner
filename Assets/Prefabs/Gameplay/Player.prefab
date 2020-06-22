@@ -54,6 +54,7 @@ MonoBehaviour:
   _currentSpeed: {fileID: 11400000, guid: cd5a1668e28522543a001d71fa84f429, type: 2}
   _resistanceToHit: {fileID: 11400000, guid: 12d00c28f9a0cf04692248dd3b647a8a, type: 2}
   _equipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}
+  _heatFlow: {fileID: 11400000, guid: 3308460b8618d3f4589166772e4bb9d9, type: 2}
   _triggerStatusPanel: {fileID: 11400000, guid: f5490dfdc4123ba468946b8a69d649fc,
     type: 2}
 --- !u!1 &2314250434073995524
@@ -305,6 +306,7 @@ MonoBehaviour:
   _canDigDown: {fileID: 11400000, guid: 32506a04f5c35924287d26b8d09d5845, type: 2}
   _canDigLeft: {fileID: 11400000, guid: 11a9d1e61a0cae14391b98348da240fe, type: 2}
   _currentSpeed: {fileID: 11400000, guid: cd5a1668e28522543a001d71fa84f429, type: 2}
+  _drillSharpness: {fileID: 11400000, guid: b8f90f2696e4eac47b837cece0d66a16, type: 2}
   _digRequest: {fileID: 11400000, guid: 7f88a321dd2fd7347881e514325add5e, type: 2}
   _digComplete: {fileID: 11400000, guid: d461d6376ea6c91418d25c368b764399, type: 2}
   _triggerInteraction: {fileID: 11400000, guid: d38cfe4662137df47b1b24c984325572,

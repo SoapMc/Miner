@@ -44,8 +44,9 @@ namespace Miner.Gameplay
                 if(_tilemap.GetTile<Tile>((Vector3Int)_dugCoords) is Tile tile)
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
-                    if(_dugTile != null)
-                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, 0.01f, 1f));
+                    if(_dugTile != null && dr.DrillSharpness > 0.0001f)
+                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness, 1f));
+#warning wpisz formule szybkosci kopania
                 }
             }
             else
