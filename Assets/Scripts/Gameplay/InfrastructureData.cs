@@ -7,7 +7,7 @@ namespace Miner.Gameplay
     [System.Serializable]
     public class InfrastructureData
     {
-        public int FuelSupply;
+        public float FuelSupply;
 
 
     }

@@ -14,12 +14,14 @@ namespace Miner.Gameplay
         [SerializeField] private int _value = 0;
         [SerializeField] private bool _isFuel = false;
         [SerializeField] private bool _isDestroyable = true;
+        [SerializeField] private int _mass = 0;
 
         public string Name => _name;
         public List<Tile> ClasifiedTiles => _tiles;
         public float Hardiness => _hardiness;
         public int Value => _value;
         public bool IsDestroyable => _isDestroyable;
+        public int Mass => _mass;
 
     }
 }

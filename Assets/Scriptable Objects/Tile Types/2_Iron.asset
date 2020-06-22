@@ -18,3 +18,5 @@ MonoBehaviour:
   _hardiness: 1
   _value: 25
   _isFuel: 0
+  _isDestroyable: 1
+  _mass: 120

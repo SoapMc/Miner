@@ -13,7 +13,7 @@ namespace Miner.Management
         //[SerializeField] private GameEvent _updateBuildingUI = null;
 
         [Header("Resources")]
-        [SerializeField] private IntReference _fuelSupply = null;
+        [SerializeField] private FloatReference _fuelSupply = null;
 
         private bool _suppressEvents = false;
 

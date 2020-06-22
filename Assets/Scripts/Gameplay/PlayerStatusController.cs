@@ -27,7 +27,6 @@ namespace Miner.Gameplay
         private void CalculateTemperatureFlow()
         {
             _heatFlow.Value = (_externalTemperature.Value - _effectiveCooling.Value - _internalTemperature.Value) * Time.deltaTime / (float)(_thermalInsulation.Value + 1);
-            if (_internalTemperature.Value > _externalTemperature) return;
             _internalTemperature.Value += _heatFlow.Value; 
         }
 

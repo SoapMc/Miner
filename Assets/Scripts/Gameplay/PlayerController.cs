@@ -20,6 +20,7 @@ namespace Miner.Gameplay
         [SerializeField] private BoolReference _canDigLeft = null;
         [SerializeField] private Vector2Reference _currentSpeed = null;
         [SerializeField] private FloatReference _drillSharpness = null;
+        [SerializeField] private IntReference _playerCargoMass = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _digRequest = null;
@@ -66,6 +67,11 @@ namespace Miner.Gameplay
             }
         }
 
+        public void OnMassChanged(int oldMass, int newMass)
+        {
+            _rigidbody.mass += (newMass - oldMass)/1000f;
+        }
+
         public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
         {
             _locked = true;
@@ -86,6 +92,7 @@ namespace Miner.Gameplay
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _playerCargoMass.ValueChanged += OnMassChanged;
         }
 
         private void Update()
@@ -135,6 +142,11 @@ namespace Miner.Gameplay
             _rigidbody.AddForce(new Vector2(_horizontalMove, _verticalMove));
             _horizontalMove = 0f;
             _verticalMove = 0f;
+        }
+
+        private void OnDestroy()
+        {
+            _playerCargoMass.ValueChanged -= OnMassChanged;
         }
     }
 }

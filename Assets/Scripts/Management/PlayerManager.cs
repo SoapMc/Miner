@@ -34,6 +34,7 @@ namespace Miner.Management
         [SerializeField] private UsableItemTable _usableItems = null;
         [SerializeField] private IntReference _resistanceToHit = null;
         [SerializeField] private IntReference _thermalInsulation = null;
+        [SerializeField] private IntReference _cargoMass = null;
 
         [Header("Initial resources")]
         [SerializeField] private int _initialMoney = 0;
@@ -168,11 +169,13 @@ namespace Miner.Management
                 foreach(var addElem in upd.AddCargoChange)
                 {
                     _cargo.Add(addElem);
+                    _cargoMass.Value += addElem.Type.Mass;
                 }
 
                 foreach (var removeElem in upd.RemoveCargoChange)
                 {
                     _cargo.Remove(removeElem);
+                    _cargoMass.Value -= removeElem.Type.Mass;
                 }
 
                 foreach(var newPart in upd.EquipmentChange)

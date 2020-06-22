@@ -11,7 +11,7 @@ namespace Miner.UI
 {
     public class FuelStationWindow : MonoBehaviour
     {
-        [SerializeField] private IntReference _fuelSupply = null;
+        [SerializeField] private FloatReference _fuelSupply = null;
         [SerializeField] private CargoTable _playerCargo = null;
         [SerializeField] private FloatReference _playerFuel = null;
         [SerializeField] private FloatReference _playerMaxFuel = null;
@@ -33,19 +33,13 @@ namespace Miner.UI
         {
             if (_playerMoney >= _fullRefillCost)
             {
-                _updatePlayerData.Raise(new UpdatePlayerDataEA() {
-                    MoneyChange = -_fullRefillCost,
-                    FuelChange = _playerMaxFuel.Value - _playerFuel.Value
-                });
+                SellFuelToPlayer(_playerMaxFuel.Value - _playerFuel.Value, _fullRefillCost);
             }
             else
             {
                 float boughtFuel = _playerMoney.Value / (float)_fuelPrice;
-                _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                {
-                    MoneyChange = Mathf.CeilToInt(-boughtFuel * _fuelPrice),
-                    FuelChange = boughtFuel
-                });
+                _fuelSupply.Value -= boughtFuel;
+                SellFuelToPlayer(boughtFuel, Mathf.CeilToInt(-boughtFuel * _fuelPrice));
             }
             CalculateFullRefillCost();
         }
@@ -59,19 +53,11 @@ namespace Miner.UI
                 int refillCost = Mathf.CeilToInt(_playerMaxFuel.Value * 0.1f * _fuelPrice);
                 if (_playerMoney >= refillCost)
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -refillCost,
-                        FuelChange = _playerMaxFuel.Value * 0.1f
-                    });
+                    SellFuelToPlayer(_playerMaxFuel.Value * 0.1f, refillCost);
                 }
                 else
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -_playerMoney,
-                        FuelChange = (_playerMoney / (float)_fuelPrice)
-                    });
+                    SellFuelToPlayer(_playerMoney / (float)_fuelPrice, _playerMoney);
                 }
             }
             else
@@ -79,19 +65,11 @@ namespace Miner.UI
                 int refillCost = Mathf.CeilToInt(missingFuel * _fuelPrice);
                 if (_playerMoney >= refillCost)
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -refillCost,
-                        FuelChange = _playerMaxFuel.Value - _playerFuel.Value
-                    });
+                    SellFuelToPlayer(_playerMaxFuel.Value - _playerFuel.Value, refillCost);
                 }
                 else
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -_playerMoney,
-                        FuelChange = (_playerMoney / (float)_fuelPrice)
-                    });
+                    SellFuelToPlayer(_playerMoney / (float)_fuelPrice, _playerMoney);
                 }
             }
             CalculateFullRefillCost();
@@ -106,19 +84,11 @@ namespace Miner.UI
                 int refillCost = Mathf.CeilToInt(_playerMaxFuel.Value * 0.01f * _fuelPrice);
                 if (_playerMoney >= refillCost)
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -refillCost,
-                        FuelChange = _playerMaxFuel.Value * 0.01f
-                    });
+                    SellFuelToPlayer(_playerMaxFuel.Value * 0.01f, refillCost);
                 }
                 else
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -_playerMoney,
-                        FuelChange = (_playerMoney / (float)_fuelPrice)
-                    });
+                    SellFuelToPlayer(_playerMoney / (float)_fuelPrice, _playerMoney);
                 }
             }
             else
@@ -126,22 +96,25 @@ namespace Miner.UI
                 int refillCost = Mathf.CeilToInt((_playerMaxFuel.Value - _playerFuel.Value) * _fuelPrice);
                 if (_playerMoney >= refillCost)
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -refillCost,
-                        FuelChange = _playerMaxFuel.Value - _playerFuel.Value
-                    });
+                    SellFuelToPlayer(_playerMaxFuel.Value - _playerFuel.Value, refillCost);
                 }
                 else
                 {
-                    _updatePlayerData.Raise(new UpdatePlayerDataEA()
-                    {
-                        MoneyChange = -_playerMoney,
-                        FuelChange = (_playerMoney / (float)_fuelPrice)
-                    });
+                    SellFuelToPlayer(_playerMoney / (float)_fuelPrice, _playerMoney.Value);
                 }
             }
             CalculateFullRefillCost();
+        }
+
+        private void SellFuelToPlayer(float amount, int price)
+        {
+            _updatePlayerData.Raise(new UpdatePlayerDataEA()
+            {
+                MoneyChange = -price,
+                FuelChange = amount
+            });
+            _fuelSupply.Value -= amount;
+            RefreshUI();
         }
 
         public void RefreshUI()
@@ -158,7 +131,7 @@ namespace Miner.UI
 
         private void CalculateFuelPrice()
         {
-            _fuelPrice = 10 - _fuelSupply / 1000;
+            _fuelPrice = 10 - (int)_fuelSupply / 1000;
             _fuelPrice = Mathf.Clamp(_fuelPrice, 1, 10);
             _price.text = _fuelPrice.ToString() + " $/ l";
         }
@@ -167,6 +140,8 @@ namespace Miner.UI
         {
             _fullRefillCost = Mathf.CeilToInt((_playerMaxFuel.Value - _playerFuel.Value) * _fuelPrice);
             _fullRefillCostText.text = _fullRefillCost.ToString() + " $";
+            _fuelSupplyText.text = ((int)_fuelSupply).ToString() + "l";
+            CalculateFuelPrice();
         }
 
         private void Awake()
