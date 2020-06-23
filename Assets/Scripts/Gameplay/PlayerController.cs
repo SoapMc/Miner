@@ -27,6 +27,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _digComplete = null;
         [SerializeField] private GameEvent _triggerInteraction = null;
 
+        private float _maxSpeed = 25f;
         private Grid _worldGrid = null;
         private Rigidbody2D _rigidbody = null;
         private float _verticalMove = 0f;
@@ -101,12 +102,14 @@ namespace Miner.Gameplay
             _playerFuel.Value -= _playerFuelUsage * Time.deltaTime;
             _currentSpeed.Value = _rigidbody.velocity;
             _gridPosition.Value = (Vector2Int)_worldGrid.WorldToCell(transform.position);
+            if (_rigidbody.velocity.magnitude > _maxSpeed)
+                _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, _maxSpeed);
 
-            if (_locked) return;
+                if (_locked) return;
             _horizontalMove = Input.GetAxis("Horizontal") * _playerEnginePower.Value;
             _verticalMove = Mathf.Clamp(Input.GetAxis("Vertical") * 2 * _playerEnginePower.Value, 0f, float.MaxValue);
 
-            if(_canDigDown)
+            if(_canDigDown.Value == true)
             {
                 if(Input.GetAxis("Vertical") < -0.6f)
                 {

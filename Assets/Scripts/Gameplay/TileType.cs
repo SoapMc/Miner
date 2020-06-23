@@ -22,6 +22,7 @@ namespace Miner.Gameplay
         public int Value => _value;
         public bool IsDestroyable => _isDestroyable;
         public int Mass => _mass;
+        public bool IsFuel => _isFuel;
 
     }
 }

@@ -164,6 +164,8 @@ MonoBehaviour:
   _worldLoaded: {fileID: 11400000, guid: 287002e75ecd37f4db905724166447b8, type: 2}
   _leadToDigPlace: {fileID: 11400000, guid: 9719fbe7cba519649afaaf2958decb4b, type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _updateInfrastructureData: {fileID: 11400000, guid: 3263737974f642943b373f837e8515a3,
+    type: 2}
   _horizontalWorldBorders: {fileID: 11400000, guid: e4fd24dc8d5817c4b9441c121b228061,
     type: 2}
   _vecticalWorldBorders: {fileID: 11400000, guid: fa2c237a9e747a045849ac95081554e5,
@@ -901,7 +903,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a5f6bc0c05f454f4ca444d58419482bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

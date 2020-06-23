@@ -103,7 +103,7 @@ namespace Miner.UI
                     SellFuelToPlayer(_playerMoney / (float)_fuelPrice, _playerMoney.Value);
                 }
             }
-            CalculateFullRefillCost();
+            
         }
 
         private void SellFuelToPlayer(float amount, int price)
@@ -121,7 +121,9 @@ namespace Miner.UI
         {
             CalculateFuelPrice();
             CalculateFullRefillCost();
-            _fuelSupplyText.text = _fuelSupply.Value.ToString() + " l";
+            _fuelSupplyText.text = ((int)_fuelSupply).ToString() + "l";
+            _price.text = _fuelPrice.ToString() + " $/ l";
+            _fullRefillCostText.text = _fullRefillCost.ToString() + " $";
         }
 
         public void CloseWindow()
@@ -133,15 +135,11 @@ namespace Miner.UI
         {
             _fuelPrice = 10 - (int)_fuelSupply / 1000;
             _fuelPrice = Mathf.Clamp(_fuelPrice, 1, 10);
-            _price.text = _fuelPrice.ToString() + " $/ l";
         }
 
         private void CalculateFullRefillCost()
         {
             _fullRefillCost = Mathf.CeilToInt((_playerMaxFuel.Value - _playerFuel.Value) * _fuelPrice);
-            _fullRefillCostText.text = _fullRefillCost.ToString() + " $";
-            _fuelSupplyText.text = ((int)_fuelSupply).ToString() + "l";
-            CalculateFuelPrice();
         }
 
         private void Awake()

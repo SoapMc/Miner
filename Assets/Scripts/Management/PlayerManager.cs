@@ -74,13 +74,14 @@ namespace Miner.Management
         private void Equip(ReferencePart part, float durability = 1f)
         {
             if (part == null) return;
-            part.Durability = durability;
+            part.Durability = Mathf.Clamp(durability, 0.1f, 1f);
             switch(part)
             {
                 case HullReferencePart hull:
                     _equipment.Hull = hull;
                     _maxHull.Value = (int)(hull.MaxHull * part.Durability);
-                    _hull.Value = _maxHull.Value;
+                    if(durability == 1f)
+                        _hull.Value = _maxHull.Value;
                     _resistanceToHit.Value = (int)(hull.ResistanceToHit * part.Durability);
                     _thermalInsulation.Value = hull.ThermalInsulation;
                     break;
@@ -148,25 +149,22 @@ namespace Miner.Management
 
         public void OnUpdatePlayerData(EventArgs args)
         {
-            if(args is UpdatePlayerDataEA upd)
+            if (args is UpdatePlayerDataEA upd)
             {
                 _money.Value += upd.MoneyChange;
 
                 _maxHull.Value += upd.MaxHullChange;
                 _hull.Value += upd.HullChange;
-                if(_hull > _maxHull)
-                {
-                    _hull.Value = _maxHull;
-                }
+                _hull.Value = Mathf.Clamp(_hull.Value, 0, _maxHull.Value);
 
                 _fuel.Value += upd.FuelChange;
                 _maxFuel.Value += upd.MaxFuelChange;
-                if(_fuel > _maxFuel)
+                if (_fuel > _maxFuel)
                 {
                     _fuel.Value = _maxFuel;
                 }
 
-                foreach(var addElem in upd.AddCargoChange)
+                foreach (var addElem in upd.AddCargoChange)
                 {
                     _cargo.Add(addElem);
                     _cargoMass.Value += addElem.Type.Mass;
@@ -178,24 +176,45 @@ namespace Miner.Management
                     _cargoMass.Value -= removeElem.Type.Mass;
                 }
 
-                foreach(var newPart in upd.EquipmentChange)
+                foreach (var newPart in upd.EquipmentChange)
                 {
                     Equip(newPart);
                 }
 
-                foreach(var addUsableItem in upd.AddUsableItemsChange)
+                foreach (var addUsableItem in upd.AddUsableItemsChange)
                 {
                     _usableItems.Add(addUsableItem);
                 }
 
-                foreach(var removeUsableItem in upd.RemoveUsableItemsChange)
+                foreach (var removeUsableItem in upd.RemoveUsableItemsChange)
                 {
                     _usableItems.Remove(removeUsableItem);
                 }
+
+                DealPermaDamage(_equipment.Hull, upd.HullPermaDamage);
+                DealPermaDamage(_equipment.FuelTank, upd.FuelTankPermaDamage);
+                DealPermaDamage(_equipment.Engine, upd.EnginePermaDamage);
+                DealPermaDamage(_equipment.Drill, upd.DrillPermaDamage);
+                DealPermaDamage(_equipment.Cooling, upd.CoolingPermaDamage);
+                DealPermaDamage(_equipment.Cargo, upd.CargoPermaDamage);
+                DealPermaDamage(_equipment.Battery, upd.BatteryPermaDamage);
+
             }
             else
             {
                 throw new InvalidEventArgsException();
+            }
+        }
+
+        private void DealPermaDamage(ReferencePart part, int amount)
+        {
+            if (amount > 0)
+            {
+                if (part != null)
+                {
+                    part.Durability -= amount / 100f;
+                    Equip(part, part.Durability);
+                }
             }
         }
 

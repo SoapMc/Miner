@@ -126,7 +126,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a5f6bc0c05f454f4ca444d58419482bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 3478985989722002574}
   - component: {fileID: 8172002338710840334}
   - component: {fileID: 8716392457649731574}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Bottom Layer Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 1135168916116947895}
   - component: {fileID: 5406664830933322267}
   - component: {fileID: 3242968338691467919}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Top Layer Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

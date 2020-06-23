@@ -20,6 +20,12 @@ namespace Miner.Management
             return 0.9f / (0.0005f * (Mathf.Abs(gridDepth) * _realDimensionOfTile) + 1) + 0.1f;
         }
 
+        public int CalculateDamageFromGroundHit(float inputValue)
+        {
+            int result = Mathf.CeilToInt(0.0002f * Mathf.Pow(inputValue, 1.2f));
+            return result;
+        }
+
         private void OnEnable()
         {
             if (_instance == null)

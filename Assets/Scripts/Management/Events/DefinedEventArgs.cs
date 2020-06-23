@@ -115,6 +115,11 @@ namespace Miner.Management.Events
         public List<CargoTable.Element> RemovedResources = new List<CargoTable.Element>();
     }
 
+    public class UpdateInfrastructureEA : EventArgs
+    {
+        public int FuelSupplyChange;
+    }
+
     /// <summary>
     /// This class should be used for update only when there is no frequent changes in the stats.
     /// </summary>
@@ -125,6 +130,13 @@ namespace Miner.Management.Events
         public int MaxHullChange = 0;
         public float FuelChange = 0f;
         public float MaxFuelChange = 0f;
+        public int HullPermaDamage = 0;
+        public int FuelTankPermaDamage = 0;
+        public int EnginePermaDamage = 0;
+        public int CoolingPermaDamage = 0;
+        public int DrillPermaDamage = 0;
+        public int CargoPermaDamage = 0;
+        public int BatteryPermaDamage = 0;
         public readonly List<CargoTable.Element> AddCargoChange = new List<CargoTable.Element>();
         public readonly List<CargoTable.Element> RemoveCargoChange = new List<CargoTable.Element>();
         public readonly List<ReferencePart> EquipmentChange = new List<ReferencePart>();

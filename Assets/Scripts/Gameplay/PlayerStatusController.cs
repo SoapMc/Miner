@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Miner.Management.Events;
+using UnityEngine.Events;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
@@ -18,6 +20,7 @@ namespace Miner.Gameplay
         [SerializeField] private FloatReference _heatFlow = null;
         [Header("Events")]
         [SerializeField] private GameEvent _triggerStatusPanel = null;
+        [SerializeField] private GameEvent _updatePlayerData = null;
 
         private Vector2 _previousSpeed = Vector2.zero;
         private float _elapsedTime = 0f;
@@ -32,9 +35,16 @@ namespace Miner.Gameplay
 
         private void CheckForHit()
         {
-            if(Vector2.SqrMagnitude(_previousSpeed - _currentSpeed.Value) > _resistanceToHit)
+            float sqrSpeedChange = Vector2.SqrMagnitude(_previousSpeed - _currentSpeed.Value);
+            if (sqrSpeedChange > _resistanceToHit)
             {
-                Debug.Log("Hit");
+                UpdatePlayerDataEA upd = new UpdatePlayerDataEA() { HullChange = -GameRules.Instance.CalculateDamageFromGroundHit(5 * sqrSpeedChange) };
+                if (_equipment.Hull != null)
+                {
+                    if (Mathf.Abs(upd.HullChange) >= _equipment.Hull.MaxHull * _equipment.Hull.PermaDamageThreshold)
+                        upd.HullPermaDamage = 1;
+                }
+                _updatePlayerData.Raise(upd);
             }
             _previousSpeed = _currentSpeed.Value;
         }

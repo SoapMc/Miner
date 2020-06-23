@@ -20,11 +20,12 @@ namespace Miner.Gameplay
 
         private bool Raycast(Transform source, Vector2 direction)
         {
-            RaycastHit2D hit = Physics2D.Raycast(source.position, direction, 0.1f, _groundLayer);
-            Debug.DrawRay(source.position, direction, Color.red);
+            RaycastHit2D hit = Physics2D.Raycast(source.position, direction, 0.05f, _groundLayer);
+            Debug.DrawRay(source.position, 0.05f * direction, Color.red);
             if (hit.collider != null)
             {
-                return true;
+                if(!hit.collider.isTrigger)
+                    return true;
             }
 
             return false;     

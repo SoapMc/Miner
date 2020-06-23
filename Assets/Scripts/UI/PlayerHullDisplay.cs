@@ -13,19 +13,21 @@ namespace Miner.UI
 
         private void OnValueChanged(int oldValue, int newValue)
         {
-            _text.text = newValue + " / " + _maxHull.Value;
+            _text.text = _currentHull.Value + " / " + _maxHull.Value;
         }
 
         private void Start()
         {
             _text = GetComponent<TextMeshProUGUI>();
             _currentHull.ValueChanged += OnValueChanged;
+            _maxHull.ValueChanged += OnValueChanged;
             OnValueChanged(_currentHull.Value, _currentHull.Value);
         }
 
         private void OnDestroy()
         {
             _currentHull.ValueChanged -= OnValueChanged;
+            _maxHull.ValueChanged -= OnValueChanged;
         }
     }
 }

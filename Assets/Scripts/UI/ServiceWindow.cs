@@ -24,7 +24,33 @@ namespace Miner.UI
         [SerializeField] private TextMeshProUGUI _preformanceInfoPrefab = null;
         [SerializeField] private UsableItemOffer _usableItemOfferPrefab = null;
         [SerializeField] private Button _firstSelectedElement = null;
+        [SerializeField] private TextMeshProUGUI _repairPriceText = null;
+        [SerializeField] private IntReference _playerHull = null;
+        [SerializeField] private IntReference _playerMaxHull = null;
+        private int _repairCostPerPoint = 25;
         private List<UsableItemOffer> _offers;
+
+        public void Repair()
+        {
+            int repairCost = (_playerMaxHull.Value - _playerHull.Value) * _repairCostPerPoint;
+            if(repairCost <= _playerMoney.Value)
+            {
+                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -repairCost, HullChange = _playerMaxHull.Value - _playerHull.Value });
+            }
+            else
+            {
+                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -_playerMoney, HullChange = Mathf.CeilToInt(_playerMoney.Value / (float)_repairCostPerPoint) });
+            }
+
+            CalculateRepairCost();
+        }
+
+        public int CalculateRepairCost()
+        {
+            int repairCost = (_playerMaxHull.Value - _playerHull.Value) * _repairCostPerPoint;
+            _repairPriceText.text = repairCost.ToString() + " $";
+            return repairCost;
+        }
 
         public int BuyItem(UsableItem item)
         {
@@ -104,6 +130,7 @@ namespace Miner.UI
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_firstSelectedElement.gameObject);
             _firstSelectedElement.OnSelect(null);
+            CalculateRepairCost();
         }
 
         private void Start()

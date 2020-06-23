@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8419228469112531609}
   - component: {fileID: 991413557121966930}
+  - component: {fileID: 7057051388360364831}
   m_Layer: 0
   m_Name: Infrastructure Manager
   m_TagString: Untagged
@@ -44,6 +45,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fuelSupply: {fileID: 11400000, guid: becf5165bca89574fa94d620eaf4543b, type: 2}
+--- !u!114 &7057051388360364831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5125488872518959256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 3263737974f642943b373f837e8515a3, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 991413557121966930}
+        m_MethodName: OnUpdateInfrastructureDate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5420866539213587991
 GameObject:
   m_ObjectHideFlags: 0

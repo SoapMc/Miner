@@ -9,14 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ecbf6975610e1b4095b7484cedc48a2, type: 3}
-  m_Name: 1_Coal
+  m_Script: {fileID: 11500000, guid: 948c10cac11c49547ad3cb9338f30f82, type: 3}
+  m_Name: Update Infrastructure Data
   m_EditorClassIdentifier: 
-  _name: Coal
-  _tiles:
-  - {fileID: 11400000, guid: e7d34b6b604341749acf26c617d21f59, type: 2}
-  _hardiness: 1
-  _value: 10
-  _isFuel: 1
-  _isDestroyable: 1
-  _mass: 100

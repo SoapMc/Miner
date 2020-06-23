@@ -16,6 +16,7 @@ namespace Miner.Gameplay
         public int MaxHull => _maxHull;
         public int ResistanceToHit => _resistanceToHit;
         public int ThermalInsulation => _thermalInsulation;
+        public float PermaDamageThreshold => _permaDamageThreshold;
 
         public override string[] GetSpecificDescription()
         {
@@ -25,10 +26,10 @@ namespace Miner.Gameplay
         public override string[] GetPerformanceDescription()
         {
             return new string[5] {  "Total performance: " + ((int)(_durability * 100)).ToString() + " %",
-                                    "Max hull: " + _maxHull.ToString() + " (" + (_maxHull *_durability).ToString() + ")",
-                                    "Resistance to hit: " + _resistanceToHit.ToString() + " (" + (_resistanceToHit *_durability).ToString() + ")",
+                                    "Max hull: " + _maxHull.ToString() + " (" + ((int)(_maxHull *_durability)).ToString() + ")",
+                                    "Resistance to hit: " + _resistanceToHit.ToString() + " (" + ((int)(_resistanceToHit *_durability)).ToString() + ")",
                                     "Thermal insulation: " + _thermalInsulation.ToString(),
-                                    "Damaged permenently when hit above " + (_maxHull * _permaDamageThreshold).ToString() + " damage" };
+                                    "Damaged permenently when hit above " + ((int)(_maxHull * _permaDamageThreshold)).ToString() + " damage" };
         }
     }
 }

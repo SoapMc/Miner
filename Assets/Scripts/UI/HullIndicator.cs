@@ -15,7 +15,7 @@ namespace Miner.UI
         private void OnValueChanged(int oldValue, int newValue)
         {
             if (_playerMaxHull > 0)
-                _slider.value = newValue / (float)_playerMaxHull;
+                _slider.value = _playerHull / (float)_playerMaxHull;
             else
                 _slider.value = 1f;
         }
@@ -24,12 +24,14 @@ namespace Miner.UI
         {
             _slider = GetComponent<Slider>();
             _playerHull.ValueChanged += OnValueChanged;
+            _playerMaxHull.ValueChanged += OnValueChanged;
             OnValueChanged(_playerHull, _playerHull);
         }
 
         private void OnDestroy()
         {
             _playerHull.ValueChanged -= OnValueChanged;
+            _playerMaxHull.ValueChanged -= OnValueChanged;
         }
     }
 }

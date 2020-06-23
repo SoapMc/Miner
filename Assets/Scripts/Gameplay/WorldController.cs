@@ -29,6 +29,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _worldLoaded = null;
         [SerializeField] private GameEvent _leadToDigPlace = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
+        [SerializeField] private GameEvent _updateInfrastructureData = null;
 
         [Header("World Generation")]
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
@@ -60,9 +61,16 @@ namespace Miner.Gameplay
 
         public void OnDigComplete()
         {
-            UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-            upd.AddCargoChange.Add(new CargoTable.Element() { Type = _dugTile, Amount = 1 });
-            _updatePlayerData.Raise(upd);
+            if (!_dugTile.IsFuel)
+            {
+                UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
+                upd.AddCargoChange.Add(new CargoTable.Element() { Type = _dugTile, Amount = 1 });
+                _updatePlayerData.Raise(upd);
+            }
+            else
+            {
+                _updateInfrastructureData.Raise(new UpdateInfrastructureEA() { FuelSupplyChange = _dugTile.Mass });
+            }
             DestroyTile(_dugCoords);
             _dugTile = null;
         }
