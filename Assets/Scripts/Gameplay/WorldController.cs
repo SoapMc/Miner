@@ -15,7 +15,7 @@ namespace Miner.Gameplay
     {
         [SerializeField] private TileTypes _tiles = null;
         [SerializeField] private TileType _tileEdges = null;
-        [SerializeField] private Tilemap _surfaceTilemap = null;
+        [SerializeField] private GroundLayerController _surfaceTilemap = null;
         [SerializeField] private GroundLayerController _groundLayerPrefab = null;
         [SerializeField] private Grid _grid = null;
         [SerializeField] private Transform _playerSpawnPoint = null;
@@ -23,6 +23,7 @@ namespace Miner.Gameplay
         [SerializeField] private FloatReference _playerExternalTemperature = null;
         [SerializeField] private FloatReference _surfaceTemperature = null;
         [SerializeField, Range(0.02f, 1f)] private float _temperatureGradient = 0.25f;  //per tile
+        [SerializeField] private TilemapController _tilemapController = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _worldLoaded = null;
@@ -33,9 +34,8 @@ namespace Miner.Gameplay
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
         [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
         [SerializeField] private List<GroundLayer> _layers = new List<GroundLayer>();
-        private int _surfaceDepth = -1;
+        private int _surfaceDepth = -2;
 
-        private TilemapController _tilemapController = null;
         private TileIdentifier _tileIdentifier = null;
         private Vector2Int _dugCoords;
         private TileType _dugTile = null;
@@ -191,64 +191,75 @@ namespace Miner.Gameplay
 
         public void GenerateWorld(int seed = -1)
         {
+
             float prob;
             bool tileSet;
-            int minimumLayerDepthForCurrentLayer = _surfaceDepth;
+            int minimumDepthForCurrentLayer = 0;
+            int maximumDepthForCurrentLayer = _surfaceDepth;
+            int worldWidth = Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y);
+            int totalDepth = -_layers.Sum(x => x.Depth) + maximumDepthForCurrentLayer;
+            Camera mainCamera = Camera.main;
 
-            int totalDepth = -_layers.Sum(x => x.Depth) + minimumLayerDepthForCurrentLayer;
+            Tilemap surface = _surfaceTilemap.Tilemap;
             for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
             {
-                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(x, 20), _tileEdges.ClasifiedTiles[13]);
-                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(x, totalDepth), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(x, 20, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(x, totalDepth, 0), _tileEdges.ClasifiedTiles[13]);
             }
-            
+
             for (int y = 20; y > totalDepth - 1; --y)
             {
-                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(_horizontalWorldBorders.Value.x - 1, y), _tileEdges.ClasifiedTiles[13]);
-                _tilemapController.SetTileToDefaultTilemap(new Vector2Int(_horizontalWorldBorders.Value.y, y), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.x - 1, y, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.y, y, 0), _tileEdges.ClasifiedTiles[13]);
             }
             _tilemapController.AddTilemap(_surfaceTilemap, _surfaceDepth);
-            /*
-            foreach (var layer in _layers)
+
+            for (int i = 0; i < _layers.Count; ++i)
             {
-                _tilemapController.AddTilemap(Instantiate(_groundLayerPrefab, _grid.transform));
+                minimumDepthForCurrentLayer = maximumDepthForCurrentLayer;  //minimum depth is maximum depth from previous layer 
+                maximumDepthForCurrentLayer -= _layers[i].Depth;
+                GroundLayerController groundLayer = Instantiate(_groundLayerPrefab, _grid.transform);
+                groundLayer.Initialize(minimumDepthForCurrentLayer, maximumDepthForCurrentLayer, Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y), i + 1, mainCamera.orthographicSize);
+                _tilemapController.AddTilemap(groundLayer, maximumDepthForCurrentLayer);
+
                 for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
                 {
-                    for (int y = minimumLayerDepthForCurrentLayer; y > (minimumLayerDepthForCurrentLayer - layer.Depth); --y)
+                    for (int y = minimumDepthForCurrentLayer; y > maximumDepthForCurrentLayer; --y)
                     {
                         tileSet = false;
                         prob = Random.Range(0f, 1f);
-                        for (int j = 0; j < layer.Resources.Count; ++j)
+                        for (int j = 0; j < _layers[i].Resources.Count; ++j)
                         {
-                            if (prob <= layer.Resources[j].Probability)
+                            if (prob <= _layers[i].Resources[j].Probability)
                             {
-                                _tilemap.SetTile(new Vector3Int(x, y, 0), layer.Resources[j].Type.ClasifiedTiles[0]);
+                                groundLayer.Tilemap.SetTile(new Vector3Int(x, y, 0), _layers[i].Resources[j].Type.ClasifiedTiles[0]);
                                 tileSet = true;
                             }
                         }
                         if (!tileSet)
                         {
-                            _tilemap.SetTile(new Vector3Int(x, y, 0), layer.DefaultTiles[0].ClasifiedTiles[0]);
+                            groundLayer.Tilemap.SetTile(new Vector3Int(x, y, 0), _layers[i].DefaultTiles[0].ClasifiedTiles[0]);
                         }
 
                     }
                 }
-
-                for (int y = minimumLayerDepthForCurrentLayer; y > (minimumLayerDepthForCurrentLayer - layer.Depth); --y)
+                
+                for (int y = minimumDepthForCurrentLayer; y > (maximumDepthForCurrentLayer + 1); --y)
                 {
                     for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
                     {
-                    
+
                         prob = Random.Range(0f, 1f);
-                        if(prob <= layer.ProbabilityOfEmptySpaces)
+                        if (prob <= _layers[i].ProbabilityOfEmptySpaces)
                         {
-                           DestroyTile(new Vector2Int(x, y));
+                            DestroyTile(new Vector2Int(x, y));
                         }
                     }
                 }
-                minimumLayerDepthForCurrentLayer -= layer.Depth;
-            }*/
-            
+                    
+            }
+
+            _tilemapController.ActivateSurface();
         }
 
         private IEnumerator UpdateExternalTemperature()
@@ -263,7 +274,7 @@ namespace Miner.Gameplay
         private void Awake()
         {
             _tileIdentifier = new TileIdentifier(_tiles);
-            _tilemapController = new TilemapController(_layers.Count, _surfaceTilemap);
+            _surfaceTilemap.Initialize(0, _surfaceDepth, Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y), 0);
             GenerateWorld();
         }
 

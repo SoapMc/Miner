@@ -185,6 +185,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _topLayerTrigger: {fileID: 3242968338691467919}
   _bottomLayerTrigger: {fileID: 8716392457649731574}
+  _tilemap: {fileID: 2952874801663026719}
+  _triggerOffset: 2
 --- !u!1 &2521318054469546175
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +257,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ea7eb21c62be242b4438365ab8848c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadLayerTrigger: {fileID: 11400000, guid: 2c51264678c8dac4a98f5686fc41b33c, type: 2}
+  _triggerTopLayer: {fileID: 11400000, guid: 5423582ed7adb454ea3c116ccbf55b74, type: 2}
+  _triggerBottomLayer: {fileID: 11400000, guid: 2c51264678c8dac4a98f5686fc41b33c,
+    type: 2}
+  _topLayerActivity: 0
+  _bottomLayerActivity: 1
 --- !u!1 &8908027818379121040
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,4 +332,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ea7eb21c62be242b4438365ab8848c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadLayerTrigger: {fileID: 11400000, guid: 5423582ed7adb454ea3c116ccbf55b74, type: 2}
+  _triggerTopLayer: {fileID: 11400000, guid: 5423582ed7adb454ea3c116ccbf55b74, type: 2}
+  _triggerBottomLayer: {fileID: 11400000, guid: 2c51264678c8dac4a98f5686fc41b33c,
+    type: 2}
+  _topLayerActivity: 1
+  _bottomLayerActivity: 0

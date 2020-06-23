@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eecdf44fda402d8459c67cd381d28b79, type: 3}
   m_Name: Ground Layer 2
   m_EditorClassIdentifier: 
-  Depth: 100
+  Depth: 50
   ProbabilityOfEmptySpaces: 0.02
   DefaultTiles:
   - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}

@@ -20,6 +20,7 @@ namespace Miner.Gameplay
         public void Initialize(int layerNumber, int worldWidth)
         {
             _collider.size = new Vector2(worldWidth, _triggerThickness);
+            transform.position = new Vector3(worldWidth / 2f, 0, 0);
             _layerNumber = layerNumber;
         }
 
@@ -27,7 +28,6 @@ namespace Miner.Gameplay
         {
             if(collision.GetComponent<PlayerController>() != null)
             {
-                Debug.Log("Trigger layer!");
                _triggerTopLayer.Raise(new LayerTriggerEA(_layerNumber, _topLayerActivity));
                _triggerBottomLayer.Raise(new LayerTriggerEA(_layerNumber, _bottomLayerActivity));
             }

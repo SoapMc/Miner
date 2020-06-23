@@ -9,41 +9,44 @@ using System.Linq;
 
 namespace Miner.Gameplay
 {
-    public class TilemapController
+    public class TilemapController : MonoBehaviour
     {
-        private Tilemap _alwaysActiveTilemap = null;
-        private List<Tuple<int, Tilemap>> _tilemaps = new List<Tuple<int, Tilemap>>();
-        private int _layersCount = 0;
+        private List<Tuple<int, GroundLayerController>> _tilemaps = new List<Tuple<int, GroundLayerController>>();
 
-        public Tilemap AlwaysActiveTilemap => _alwaysActiveTilemap;
-
-        public void AddTilemap(Tilemap tilemap, int maximumLayerDepth)
+        public void AddTilemap(GroundLayerController tilemap, int maximumLayerDepth)
         {
-#warning zmien tilemap na ground layer controller
-            _tilemaps.Add(new Tuple<int, Tilemap>(maximumLayerDepth, tilemap));
+            _tilemaps.Add(new Tuple<int, GroundLayerController>(maximumLayerDepth, tilemap));
         }
 
         public Tile GetTile(Vector2Int pos)
         {
-            return _tilemaps.FirstOrDefault(x => x.Item1 <= pos.y).Item2.GetTile<Tile>((Vector3Int)pos);
+            return _tilemaps.FirstOrDefault(x => x.Item1 < pos.y)?.Item2.Tilemap.GetTile<Tile>((Vector3Int)pos);
         }
 
         public void SetTile(Vector2Int pos, Tile tile)
         {
-            _tilemaps.First(x => x.Item1 < pos.y).Item2.SetTile((Vector3Int)pos, tile);
+            _tilemaps.First(x => x.Item1 < pos.y).Item2.Tilemap.SetTile((Vector3Int)pos, tile);
         }
 
-        public void SetTileToDefaultTilemap(Vector2Int pos, Tile tile)
+        public void ActivateSurface()
         {
-            _alwaysActiveTilemap.SetTile((Vector3Int)pos, tile);
+            if(_tilemaps.Count > 1)
+            {
+                _tilemaps[1].Item2.gameObject.SetActive(true);
+            }
+            for(int i = 2; i < _tilemaps.Count; ++i)
+            {
+                _tilemaps[i].Item2.gameObject.SetActive(false);
+            }
         }
 
         public void OnTriggerUpperLayer(EventArgs args)
         {
             if(args is LayerTriggerEA lt)
             {
-                if (lt.LayerNumber > 1 && lt.LayerNumber < _layersCount)
-                    _tilemaps[lt.LayerNumber - 1].Item2.gameObject.SetActive(lt.LayerActivation);
+                int triggeredLayer = lt.LayerNumber - 1;
+                if(triggeredLayer > 0 && triggeredLayer < _tilemaps.Count)
+                    _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
             }
             else
             {
@@ -55,19 +58,14 @@ namespace Miner.Gameplay
         {
             if (args is LayerTriggerEA lt)
             {
-                if (lt.LayerNumber > 0 && lt.LayerNumber < (_layersCount - 1) )
-                    _tilemaps[lt.LayerNumber + 1].Item2.gameObject.SetActive(lt.LayerActivation);
+                int triggeredLayer = lt.LayerNumber + 1;
+                if (triggeredLayer > 0 && triggeredLayer < _tilemaps.Count)
+                    _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
             }
             else
             {
                 throw new InvalidEventArgsException();
             }
-        }
-
-        public TilemapController(int layersCount, Tilemap alwaysActiveTilemap)
-        {
-            _alwaysActiveTilemap = alwaysActiveTilemap;
-            _layersCount = layersCount;
         }
     }
 }

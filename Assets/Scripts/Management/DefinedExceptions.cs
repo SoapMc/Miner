@@ -32,4 +32,11 @@ namespace Miner.Management.Exceptions
         public InvalidSettingException(string message) : base(message) { }
         public InvalidSettingException(string message, System.Exception inner) : base(message, inner) { }
     }
+
+    public class WorldGenerationException : Exception
+    {
+        public WorldGenerationException() { }
+        public WorldGenerationException(string message) : base(message) { }
+        public WorldGenerationException(string message, System.Exception inner) : base(message, inner) { }
+    }
 }

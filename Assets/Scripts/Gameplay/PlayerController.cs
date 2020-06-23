@@ -48,6 +48,7 @@ namespace Miner.Gameplay
                 _worldGrid = wl.WorldGrid;
                 transform.position = wl.PlayerSpawnPoint.position;
                 _locked = false;
+                enabled = true;
             }
             else
             {
@@ -84,7 +85,7 @@ namespace Miner.Gameplay
                 transform.position = Vector3.Lerp(startPosition, worldCoords, lerpCoeff);
                 yield return null;
             }
-            
+
             _digComplete.Raise();
             _locked = false;
         }
