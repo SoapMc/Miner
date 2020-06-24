@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 161963429647375285}
   - component: {fileID: 4559782631610663632}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1638400
+    m_Bits: 3735552
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 3406047223502112675}
   - component: {fileID: 4857336304358511749}
   - component: {fileID: 8660261710125312322}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Processing Plant
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
+using Miner.Management.Exceptions;
 
 namespace Miner.Gameplay
 {
@@ -22,5 +25,31 @@ namespace Miner.Gameplay
         public List<CoolingReferencePart> Coolings => _coolings;
         public List<BatteryReferencePart> Batteries => _batteries;
         public List<DrillReferencePart> Drills => _drills;
+
+        public ReferencePart GetPart(int id)
+        {
+            ReferencePart result = Hulls.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            result = FuelTanks.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            result = Engines.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            result = Cargos.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            result = Coolings.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            result = Batteries.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            result = Drills.FirstOrDefault(x => x.Id == id);
+            if (result != null)
+                return result;
+            throw new PartNotFoundException("Part cannot be found (id: " + id.ToString() + ")");
+        }
     }
 }

@@ -35,6 +35,9 @@ namespace Miner.Management
         [SerializeField] private IntReference _resistanceToHit = null;
         [SerializeField] private IntReference _thermalInsulation = null;
         [SerializeField] private IntReference _cargoMass = null;
+        [SerializeField] private ReferencePartList _partList = null;
+        [SerializeField] private UsableItemList _usableItemList = null;
+        [SerializeField] private TileTypes _tileTypes = null;
 
         [Header("Initial resources")]
         [SerializeField] private int _initialMoney = 0;
@@ -120,7 +123,7 @@ namespace Miner.Management
 
         public PlayerData RetrieveSerializableData()
         {
-            return new PlayerData()
+            PlayerData pd = new PlayerData()
             {
                 Money = _money,
                 MaxHull = _maxHull,
@@ -128,6 +131,52 @@ namespace Miner.Management
                 MaxFuel = _maxFuel,
                 Fuel = _fuel
             };
+
+            if(_equipment.Hull != null)
+            {
+                pd.HullPartId = _equipment.Hull.Id;
+                pd.HullDurability = _equipment.Hull.Durability;
+            }
+            if (_equipment.FuelTank != null)
+            {
+                pd.FuelTankPartId = _equipment.Hull.Id;
+                pd.FuelTankDurability = _equipment.FuelTank.Durability;
+            }
+            if (_equipment.Engine != null)
+            {
+                pd.EnginePartId = _equipment.Engine.Id;
+                pd.EngineDurability = _equipment.Engine.Durability;
+            }
+            if (_equipment.Drill != null)
+            {
+                pd.DrillPartId = _equipment.Drill.Id;
+                pd.DrillDurability = _equipment.Drill.Durability;
+            }
+            if (_equipment.Cooling != null)
+            {
+                pd.CoolingPartId = _equipment.Cooling.Id;
+                pd.CoolingDurability = _equipment.Cooling.Durability;
+            }
+            if (_equipment.Cargo != null)
+            {
+                pd.CargoPartId = _equipment.Cargo.Id;
+                pd.CargoDurability = _equipment.Cargo.Durability;
+            }
+            if (_equipment.Battery != null)
+            {
+                pd.BatteryPartId = _equipment.Battery.Id;
+                pd.BatteryDurability = _equipment.Battery.Durability;
+            }
+
+            foreach(var usableItem in _usableItems)
+            {
+                pd.UsableItems.Add(new PlayerData.UsableItemSaveData(usableItem.Item.Id, usableItem.Amount));
+            }
+            foreach(var cargoElem in _cargo)
+            {
+                pd.CargoElements.Add(new PlayerData.CargoElementSaveData(cargoElem.Type.Id, cargoElem.Amount));
+            }
+            return pd;
         }
 
         public void Load(PlayerData data)
@@ -143,8 +192,22 @@ namespace Miner.Management
             _hull.Value = data.Hull;
             _maxFuel.Value = data.MaxFuel;
             _fuel.Value = data.Fuel;
+            if(data.HullPartId != -1) Equip(_partList.GetPart(data.HullPartId), data.HullDurability);
+            if (data.FuelTankPartId != -1) Equip(_partList.GetPart(data.FuelTankPartId), data.FuelTankDurability);
+            if (data.EnginePartId != -1) Equip(_partList.GetPart(data.EnginePartId), data.EngineDurability);
+            if (data.DrillPartId != -1) Equip(_partList.GetPart(data.DrillPartId), data.DrillDurability);
+            if (data.CoolingPartId != -1) Equip(_partList.GetPart(data.CoolingPartId), data.CoolingDurability);
+            if (data.CargoPartId != -1) Equip(_partList.GetPart(data.CargoPartId), data.CargoDurability);
+            if (data.BatteryPartId != -1) Equip(_partList.GetPart(data.BatteryPartId), data.BatteryDurability);
 
-            //_updatePlayerStatsUI.Raise(new UpdatePlayerStatsUIEventArgs(0, GameManager.Instance.Player, GameManager.Instance.Player, GameManager.Instance.Player));
+            foreach(var usableItem in data.UsableItems)
+            {
+                _usableItems.Add(new UsableItemTable.Element() { Item = _usableItemList.GetItem(usableItem.Id), Amount = usableItem.Amount });
+            }
+            foreach(var cargoElem in data.CargoElements)
+            {
+                _cargo.Add(new CargoTable.Element() { Type = _tileTypes.GetTileType(cargoElem.Id), Amount = cargoElem.Amount });
+            }
         }
 
         public void OnUpdatePlayerData(EventArgs args)

@@ -12,10 +12,26 @@ namespace Miner.Management
     {
         [SerializeField] private WorldController _worldPrefab = null;
         private WorldController _worldController = null;
+        private int _seed = -1;
 
         public void ResetState()
         {
             _worldController = Instantiate(_worldPrefab, Vector3.zero, Quaternion.identity);
+            _seed = (int)System.DateTime.Now.Ticks;
+            Random.InitState(_seed);
+            _worldController.GenerateWorld(_seed);
+        }
+
+        public void Load(int seed)
+        {
+            _worldController = Instantiate(_worldPrefab, Vector3.zero, Quaternion.identity);
+            _seed = seed;
+            _worldController.GenerateWorld(seed);
+        }
+
+        public int RetrieveSerializableData()
+        {
+            return _seed;
         }
     }
 }

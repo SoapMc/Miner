@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Miner.Gameplay
 {
@@ -19,6 +20,11 @@ namespace Miner.Gameplay
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _items.GetEnumerator();
+        }
+
+        public UsableItem GetItem(int id)
+        {
+            return _items.FirstOrDefault(x => x.Id == id);
         }
     }
 }

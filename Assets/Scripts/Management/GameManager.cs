@@ -52,10 +52,6 @@ namespace Miner.Management
                 {
                     LoadFromFile();
                 }
-                else
-                {
-                    StartNewGame();
-                }
             }
         }
 
@@ -68,7 +64,7 @@ namespace Miner.Management
             {
                 _player.Load(sd.Player);
                 _infrastructure.Load(sd.Infrastructure);
-                //_worldManager.LoadFromFile(sd.CurrentLevel, sd.LevelSeed);
+                _worldManager.Load(sd.Seed);
             }
             else
             {
@@ -83,7 +79,8 @@ namespace Miner.Management
             SavedData sd = new SavedData()
             {
                 Player = _player.RetrieveSerializableData(),
-                Infrastructure = _infrastructure.RetrieveSerializableData()
+                Infrastructure = _infrastructure.RetrieveSerializableData(),
+                Seed = _worldManager.RetrieveSerializableData()
             };
             SaveLoadSystem.SaveToFile(sd, _profileFileName);
         }
@@ -93,7 +90,7 @@ namespace Miner.Management
             SaveLoadSystem.RemoveSaveState(_profileFileName);
             _player.ResetCharacter();
             _worldManager.ResetState();
-            _infrastructure.ResetInfrastructure();
+            _infrastructure.ResetState();
         }
 
         public void StartNewGame()
@@ -105,6 +102,7 @@ namespace Miner.Management
         {
             public PlayerData Player;
             public InfrastructureData Infrastructure;
+            public int Seed;
         }
     }
 }

@@ -33,6 +33,13 @@ namespace Miner.Management.Exceptions
         public InvalidSettingException(string message, System.Exception inner) : base(message, inner) { }
     }
 
+    public class PartNotFoundException : Exception
+    {
+        public PartNotFoundException() { }
+        public PartNotFoundException(string message) : base(message) { }
+        public PartNotFoundException(string message, System.Exception inner) : base(message, inner) { }
+    }
+
     public class WorldGenerationException : Exception
     {
         public WorldGenerationException() { }

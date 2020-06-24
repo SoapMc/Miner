@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7815226255100452790}
   - component: {fileID: 1438361379699660889}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1638400
+    m_Bits: 3735552
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 4253977259065829705}
   - component: {fileID: 6279466496315636335}
   - component: {fileID: 7810070803375343528}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Service
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3152552184477231434}
   - component: {fileID: 1252713708089611320}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1638400
+    m_Bits: 3735552
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0

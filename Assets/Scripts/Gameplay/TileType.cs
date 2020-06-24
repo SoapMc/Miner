@@ -9,6 +9,7 @@ namespace Miner.Gameplay
     public class TileType : ScriptableObject
     {
         [SerializeField] private string _name = string.Empty;
+        [SerializeField] private int _id;
         [SerializeField] private List<Tile> _tiles;
         [SerializeField, Range(0.01f, 10f)] private float _hardiness = 1f;
         [SerializeField] private int _value = 0;
@@ -17,6 +18,7 @@ namespace Miner.Gameplay
         [SerializeField] private int _mass = 0;
 
         public string Name => _name;
+        public int Id => _id;
         public List<Tile> ClasifiedTiles => _tiles;
         public float Hardiness => _hardiness;
         public int Value => _value;

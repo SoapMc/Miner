@@ -5,6 +5,7 @@ using System;
 using Miner.Management.Exceptions;
 using Miner.Management.Events;
 using System.Linq;
+using Miner.Management;
 
 namespace Miner.UI
 {
@@ -12,6 +13,7 @@ namespace Miner.UI
     {
         [SerializeField] private GameEvent _enablePlayerController = null;
         [SerializeField] private GameEvent _disablePlayerController = null;
+        [SerializeField] private GameObject _mainMenuWindow = null;
 
         private List<GameObject> _openedWindows = new List<GameObject>();
 
@@ -40,11 +42,18 @@ namespace Miner.UI
 
                 if (_openedWindows.Count == 0)
                     _enablePlayerController.Raise();
+
+                GameManager.Instance.SaveToFile();
             }
             else
             {
                 throw new InvalidEventArgsException();
             }
+        }
+
+        private void Start()
+        {
+            OnCreateWindow(new CreateWindowEA(_mainMenuWindow));
         }
     }
 }

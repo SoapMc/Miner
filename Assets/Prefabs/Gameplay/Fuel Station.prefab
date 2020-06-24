@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8527874580276066801}
   - component: {fileID: 3797407861828137237}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1638400
+    m_Bits: 3735552
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 895990742221338857}
   - component: {fileID: 6936456640531885007}
   - component: {fileID: 6558623239277843976}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Fuel Station
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7039609259976631100}
   - component: {fileID: 1193352010339742348}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1638400
+    m_Bits: 3735552
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0

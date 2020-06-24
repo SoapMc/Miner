@@ -199,6 +199,8 @@ namespace Miner.Gameplay
 
         public void GenerateWorld(int seed = -1)
         {
+            if (seed != -1)
+                Random.InitState(seed);
 
             float prob;
             bool tileSet;
@@ -283,7 +285,6 @@ namespace Miner.Gameplay
         {
             _tileIdentifier = new TileIdentifier(_tiles);
             _surfaceTilemap.Initialize(0, _surfaceDepth, Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y), 0);
-            GenerateWorld();
         }
 
         private void Start()

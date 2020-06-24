@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4880400502872948223}
   - component: {fileID: 1134280656383441485}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1638400
+    m_Bits: 3735552
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 6959983681188683512}
   - component: {fileID: 917283025495854558}
   - component: {fileID: 4034397931928252441}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Workshop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

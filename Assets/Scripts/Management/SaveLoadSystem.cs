@@ -8,7 +8,7 @@ namespace Miner.Management
 {
     public static class SaveLoadSystem
     {
-        private const string _directoryName = "/My Games/Inkaust/";
+        private const string _directoryName = "/My Games/Miner/";
 
         public static void SaveToFile<T>(T obj, string fileName)
         {

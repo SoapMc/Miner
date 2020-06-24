@@ -10,15 +10,12 @@ namespace Miner.Management
 {
     public class InfrastructureManager : MonoBehaviour
     {
-        //[Header("Events")]
-        //[SerializeField] private GameEvent _updateBuildingUI = null;
-
         [Header("Resources")]
         [SerializeField] private FloatReference _fuelSupply = null;
 
         private bool _suppressEvents = false;
 
-        public void ResetInfrastructure()
+        public void ResetState()
         {
             _fuelSupply.Value = 5000;
         }
@@ -38,8 +35,7 @@ namespace Miner.Management
                 Debug.LogException(new InvalidSaveStateException());
                 throw new InvalidSaveStateException();
             }
-
-            //_updatePlayerStatsUI.Raise(new UpdatePlayerStatsUIEventArgs(0, GameManager.Instance.Player, GameManager.Instance.Player, GameManager.Instance.Player));
+            _fuelSupply.Value = data.FuelSupply;
         }
 
         public void OnUpdateInfrastructureDate(EventArgs args)
