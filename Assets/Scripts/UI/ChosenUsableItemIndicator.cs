@@ -20,8 +20,6 @@ namespace Miner.UI
 
         public void OnUpdatePlayerData(EventArgs args)
         {
-            bool allHaveBeenUsed = false;
-
             if(args is UpdatePlayerDataEA upd)
             {
                 foreach (var usableItem in upd.AddUsableItemsChange)
@@ -33,9 +31,9 @@ namespace Miner.UI
                         if (item.Amount > 0)
                         {
                             item.gameObject.SetActive(true);
-                            List<ChosenUsableItem> allItems = _content.FindAll(x => x.gameObject.activeSelf == true);
-                            if(allItems.Count == 1)
-                                allHaveBeenUsed = true;
+                            UpdateLayout();
+                            if (_content.FindAll(x => x.gameObject.activeSelf == true).Count == 1)
+                                MoveViewRequest(item.transform.localPosition);
                         }
                     }
                     else
@@ -53,7 +51,9 @@ namespace Miner.UI
                         if (item.Amount <= 0)
                         {
                             item.gameObject.SetActive(false);
-                            allHaveBeenUsed = true;
+                            UpdateLayout();
+                            if (_content.FindAll(x => x.gameObject.activeSelf == true).Count > 0)
+                                MoveViewRequest(_content.First(x => x.gameObject.activeSelf == true).transform.localPosition);
                         }
                     }
                     else
@@ -61,13 +61,6 @@ namespace Miner.UI
                         throw new UsableItemNotFoundException();
                     }
                 }
-                UpdateLayout();
-
-                if (allHaveBeenUsed && _content.Count >= 1)
-                {
-                    MoveViewRequest(_content.First().transform.localPosition);
-                }
-
             }
             else
             {
@@ -82,7 +75,8 @@ namespace Miner.UI
                 ChosenUsableItem item = _content.FirstOrDefault(x => x.Item == cui.Item);
                 if(item != null)
                 {
-                    MoveViewRequest(item.transform.localPosition);
+                    if(item.gameObject.activeSelf == true)
+                        MoveViewRequest(item.transform.localPosition);
                 }
             }
             else

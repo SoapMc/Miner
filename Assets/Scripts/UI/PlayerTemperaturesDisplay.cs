@@ -46,7 +46,7 @@ namespace Miner.UI
             }
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             StartCoroutine(RefreshDisplay());
         }
