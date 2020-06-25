@@ -26,6 +26,9 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _digRequest = null;
         [SerializeField] private GameEvent _digComplete = null;
         [SerializeField] private GameEvent _triggerInteraction = null;
+        [SerializeField] private GameEvent _chooseNextUsableItem = null;
+        [SerializeField] private GameEvent _choosePreviousUsableItem = null;
+        [SerializeField] private GameEvent _useItemRequest = null;
 
         private float _maxSpeed = 25f;
         private Grid _worldGrid = null;
@@ -72,6 +75,17 @@ namespace Miner.Gameplay
         public void OnMassChanged(int oldMass, int newMass)
         {
             _rigidbody.mass += (newMass - oldMass)/1000f;
+        }
+        public void OnRestoreGameAfterPlayerDestroyed(EventArgs args)
+        {
+            if(args is RestoreGameAfterPlayerDestroyedEA rgapd)
+            {
+                transform.position = rgapd.PlayerSpawnPoint.position;
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
         }
 
         public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
@@ -137,6 +151,19 @@ namespace Miner.Gameplay
             if(Input.GetKeyDown(KeyCode.Return))
             {
                 _triggerInteraction.Raise();
+            }
+
+            if(Input.GetKeyDown(KeyCode.X))
+            {
+                _chooseNextUsableItem.Raise();
+            }
+            else if(Input.GetKeyDown(KeyCode.Z))
+            {
+                _choosePreviousUsableItem.Raise();
+            }
+            else if(Input.GetKeyDown(KeyCode.Space))
+            {
+                _useItemRequest.Raise(new UseItemRequestEA(_gridPosition.Value));
             }
         }
 

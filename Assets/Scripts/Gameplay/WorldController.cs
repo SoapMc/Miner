@@ -30,6 +30,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _leadToDigPlace = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _updateInfrastructureData = null;
+        [SerializeField] private GameEvent _restoreGameAfterPlayerDestroyed = null;
 
         [Header("World Generation")]
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
@@ -73,6 +74,17 @@ namespace Miner.Gameplay
             }
             DestroyTile(_dugCoords);
             _dugTile = null;
+        }
+
+        public void OnPlayerDead()
+        {
+            StartCoroutine(PlayerDead(5f));
+        }
+
+        private IEnumerator PlayerDead(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            _restoreGameAfterPlayerDestroyed.Raise(new RestoreGameAfterPlayerDestroyedEA(_playerSpawnPoint));
         }
 
         public void DestroyTile(Vector2Int gridPos)

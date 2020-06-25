@@ -85,6 +85,11 @@ namespace Miner.Gameplay
             return _content.GetEnumerator();
         }
 
+        public Element this[int index]
+        {
+            get => _content[index];
+        }
+
         public class Element
         {
             public UsableItem Item;

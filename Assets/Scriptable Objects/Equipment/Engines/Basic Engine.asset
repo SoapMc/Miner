@@ -17,7 +17,7 @@ MonoBehaviour:
   _id: 400
   _cost: 0
   _shortDescription: 
-  _power: 100
+  _power: 150
   _fuelUsage: 0.09
   _thermalVulnerability: 100
   _permaDamageLoadThreshold: 0

@@ -40,6 +40,13 @@ namespace Miner.Management.Exceptions
         public PartNotFoundException(string message, System.Exception inner) : base(message, inner) { }
     }
 
+    public class UsableItemNotFoundException : Exception
+    {
+        public UsableItemNotFoundException() { }
+        public UsableItemNotFoundException(string message) : base(message) { }
+        public UsableItemNotFoundException(string message, System.Exception inner) : base(message, inner) { }
+    }
+
     public class WorldGenerationException : Exception
     {
         public WorldGenerationException() { }

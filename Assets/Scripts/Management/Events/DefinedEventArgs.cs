@@ -8,6 +8,16 @@ using Miner.UI;
 
 namespace Miner.Management.Events
 {
+    public class ChooseUsableItemEA : EventArgs
+    {
+        public readonly UsableItem Item;
+
+        public ChooseUsableItemEA(UsableItem item)
+        {
+            Item = item;
+        }
+    }
+
     public class CloseWindowEA : EventArgs
     {
         public readonly GameObject ClosedWindow;
@@ -65,6 +75,16 @@ namespace Miner.Management.Events
             Place = place;
             Speed = speed;
             Hardness = hardness;
+        }
+    }
+
+    public class RestoreGameAfterPlayerDestroyedEA : EventArgs
+    {
+        public readonly Transform PlayerSpawnPoint;
+
+        public RestoreGameAfterPlayerDestroyedEA(Transform playerSpawnPoint)
+        {
+            PlayerSpawnPoint = playerSpawnPoint;
         }
     }
 
@@ -143,6 +163,16 @@ namespace Miner.Management.Events
         public readonly List<UsableItemTable.Element> AddUsableItemsChange = new List<UsableItemTable.Element>();
         public readonly List<UsableItemTable.Element> RemoveUsableItemsChange = new List<UsableItemTable.Element>();
         
+    }
+
+    public class UseItemRequestEA : EventArgs
+    {
+        public Vector2Int GridPosition;
+
+        public UseItemRequestEA(Vector2Int gridPosition)
+        {
+            GridPosition = gridPosition;
+        }
     }
 
     public class WorldLoadedEA : EventArgs

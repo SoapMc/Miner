@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 2_Iron
   m_EditorClassIdentifier: 
   _name: Iron
+  _id: 2
   _tiles:
   - {fileID: 11400000, guid: b3bee264fa7c75e46abe3fd8ba5388a5, type: 2}
   _hardiness: 1

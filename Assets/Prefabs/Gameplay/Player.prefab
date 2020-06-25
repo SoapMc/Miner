@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6093408917549231465}
   - component: {fileID: 1653198735113129404}
+  - component: {fileID: 8494862637188388605}
+  - component: {fileID: 9222528849099995566}
   m_Layer: 19
   m_Name: Status Controller
   m_TagString: Untagged
@@ -58,6 +60,71 @@ MonoBehaviour:
   _triggerStatusPanel: {fileID: 11400000, guid: f5490dfdc4123ba468946b8a69d649fc,
     type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+--- !u!114 &8494862637188388605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859861249857689815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 94a4262cd54f06742b09b9bebffdc9e2, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6839613901156741159}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &9222528849099995566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859861249857689815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 5d355295ad65ef041a90085d282ddd2e, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6839613901156741159}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 6839613901156741159}
+        m_MethodName: OnRestoreGameAfterPlayerDestroyed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &2314250434073995524
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,6 +472,11 @@ MonoBehaviour:
   _digComplete: {fileID: 11400000, guid: d461d6376ea6c91418d25c368b764399, type: 2}
   _triggerInteraction: {fileID: 11400000, guid: d38cfe4662137df47b1b24c984325572,
     type: 2}
+  _chooseNextUsableItem: {fileID: 11400000, guid: e420c07a9709c364db9aee3b661f2f44,
+    type: 2}
+  _choosePreviousUsableItem: {fileID: 11400000, guid: 4c7a869caf536234b8a4afa00399f884,
+    type: 2}
+  _useItemRequest: {fileID: 11400000, guid: cb73b3f236b01d4419ae916188d20ede, type: 2}
 --- !u!114 &3615222439350159771
 MonoBehaviour:
   m_ObjectHideFlags: 0

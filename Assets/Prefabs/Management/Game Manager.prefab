@@ -83,6 +83,10 @@ GameObject:
   - component: {fileID: 9159179205859661251}
   - component: {fileID: 4284794202764284487}
   - component: {fileID: 6223407357104942189}
+  - component: {fileID: 7495755794692719162}
+  - component: {fileID: 5217533462895763894}
+  - component: {fileID: 1957332254116812081}
+  - component: {fileID: 2847395531858570135}
   m_Layer: 0
   m_Name: Player Manager
   m_TagString: Untagged
@@ -116,7 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34de11fd67ac774297315135404c681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _updatePlayerUI: {fileID: 11400000, guid: 83c4a20b2fcc5cb4cb4aac73993e5c20, type: 2}
+  _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _playerDead: {fileID: 11400000, guid: 94a4262cd54f06742b09b9bebffdc9e2, type: 2}
+  _chooseUsableItem: {fileID: 11400000, guid: 4a692077c9d8f2642a963a1755c65025, type: 2}
   _money: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _maxHull: {fileID: 11400000, guid: be7f45b775b767e439d2b13c6fb44053, type: 2}
   _hull: {fileID: 11400000, guid: f45cbd05d90518a47a3b5d8ac0f36fc9, type: 2}
@@ -137,7 +143,7 @@ MonoBehaviour:
   _partList: {fileID: 11400000, guid: d90ee6c8926a8f640b9856fa3f0be8a6, type: 2}
   _usableItemList: {fileID: 11400000, guid: cfbb51338fe95f449b6dfd607edf0da8, type: 2}
   _tileTypes: {fileID: 11400000, guid: 0cf9998c3ea5754459aca1dd53012051, type: 2}
-  _initialMoney: 2500
+  _initialMoney: 6000
   _initialHull: {fileID: 11400000, guid: 08012d68ee9096044bba99a274644f3c, type: 2}
   _initialBattery: {fileID: 0}
   _initialEngine: {fileID: 11400000, guid: 01bdfc110f23be847b8b9aa6ea5dfe5b, type: 2}
@@ -163,6 +169,114 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4284794202764284487}
         m_MethodName: OnUpdatePlayerData
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7495755794692719162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420866539213587991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 5d355295ad65ef041a90085d282ddd2e, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4284794202764284487}
+        m_MethodName: OnRestoreGameAfterPlayerDestroyed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5217533462895763894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420866539213587991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: e420c07a9709c364db9aee3b661f2f44, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4284794202764284487}
+        m_MethodName: OnChooseNextUsableItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1957332254116812081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420866539213587991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 4c7a869caf536234b8a4afa00399f884, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4284794202764284487}
+        m_MethodName: OnChoosePreviousUsableItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2847395531858570135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5420866539213587991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: cb73b3f236b01d4419ae916188d20ede, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4284794202764284487}
+        m_MethodName: OnUseItemRequest
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

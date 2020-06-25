@@ -15,7 +15,9 @@ namespace Miner.Management
     public class PlayerManager : MonoBehaviour
     {
         [Header("Events")]
-        [SerializeField] private GameEvent _updatePlayerUI = null;
+        [SerializeField] private GameEvent _updatePlayerData = null;
+        [SerializeField] private GameEvent _playerDead = null;
+        [SerializeField] private GameEvent _chooseUsableItem = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _money = null;
@@ -50,6 +52,7 @@ namespace Miner.Management
         [SerializeField] private FuelTankReferencePart _initialFuelTank = null;
 
         private bool _suppressEvents = false;
+        private int _chosenUsableItemIndex = 0;
 
         public int Money => _money;
         public int MaxHull => _maxHull;
@@ -262,6 +265,68 @@ namespace Miner.Management
                 DealPermaDamage(_equipment.Cargo, upd.CargoPermaDamage);
                 DealPermaDamage(_equipment.Battery, upd.BatteryPermaDamage);
 
+                if(_hull.Value <= 0)
+                {
+                    _playerDead.Raise();
+
+                    DealPermaDamage(_equipment.Hull, Random.Range(0, 5));
+                    DealPermaDamage(_equipment.FuelTank, Random.Range(0, 5));
+                    DealPermaDamage(_equipment.Engine, Random.Range(0, 5));
+                    DealPermaDamage(_equipment.Drill, Random.Range(0, 5));
+                    DealPermaDamage(_equipment.Cooling, Random.Range(0, 5));
+                    DealPermaDamage(_equipment.Cargo, Random.Range(0, 5));
+                    DealPermaDamage(_equipment.Battery, Random.Range(0, 5));
+                }
+
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
+        public void OnRestoreGameAfterPlayerDestroyed()
+        {
+            _hull.Value = _maxHull.Value;
+            _fuel.Value = _maxFuel.Value;
+
+            _cargo.Clear();
+        }
+
+        public void OnChooseNextUsableItem()
+        {
+            if(_usableItems.Count > 0)
+            {
+                
+                _chosenUsableItemIndex++;
+                if (_chosenUsableItemIndex >= _usableItems.Count)
+                    _chosenUsableItemIndex = 0;
+                _chooseUsableItem.Raise(new ChooseUsableItemEA(_usableItems[_chosenUsableItemIndex].Item));
+            }
+        }
+
+        public void OnChoosePreviousUsableItem()
+        {
+            if (_usableItems.Count > 0)
+            {
+                _chosenUsableItemIndex--;
+                if (_chosenUsableItemIndex < 0)
+                    _chosenUsableItemIndex = _usableItems.Count - 1;
+                _chooseUsableItem.Raise(new ChooseUsableItemEA(_usableItems[_chosenUsableItemIndex].Item));
+            }
+        }
+
+        public void OnUseItemRequest(EventArgs args)
+        {
+            if(args is UseItemRequestEA uir)
+            {
+                if (_chosenUsableItemIndex < _usableItems.Count && _chosenUsableItemIndex >= 0)
+                {
+                    Debug.Log("Use item : " + _usableItems[_chosenUsableItemIndex].Item.Name + " at position " + uir.GridPosition);
+                    UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
+                    upd.RemoveUsableItemsChange.Add(new UsableItemTable.Element() { Item = _usableItems[_chosenUsableItemIndex].Item, Amount = 1 });
+                    _updatePlayerData.Raise(upd);
+                }
             }
             else
             {
