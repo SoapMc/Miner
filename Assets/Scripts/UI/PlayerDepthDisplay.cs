@@ -21,7 +21,7 @@ namespace Miner.UI
             _playerGridPosition.ValueChanged += OnValueChanged;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _playerGridPosition.ValueChanged -= OnValueChanged;
         }

@@ -18,6 +18,7 @@ namespace Miner.Management
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _playerDead = null;
         [SerializeField] private GameEvent _chooseUsableItem = null;
+        [SerializeField] private GameEvent _addResourceToCargo = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _money = null;
@@ -234,6 +235,7 @@ namespace Miner.Management
                 {
                     _cargo.Add(addElem);
                     _cargoMass.Value += addElem.Type.Mass;
+                    _addResourceToCargo.Raise(new AddResourceToCargoEA(addElem));
                 }
 
                 foreach (var removeElem in upd.RemoveCargoChange)

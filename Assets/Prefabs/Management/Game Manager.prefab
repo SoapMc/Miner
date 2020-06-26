@@ -123,6 +123,8 @@ MonoBehaviour:
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
   _playerDead: {fileID: 11400000, guid: 94a4262cd54f06742b09b9bebffdc9e2, type: 2}
   _chooseUsableItem: {fileID: 11400000, guid: 4a692077c9d8f2642a963a1755c65025, type: 2}
+  _addResourceToCargo: {fileID: 11400000, guid: 617598eedb41c3244a34280da0a54e8d,
+    type: 2}
   _money: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _maxHull: {fileID: 11400000, guid: be7f45b775b767e439d2b13c6fb44053, type: 2}
   _hull: {fileID: 11400000, guid: f45cbd05d90518a47a3b5d8ac0f36fc9, type: 2}

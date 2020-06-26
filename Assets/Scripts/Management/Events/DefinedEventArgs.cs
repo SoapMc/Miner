@@ -8,6 +8,16 @@ using Miner.UI;
 
 namespace Miner.Management.Events
 {
+    public class AddResourceToCargoEA : EventArgs
+    {
+        public readonly CargoTable.Element Resource;
+
+        public AddResourceToCargoEA(CargoTable.Element resource)
+        {
+            Resource = resource;
+        }
+    }
+
     public class ChooseUsableItemEA : EventArgs
     {
         public readonly UsableItem Item;
