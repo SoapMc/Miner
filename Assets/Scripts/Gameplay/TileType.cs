@@ -16,7 +16,7 @@ namespace Miner.Gameplay
         [SerializeField] private bool _isFuel = false;
         [SerializeField] private bool _isDestroyable = true;
         [SerializeField] private int _mass = 0;
-        [SerializeField] private string _briefInfo = string.Empty;
+        [SerializeField] private bool _showBriefInfoOnDig = true;
 
         public string Name => _name;
         public int Id => _id;
@@ -26,7 +26,7 @@ namespace Miner.Gameplay
         public bool IsDestroyable => _isDestroyable;
         public int Mass => _mass;
         public bool IsFuel => _isFuel;
-        public string BriefInfo => _briefInfo;
+        public bool ShowBriefInfoOnDig => _showBriefInfoOnDig;
 
     }
 }

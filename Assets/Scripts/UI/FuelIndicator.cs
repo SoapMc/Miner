@@ -15,7 +15,7 @@ namespace Miner.UI
         private void OnValueChanged(float oldValue, float newValue)
         {
             if (_playerMaxFuel > 0)
-                _slider.value = newValue / _playerMaxFuel;
+                _slider.value = _playerFuel / _playerMaxFuel;
             else
                 _slider.value = 1f;
         }

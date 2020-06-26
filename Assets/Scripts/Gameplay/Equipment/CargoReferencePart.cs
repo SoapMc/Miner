@@ -7,8 +7,8 @@ namespace Miner.Gameplay
     [CreateAssetMenu(menuName = "Equipment/Cargo Reference Part")]
     public class CargoReferencePart : ReferencePart
     {
-        [SerializeField] private int _volume = 0;
+        [SerializeField] private int _maxMass = 0;
 
-        public int Volume => _volume;
+        public int MaxMass => _maxMass;
     }
 }

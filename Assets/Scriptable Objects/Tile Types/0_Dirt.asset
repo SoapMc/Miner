@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: 0_Dirt
   m_EditorClassIdentifier: 
   _name: Dirt
+  _id: 0
   _tiles:
   - {fileID: 11400000, guid: ae7039785eaa27e47af1718196d65284, type: 2}
   - {fileID: 11400000, guid: ec40d7d33a9c4614fa2c76221b37e2f1, type: 2}
   _hardiness: 1
   _value: 0
   _isFuel: 0
+  _isDestroyable: 1
+  _mass: 0
+  _showBriefInfoOnDig: 0

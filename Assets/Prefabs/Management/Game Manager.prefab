@@ -125,6 +125,9 @@ MonoBehaviour:
   _chooseUsableItem: {fileID: 11400000, guid: 4a692077c9d8f2642a963a1755c65025, type: 2}
   _addResourceToCargo: {fileID: 11400000, guid: 617598eedb41c3244a34280da0a54e8d,
     type: 2}
+  _updateInfrastructureData: {fileID: 11400000, guid: 3263737974f642943b373f837e8515a3,
+    type: 2}
+  _cargoFull: {fileID: 11400000, guid: d3d469507f229ff478978359d07357c8, type: 2}
   _money: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _maxHull: {fileID: 11400000, guid: be7f45b775b767e439d2b13c6fb44053, type: 2}
   _hull: {fileID: 11400000, guid: f45cbd05d90518a47a3b5d8ac0f36fc9, type: 2}
@@ -135,7 +138,7 @@ MonoBehaviour:
   _drillSharpness: {fileID: 11400000, guid: b8f90f2696e4eac47b837cece0d66a16, type: 2}
   _fuelUsage: {fileID: 11400000, guid: a328fda8f1e63e14097116a75570e55d, type: 2}
   _availableCells: {fileID: 11400000, guid: 0cc02ee0b28968943b96037d156b1a4e, type: 2}
-  _cargoVolume: {fileID: 11400000, guid: 94584331a48a4e34da985ce0e622e8b1, type: 2}
+  _cargoMaxMass: {fileID: 11400000, guid: 94584331a48a4e34da985ce0e622e8b1, type: 2}
   _cargo: {fileID: 11400000, guid: b489b169d0e499449a1a1a6a2215693b, type: 2}
   _equipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}
   _usableItems: {fileID: 11400000, guid: a7bb70400748a294187ff383869701c2, type: 2}
@@ -151,7 +154,7 @@ MonoBehaviour:
   _initialEngine: {fileID: 11400000, guid: 01bdfc110f23be847b8b9aa6ea5dfe5b, type: 2}
   _initialDrill: {fileID: 11400000, guid: ff9dc1d6a8f49af41bb677fd0cec7227, type: 2}
   _initialCooling: {fileID: 0}
-  _initialCargo: {fileID: 0}
+  _initialCargo: {fileID: 11400000, guid: 669cb4f6d26cff941b092c4b6d81608a, type: 2}
   _initialFuelTank: {fileID: 11400000, guid: 23936b00c430c714ca57206ef614d99e, type: 2}
 --- !u!114 &6223407357104942189
 MonoBehaviour:

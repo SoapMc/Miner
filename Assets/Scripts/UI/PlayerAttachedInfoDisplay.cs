@@ -18,7 +18,6 @@ namespace Miner.UI
         private TextMeshProUGUI _text = null;
         const int MAX_LENGTH = 48;
         private StringBuilder _sb = new StringBuilder(MAX_LENGTH);
-        //private int _currentIndex = 0;
         private string _wholeText = string.Empty;
         private Coroutine _coroutine = null;
 
@@ -50,29 +49,53 @@ namespace Miner.UI
             {
                 _coroutine = StartCoroutine(TriggerAppearing());
             }
-
-            _coroutine = null;
+            else
+                _coroutine = null;
         }
 
         public void OnAddResourceToCargo(EventArgs args)
         {
             if (args is AddResourceToCargoEA artc)
             {
-                _wholeText = "+" + artc.Resource.Amount.ToString() + " " + artc.Resource.Type.Name + " (" + artc.Resource.Type.Value + " $)";
-                if (_coroutine == null)
+                if (artc.Resource.Type.ShowBriefInfoOnDig)
                 {
-                    _coroutine = StartCoroutine(TriggerAppearing());
-                }
-                else
-                {
-                    StopCoroutine(_coroutine);
-                    _coroutine = null;
-                    _coroutine = StartCoroutine(TriggerDisappearing());
+                    if(!artc.Resource.Type.IsFuel)
+                        _wholeText = "+" + artc.Resource.Amount.ToString() + " " + artc.Resource.Type.Name + " (" + artc.Resource.Type.Value + " $)";
+                    else
+                        _wholeText = artc.Resource.Type.Mass.ToString() + " l of fuel added to fuel supplies";
+
+                    if (_coroutine == null)
+                    {
+                        _coroutine = StartCoroutine(TriggerAppearing());
+                    }
+                    else
+                    {
+                        StopCoroutine(_coroutine);
+                        _coroutine = null;
+                        _coroutine = StartCoroutine(TriggerDisappearing());
+                    }
                 }
             }
             else
             {
                 throw new InvalidEventArgsException();
+            }
+        }
+
+        public void OnCargoFull()
+        {
+
+            _wholeText = "Cargo is full!";
+
+            if (_coroutine == null)
+            {
+                _coroutine = StartCoroutine(TriggerAppearing());
+            }
+            else
+            {
+                StopCoroutine(_coroutine);
+                _coroutine = null;
+                _coroutine = StartCoroutine(TriggerDisappearing());
             }
         }
 

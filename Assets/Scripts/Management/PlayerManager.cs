@@ -19,6 +19,8 @@ namespace Miner.Management
         [SerializeField] private GameEvent _playerDead = null;
         [SerializeField] private GameEvent _chooseUsableItem = null;
         [SerializeField] private GameEvent _addResourceToCargo = null;
+        [SerializeField] private GameEvent _updateInfrastructureData = null;
+        [SerializeField] private GameEvent _cargoFull = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _money = null;
@@ -31,7 +33,7 @@ namespace Miner.Management
         [SerializeField] private FloatReference _drillSharpness = null;
         [SerializeField] private FloatReference _fuelUsage = null;
         [SerializeField] private IntReference _availableCells = null;
-        [SerializeField] private IntReference _cargoVolume = null;
+        [SerializeField] private IntReference _cargoMaxMass = null;
         [SerializeField] private CargoTable _cargo = null;
         [SerializeField] private EquipmentTable _equipment = null;
         [SerializeField] private UsableItemTable _usableItems = null;
@@ -111,7 +113,7 @@ namespace Miner.Management
                     break;
                 case CargoReferencePart cargo:
                     _equipment.Cargo = cargo;
-                    _cargoVolume.Value = cargo.Volume;
+                    _cargoMaxMass.Value = cargo.MaxMass;
                     break;
                 case BatteryReferencePart battery:
                     _equipment.Battery = battery;
@@ -233,9 +235,24 @@ namespace Miner.Management
 
                 foreach (var addElem in upd.AddCargoChange)
                 {
-                    _cargo.Add(addElem);
-                    _cargoMass.Value += addElem.Type.Mass;
-                    _addResourceToCargo.Raise(new AddResourceToCargoEA(addElem));
+                    if (Mathf.Abs(_cargoMaxMass.Value - _cargoMass.Value) >= (addElem.Type.Mass * addElem.Amount))
+                    {
+                        if (!addElem.Type.IsFuel)
+                        {
+                            _cargo.Add(addElem);
+                            _cargoMass.Value += addElem.Type.Mass;
+                        }
+                        else
+                        {
+                            _updateInfrastructureData.Raise(new UpdateInfrastructureEA() { FuelSupplyChange = addElem.Type.Mass });
+                        }
+                        _addResourceToCargo.Raise(new AddResourceToCargoEA(addElem));
+                    }
+                    else
+                    {
+                        _cargoFull.Raise();
+                    }
+                        
                 }
 
                 foreach (var removeElem in upd.RemoveCargoChange)

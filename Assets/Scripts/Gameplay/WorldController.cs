@@ -50,7 +50,7 @@ namespace Miner.Gameplay
                 if(_tilemapController.GetTile(_dugCoords) is Tile tile)
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
-                    if(_dugTile != null && dr.DrillSharpness > 0.0001f)
+                    if(_dugTile != null && dr.DrillSharpness > 0.001f)
                         _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f));
                 }
             }
@@ -62,16 +62,10 @@ namespace Miner.Gameplay
 
         public void OnDigComplete()
         {
-            if (!_dugTile.IsFuel)
-            {
-                UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-                upd.AddCargoChange.Add(new CargoTable.Element() { Type = _dugTile, Amount = 1 });
-                _updatePlayerData.Raise(upd);
-            }
-            else
-            {
-                _updateInfrastructureData.Raise(new UpdateInfrastructureEA() { FuelSupplyChange = _dugTile.Mass });
-            }
+            
+            UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
+            upd.AddCargoChange.Add(new CargoTable.Element() { Type = _dugTile, Amount = 1 });
+            _updatePlayerData.Raise(upd);
             DestroyTile(_dugCoords);
             _dugTile = null;
         }
@@ -85,6 +79,7 @@ namespace Miner.Gameplay
         {
             yield return new WaitForSeconds(seconds);
             _restoreGameAfterPlayerDestroyed.Raise(new RestoreGameAfterPlayerDestroyedEA(_playerSpawnPoint));
+            _tilemapController.ActivateSurface();
         }
 
         public void DestroyTile(Vector2Int gridPos)

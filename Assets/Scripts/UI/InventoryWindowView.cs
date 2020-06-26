@@ -117,5 +117,10 @@ namespace Miner.UI
                 _onKeyUp.Invoke();
             }
         }
+
+        private void Start()
+        {
+            _onKeyUp.Invoke();
+        }
     }
 }

@@ -49,6 +49,13 @@ namespace Miner.Gameplay
             _previousSpeed = _currentSpeed.Value;
         }
 
+        public void OnCargoFull()
+        {
+            TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
+            tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Cargo, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
+            _triggerStatusPanel.Raise(tsp);
+        }
+
         private IEnumerator CheckStatus()
         {
             while (true)

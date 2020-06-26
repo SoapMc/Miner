@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 1653198735113129404}
   - component: {fileID: 8494862637188388605}
   - component: {fileID: 9222528849099995566}
+  - component: {fileID: 4377307004363576740}
   m_Layer: 19
   m_Name: Status Controller
   m_TagString: Untagged
@@ -206,6 +207,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &4377307004363576740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859861249857689815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: d3d469507f229ff478978359d07357c8, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1653198735113129404}
+        m_MethodName: OnCargoFull
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2314250434073995524
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +321,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2924772834398738029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3718168631968166780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: d3d469507f229ff478978359d07357c8, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8453040090499381214}
+        m_MethodName: OnCargoFull
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8453040090499381214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,9 +360,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7f86c85423d224eabf938911975e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeOfDisplayingFullText: 2
-  _rateOfAppearing: 10
-  _rateOfDisappearing: 50
+  _timeOfDisplayingFullText: 1.5
+  _rateOfAppearing: 30
+  _rateOfDisappearing: 60
 --- !u!1 &5810322342820454736
 GameObject:
   m_ObjectHideFlags: 0
