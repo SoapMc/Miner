@@ -24,6 +24,7 @@ namespace Miner.Gameplay
         [SerializeField] private FloatReference _surfaceTemperature = null;
         [SerializeField, Range(0.02f, 1f)] private float _temperatureGradient = 0.25f;  //per tile
         [SerializeField] private TilemapController _tilemapController = null;
+        [SerializeField] private UndergroundTrigger _undergroundTrigger = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _worldLoaded = null;
@@ -35,6 +36,7 @@ namespace Miner.Gameplay
         [Header("World Generation")]
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
         [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
+        [SerializeField] private IntReference _undergroundTriggerDepth;
         [SerializeField] private List<GroundLayer> _layers = new List<GroundLayer>();
         private int _surfaceDepth = -2;
 
@@ -50,8 +52,10 @@ namespace Miner.Gameplay
                 if(_tilemapController.GetTile(_dugCoords) is Tile tile)
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
-                    if(_dugTile != null && dr.DrillSharpness > 0.001f)
+                    if (_dugTile != null && dr.DrillSharpness > 0.001f)
+                    {
                         _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f));
+                    }
                 }
             }
             else
@@ -214,6 +218,7 @@ namespace Miner.Gameplay
             int minimumDepthForCurrentLayer = 0;
             int maximumDepthForCurrentLayer = _surfaceDepth;
             int worldWidth = Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y);
+            _undergroundTrigger.Initialize(_undergroundTriggerDepth, worldWidth);
             int totalDepth = -_layers.Sum(x => x.Depth) + maximumDepthForCurrentLayer;
             Camera mainCamera = Camera.main;
 
@@ -298,6 +303,8 @@ namespace Miner.Gameplay
         {
             int totalDepth = -_layers.Sum(x => x.Depth) + _surfaceDepth;
             _vecticalWorldBorders.Value = new Vector2Int(_vecticalWorldBorders.Value.x, totalDepth);
+            int worldWidth = Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y);
+            _undergroundTrigger.Initialize(_undergroundTriggerDepth, worldWidth);
 
             _worldLoaded.Raise(new WorldLoadedEA(_grid, _playerSpawnPoint));
             StartCoroutine(UpdateExternalTemperature());

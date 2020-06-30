@@ -21,6 +21,7 @@ namespace Miner.Gameplay
         [SerializeField] private Vector2Reference _currentSpeed = null;
         [SerializeField] private FloatReference _drillSharpness = null;
         [SerializeField] private IntReference _playerCargoMass = null;
+        [SerializeField] private Vector2Reference _playerPosition = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _digRequest = null;
@@ -113,6 +114,7 @@ namespace Miner.Gameplay
 
         private void Update()
         {
+            _playerPosition.Value = transform.position;
             _playerFuel.Value -= _playerFuelUsage * Time.deltaTime;
             _currentSpeed.Value = _rigidbody.velocity;
             _gridPosition.Value = (Vector2Int)_worldGrid.WorldToCell(transform.position);

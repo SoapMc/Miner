@@ -82,7 +82,7 @@ namespace Miner.Gameplay
                     }
                 }
             }
-            return _content.Remove(item);
+            return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

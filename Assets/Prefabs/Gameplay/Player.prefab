@@ -647,6 +647,7 @@ MonoBehaviour:
   _currentSpeed: {fileID: 11400000, guid: cd5a1668e28522543a001d71fa84f429, type: 2}
   _drillSharpness: {fileID: 11400000, guid: b8f90f2696e4eac47b837cece0d66a16, type: 2}
   _playerCargoMass: {fileID: 11400000, guid: 1008af18477897143b5ad40eb3fef20c, type: 2}
+  _playerPosition: {fileID: 11400000, guid: 31cfa17e85919e34689240c545469bc5, type: 2}
   _digRequest: {fileID: 11400000, guid: 7f88a321dd2fd7347881e514325add5e, type: 2}
   _digComplete: {fileID: 11400000, guid: d461d6376ea6c91418d25c368b764399, type: 2}
   _triggerInteraction: {fileID: 11400000, guid: d38cfe4662137df47b1b24c984325572,

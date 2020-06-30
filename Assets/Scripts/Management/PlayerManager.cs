@@ -239,8 +239,9 @@ namespace Miner.Management
                     {
                         if (!addElem.Type.IsFuel)
                         {
+                            int addedMass = addElem.Type.Mass * addElem.Amount;
                             _cargo.Add(addElem);
-                            _cargoMass.Value += addElem.Type.Mass;
+                            _cargoMass.Value += addedMass;
                         }
                         else
                         {
@@ -257,8 +258,9 @@ namespace Miner.Management
 
                 foreach (var removeElem in upd.RemoveCargoChange)
                 {
+                    int removedMass = removeElem.Type.Mass * removeElem.Amount;
                     _cargo.Remove(removeElem);
-                    _cargoMass.Value -= removeElem.Type.Mass;
+                    _cargoMass.Value -= removedMass;
                 }
 
                 foreach (var newPart in upd.EquipmentChange)
