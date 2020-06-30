@@ -18,6 +18,20 @@ namespace Miner.Management.Events
         }
     }
 
+    public class CameraShakeEA : EventArgs
+    {
+        public readonly float Amplitude;
+        public readonly float VibrationRate;
+        public readonly float Damping;
+
+        public CameraShakeEA(float amplitude, float vibrationRate = 60f, float damping = 0.05f)
+        {
+            Amplitude = amplitude;
+            VibrationRate = vibrationRate;
+            Damping = Mathf.Clamp01(damping);
+        }
+    }
+
     public class ChooseUsableItemEA : EventArgs
     {
         public readonly UsableItem Item;
@@ -114,6 +128,13 @@ namespace Miner.Management.Events
     {
         public List<Element> EnableIcons = new List<Element>();
         public List<ESymbol> DisableIcons = new List<ESymbol>();
+
+        public bool IsEmpty()
+        {
+            if (EnableIcons.Count == 0 && DisableIcons.Count == 0)
+                return true;
+            return false;
+        }
 
         public class Element
         {

@@ -18,14 +18,17 @@ namespace Miner.Gameplay
         [SerializeField] private IntReference _resistanceToHit = null;
         [SerializeField] private EquipmentTable _equipment = null;
         [SerializeField] private FloatReference _heatFlow = null;
+        [SerializeField] private FloatReference _fuel = null;
+
         [Header("Events")]
         [SerializeField] private GameEvent _triggerStatusPanel = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
+        [SerializeField] private GameEvent _cameraShake = null;
+
 
         private Vector2 _previousSpeed = Vector2.zero;
-        private float _elapsedTime = 0f;
-        private float _lastEngineTemperatureCheck = 0f;
-        private float _lastBatteryTemperatureCheck = 0f;
+        private float _cameraShakeAmplitude = 0.2f;
+
 
         private void CalculateTemperatureFlow()
         {
@@ -45,6 +48,7 @@ namespace Miner.Gameplay
                         upd.HullPermaDamage = 1;
                 }
                 _updatePlayerData.Raise(upd);
+                _cameraShake.Raise(new CameraShakeEA(_cameraShakeAmplitude));
             }
             _previousSpeed = _currentSpeed.Value;
         }
@@ -60,15 +64,13 @@ namespace Miner.Gameplay
         {
             while (true)
             {
+                TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
                 if (_equipment.Engine != null)
                 {
-                    if (_internalTemperature.Value > _equipment.Engine.ThermalVulnerability && (_elapsedTime - _lastEngineTemperatureCheck) > 5f)
+                    if (_internalTemperature.Value > _equipment.Engine.ThermalVulnerability)
                     {
-                        TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
                         tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
                         tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Engine, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
-                        _triggerStatusPanel.Raise(tsp);
-                        _lastEngineTemperatureCheck = _elapsedTime;
                     }
                 }
 
@@ -76,19 +78,33 @@ namespace Miner.Gameplay
                 {
                     if (_internalTemperature.Value > _equipment.Battery.ThermalVulnerability)
                     {
-                        TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
+                        
                         tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning});
                         tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Battery, Mode = TriggerStatusPanelEA.EMode.Warning});
-                        _triggerStatusPanel.Raise(tsp);
                     }
                     else
                     {
-                        TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
                         tsp.DisableIcons.Add(TriggerStatusPanelEA.ESymbol.Battery);
-                        _triggerStatusPanel.Raise(tsp);
+                        
                     }
                 }
 
+                if(_equipment.FuelTank != null)
+                {
+                    if (_equipment.FuelTank.Volume != 0f)
+                    {
+                        if (_fuel.Value / _equipment.FuelTank.Volume < 0.2f)
+                        {
+                            tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Fuel, Mode = TriggerStatusPanelEA.EMode.Warning });
+                        }
+                        else
+                        {
+                            tsp.DisableIcons.Add(TriggerStatusPanelEA.ESymbol.Fuel);
+                        }
+                    }
+                }
+                if(!tsp.IsEmpty())
+                    _triggerStatusPanel.Raise(tsp);
                 yield return new WaitForSeconds(1f);
             }
         }
@@ -97,7 +113,6 @@ namespace Miner.Gameplay
         {
             CalculateTemperatureFlow();
             CheckForHit();
-            _elapsedTime += Time.deltaTime;
         }
 
         private void Start()

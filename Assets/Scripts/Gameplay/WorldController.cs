@@ -115,97 +115,92 @@ namespace Miner.Gameplay
 
         public void SetTileEdges(Vector2Int gridPos)
         {
-            try
-            {
-                bool up = IsNotCollidableTile(gridPos + Vector2Int.up);
-                bool down = IsNotCollidableTile(gridPos + Vector2Int.down);
-                bool left = IsNotCollidableTile(gridPos + Vector2Int.left);
-                bool right = IsNotCollidableTile(gridPos + Vector2Int.right);
+            if (_tilemapController.GetTile(gridPos) == null) return;
 
-                if (up && down && left && right)
-                {
-                    _tilemapController.SetTile(gridPos, null);
-                    return;
-                }
-                else if (up && down && right)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[10]);
-                    return;
-                }
-                else if (up && down && left)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[12]);
-                    return;
-                }
-                else if (down && left && right)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[11]);
-                    return;
-                }
-                else if (up && left && right)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[9]);
-                    return;
-                }
-                else if (down && left)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[8]);
-                    return;
-                }
-                else if (down && right)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[7]);
-                    return;
-                }
-                else if (up && right)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[6]);
-                    return;
-                }
-                else if (up && left)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[5]);
-                    return;
-                }
-                else if(up && down)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[14]);
-                    return;
-                }
-                else if (right && left)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[15]);
-                    return;
-                }
-                else if (up)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[4]);
-                    return;
-                }
-                else if (right)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[3]);
-                    return;
-                }
-                else if (down)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[2]);
-                    return;
-                }
-                else if (left)
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[1]);
-                    return;
-                }
-                else
-                {
-                    _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[0]);
-                    return;
-                }
-            }
-            catch
+            bool up = IsNotCollidableTile(gridPos + Vector2Int.up);
+            bool down = IsNotCollidableTile(gridPos + Vector2Int.down);
+            bool left = IsNotCollidableTile(gridPos + Vector2Int.left);
+            bool right = IsNotCollidableTile(gridPos + Vector2Int.right);
+
+            if (up && down && left && right)
             {
-                Debug.Log(gridPos);
+                _tilemapController.SetTile(gridPos, null);
+                return;
+            }
+            else if (up && down && right)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[10]);
+                return;
+            }
+            else if (up && down && left)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[12]);
+                return;
+            }
+            else if (down && left && right)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[11]);
+                return;
+            }
+            else if (up && left && right)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[9]);
+                return;
+            }
+            else if (down && left)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[8]);
+                return;
+            }
+            else if (down && right)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[7]);
+                return;
+            }
+            else if (up && right)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[6]);
+                return;
+            }
+            else if (up && left)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[5]);
+                return;
+            }
+            else if(up && down)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[14]);
+                return;
+            }
+            else if (right && left)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[15]);
+                return;
+            }
+            else if (up)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[4]);
+                return;
+            }
+            else if (right)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[3]);
+                return;
+            }
+            else if (down)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[2]);
+                return;
+            }
+            else if (left)
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[1]);
+                return;
+            }
+            else
+            {
+                _tilemapController.SetTile(gridPos, _tileEdges.ClasifiedTiles[0]);
+                return;
             }
         }
 

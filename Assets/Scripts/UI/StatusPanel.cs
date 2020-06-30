@@ -22,7 +22,7 @@ namespace Miner.UI
 
         private Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine> _coroutines = new Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine>();
 
-        private IEnumerator TriggerIcon(Image icon, float duration, TriggerStatusPanelEA.EMode mode)
+        private IEnumerator TriggerIcon(TriggerStatusPanelEA.ESymbol symbol, Image icon, float duration, TriggerStatusPanelEA.EMode mode)
         {
 
             if(mode == TriggerStatusPanelEA.EMode.Failure)
@@ -54,6 +54,7 @@ namespace Miner.UI
             }
             
             icon.gameObject.SetActive(false);
+            _coroutines[symbol] = null;
         }
 
         private Image GetImage(TriggerStatusPanelEA.ESymbol symbol)
@@ -92,13 +93,19 @@ namespace Miner.UI
             if(args is TriggerStatusPanelEA tsp)
             {
                 foreach(var icon in tsp.EnableIcons)
-                {
-                    _coroutines[icon.Symbol] = StartCoroutine(TriggerIcon(GetImage(icon.Symbol), icon.Time, icon.Mode));
+                { 
+                    if(_coroutines[icon.Symbol] == null)
+                        _coroutines[icon.Symbol] = StartCoroutine(TriggerIcon(icon.Symbol, GetImage(icon.Symbol), icon.Time, icon.Mode));
                 }
 
                 foreach(var symbol in tsp.DisableIcons)
                 {
-                    StopCoroutine(_coroutines[symbol]);
+                    if (_coroutines[symbol] != null)
+                    {
+                        StopCoroutine(_coroutines[symbol]);
+                        GetImage(symbol).gameObject.SetActive(false);
+                    }
+                    _coroutines[symbol] = null;
                 }
             }
             else
@@ -107,8 +114,12 @@ namespace Miner.UI
             }
         }
 
-        private void Awake()
+        private void Start()
         {
+            foreach(TriggerStatusPanelEA.ESymbol symbol in Enum.GetValues(typeof(TriggerStatusPanelEA.ESymbol)))
+            {
+                _coroutines.Add(symbol, null);
+            }
             DisableAll();
         }
 
@@ -116,7 +127,8 @@ namespace Miner.UI
         {
             foreach (var elem in _coroutines)
             {
-                StopCoroutine(elem.Value);
+                if(elem.Value != null)
+                    StopCoroutine(elem.Value);
             }
         }
     }

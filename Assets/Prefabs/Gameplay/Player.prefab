@@ -139,9 +139,11 @@ MonoBehaviour:
   _resistanceToHit: {fileID: 11400000, guid: 12d00c28f9a0cf04692248dd3b647a8a, type: 2}
   _equipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}
   _heatFlow: {fileID: 11400000, guid: 3308460b8618d3f4589166772e4bb9d9, type: 2}
+  _fuel: {fileID: 11400000, guid: 4cb1a26a87f5cc54dab5b31daaca6428, type: 2}
   _triggerStatusPanel: {fileID: 11400000, guid: f5490dfdc4123ba468946b8a69d649fc,
     type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _cameraShake: {fileID: 11400000, guid: fd1056168fef23840829a706515d337a, type: 2}
 --- !u!114 &8494862637188388605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,7 +567,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 57751579
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -759,6 +761,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1859861249857689815}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &4611043191066324227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,6 +790,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6839613901156741159}
         m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1859861249857689815}
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

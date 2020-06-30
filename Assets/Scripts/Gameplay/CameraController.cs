@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Miner.Gameplay
 {
@@ -16,6 +17,7 @@ namespace Miner.Gameplay
         private float _bottomBorder = 0f;
         private float _leftBorder = 0f;
         private float _rightBorder = 0f;
+        
 
         public void OnWorldLoaded()
         {
@@ -25,6 +27,8 @@ namespace Miner.Gameplay
             _topBorder = _verticalWorldBorders.Value.x * _worldGrid.cellSize.y - _camera.orthographicSize;
             _bottomBorder = _verticalWorldBorders.Value.y * _worldGrid.cellSize.y + _camera.orthographicSize;
         }
+
+        
 
         void Awake()
         {
