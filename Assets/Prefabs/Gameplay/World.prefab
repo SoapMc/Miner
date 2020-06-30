@@ -342,9 +342,7 @@ MonoBehaviour:
     type: 2}
   _undergroundTriggerDepth: {fileID: 11400000, guid: e0cfe6bc700177e40af2183659edfb76,
     type: 2}
-  _layers:
-  - {fileID: 11400000, guid: 3f21b2b3f2c9e4c4180c81e175ceefbc, type: 2}
-  - {fileID: 11400000, guid: a65879054376b92409c1b078ba8d1624, type: 2}
+  _layers: {fileID: 11400000, guid: c45991944235fc746893923f19375493, type: 2}
 --- !u!114 &5836207694600775301
 MonoBehaviour:
   m_ObjectHideFlags: 0

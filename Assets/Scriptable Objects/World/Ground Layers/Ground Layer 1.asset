@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eecdf44fda402d8459c67cd381d28b79, type: 3}
-  m_Name: Ground Layer 2
+  m_Name: Ground Layer 1
   m_EditorClassIdentifier: 
   Depth: 50
-  ProbabilityOfEmptySpaces: 0.02
+  ProbabilityOfEmptySpaces: 0.04
+  _backgroundColor: {r: 0.5660378, g: 0.45680377, b: 0.2803489, a: 1}
   DefaultTiles:
   - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:
   - Type: {fileID: 11400000, guid: 73351b9eb828430479fa8a86d045af1e, type: 2}
-    Probability: 0.045
+    Probability: 0.03
   - Type: {fileID: 11400000, guid: 531d791ba0e1b0f48bd635ce4f55af79, type: 2}
-    Probability: 0.035
+    Probability: 0.02

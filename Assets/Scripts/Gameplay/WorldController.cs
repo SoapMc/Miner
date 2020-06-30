@@ -32,12 +32,13 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _updateInfrastructureData = null;
         [SerializeField] private GameEvent _restoreGameAfterPlayerDestroyed = null;
+        [SerializeField] private GameEvent _playerOnSurface = null;
 
         [Header("World Generation")]
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
         [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
         [SerializeField] private IntReference _undergroundTriggerDepth;
-        [SerializeField] private List<GroundLayer> _layers = new List<GroundLayer>();
+        [SerializeField] private GroundLayerList _layers = null;
         private int _surfaceDepth = -2;
 
         private TileIdentifier _tileIdentifier = null;
@@ -84,6 +85,7 @@ namespace Miner.Gameplay
             yield return new WaitForSeconds(seconds);
             _restoreGameAfterPlayerDestroyed.Raise(new RestoreGameAfterPlayerDestroyedEA(_playerSpawnPoint));
             _tilemapController.ActivateSurface();
+            _playerOnSurface.Raise();
         }
 
         public void DestroyTile(Vector2Int gridPos)

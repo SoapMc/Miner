@@ -9,6 +9,7 @@ namespace Miner.Gameplay
     {
         public int Depth = 0;
         [Range(0f, 1f)] public float ProbabilityOfEmptySpaces = 0.01f;
+        public Color _backgroundColor = Color.white;
         public List<TileType> DefaultTiles = new List<TileType>();
         public List<Element> Resources = new List<Element>();
 
