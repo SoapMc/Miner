@@ -9,8 +9,8 @@ namespace Miner.Gameplay
     public class TileType : ScriptableObject
     {
         [SerializeField] private string _name = string.Empty;
-        [SerializeField] private int _id;
-        [SerializeField] private List<Tile> _tiles;
+        [SerializeField] private int _id = 0;
+        [SerializeField] private List<Tile> _tiles = new List<Tile>();
         [SerializeField, Range(0.01f, 10f)] private float _hardiness = 1f;
         [SerializeField] private int _value = 0;
         [SerializeField] private bool _isFuel = false;

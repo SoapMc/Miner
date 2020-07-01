@@ -95,13 +95,13 @@ namespace Miner.Gameplay
             Vector3 worldCoords = _worldGrid.GetCellCenterWorld((Vector3Int) coords);
             float lerpCoeff = 0f;
             Vector3 startPosition = transform.position;
+
             while(Vector2.SqrMagnitude(worldCoords - transform.position) > 0.1f)
             {
                 lerpCoeff += speed;
                 transform.position = Vector3.Lerp(startPosition, worldCoords, lerpCoeff);
                 yield return null;
             }
-
             _digComplete.Raise();
             _locked = false;
         }
@@ -130,17 +130,17 @@ namespace Miner.Gameplay
                 if(Input.GetAxis("Vertical") < -0.6f)
                 {
                     //dig down
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value, transform));
                 }
                 else if (_canDigRight && _horizontalMove > 0.8f)
                 {
                     //dig right
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value, transform));
                 }
                 else if (_canDigLeft && _horizontalMove < -0.8f)
                 {
                     //dig left
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform));
                 }
             }
             

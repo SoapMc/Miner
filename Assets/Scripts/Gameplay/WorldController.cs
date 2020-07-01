@@ -30,14 +30,13 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _worldLoaded = null;
         [SerializeField] private GameEvent _leadToDigPlace = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
-        [SerializeField] private GameEvent _updateInfrastructureData = null;
         [SerializeField] private GameEvent _restoreGameAfterPlayerDestroyed = null;
         [SerializeField] private GameEvent _playerOnSurface = null;
 
         [Header("World Generation")]
         [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
         [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
-        [SerializeField] private IntReference _undergroundTriggerDepth;
+        [SerializeField] private IntReference _undergroundTriggerDepth = null;
         [SerializeField] private GroundLayerList _layers = null;
         private int _surfaceDepth = -2;
 
@@ -55,7 +54,7 @@ namespace Miner.Gameplay
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
                     if (_dugTile != null && dr.DrillSharpness > 0.001f)
                     {
-                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f));
+                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f, dr.PlayerTransform));
                     }
                 }
             }

@@ -54,7 +54,6 @@ namespace Miner.Management
         [SerializeField] private CargoReferencePart _initialCargo = null;
         [SerializeField] private FuelTankReferencePart _initialFuelTank = null;
 
-        private bool _suppressEvents = false;
         private int _chosenUsableItemIndex = 0;
 
         public int Money => _money;

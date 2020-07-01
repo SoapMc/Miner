@@ -27,7 +27,7 @@ namespace Miner.Management
         public PlayerManager Player => _player;
         public WorldManager World => _worldManager;
         public InfrastructureManager Infrastructure => _infrastructure;
-
+        public GameRules GameRules => _gameRules;
 
         private void Awake()
         {

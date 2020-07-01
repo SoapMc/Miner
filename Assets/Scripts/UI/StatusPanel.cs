@@ -17,8 +17,8 @@ namespace Miner.UI
         [SerializeField] private Image _drillIcon = null;
         [SerializeField] private Image _batteryIcon = null;
         [SerializeField] private float _blinkPeriod = 0.3f;
-        [SerializeField] private Color _warningColor;
-        [SerializeField] private Color _failureColor;
+        [SerializeField] private Color _warningColor = Color.yellow;
+        [SerializeField] private Color _failureColor = Color.red;
 
         private Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine> _coroutines = new Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine>();
 

@@ -66,11 +66,13 @@ namespace Miner.Management.Events
     {
         public readonly Vector2Int Coordinates;
         public readonly float DrillSharpness;
+        public readonly Transform PlayerTransform;
 
-        public DigRequestEA(Vector2Int coordinates, float drillSharpness)
+        public DigRequestEA(Vector2Int coordinates, float drillSharpness, Transform playerTransform)
         {
             Coordinates = coordinates;
             DrillSharpness = drillSharpness;
+            PlayerTransform = playerTransform;
         }
     }
 
@@ -92,13 +94,15 @@ namespace Miner.Management.Events
         public readonly Vector2Int Place;
         public readonly float Speed;
         public readonly float Hardness;
+        public readonly Transform PlayerTransform;
 
-        public LeadToDigPlaceEA(TileType tile, Vector2Int place, float speed, float hardness)
+        public LeadToDigPlaceEA(TileType tile, Vector2Int place, float speed, float hardness, Transform playerTransform)
         {
             Tile = tile;
             Place = place;
             Speed = speed;
             Hardness = hardness;
+            PlayerTransform = playerTransform;
         }
     }
 

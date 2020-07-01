@@ -9,7 +9,7 @@ namespace Miner.Gameplay
     {
         [SerializeField] private int _maxHull = 0;
         [SerializeField] private int _resistanceToHit = 0;
-        [SerializeField, Range(0, 50)] private int _thermalInsulation;
+        [SerializeField, Range(0, 50)] private int _thermalInsulation = 0;
         [Tooltip("Damaged permanently if hull (in %) is below")]
         [SerializeField, Range(0f, 1f)] private float _permaDamageThreshold = 0.5f;
 

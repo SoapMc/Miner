@@ -13,8 +13,6 @@ namespace Miner.Management
         [Header("Resources")]
         [SerializeField] private FloatReference _fuelSupply = null;
 
-        private bool _suppressEvents = false;
-
         public void ResetState()
         {
             _fuelSupply.Value = 5000;
