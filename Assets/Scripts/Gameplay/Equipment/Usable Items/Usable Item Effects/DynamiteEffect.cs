@@ -33,10 +33,11 @@ namespace Miner.Gameplay
                 for(int x = -1; x < 2; ++x)
                 {
                     destroyedTiles.Add(new Vector2Int(_playerGridPosition.Value.x + x, _playerGridPosition.Value.y + y));
-#warning dokoncz
-                    //_createParticle.Raise(new CreateParticleEA(_groundExplosionParticles, ))
+                    _createParticle.Raise(new CreateParticleEA(_groundExplosionParticles, new Vector2(_playerGridPosition.Value.x + x, _playerGridPosition.Value.y + y), CreateParticleEA.ECoordinateType.Grid));
                 }
             }
+
+            _destroyTiles.Raise(new DestroyTilesEA(destroyedTiles));
         }
     }
 }

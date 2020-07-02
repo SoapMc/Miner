@@ -57,11 +57,12 @@ namespace Miner.Management.Events
         public readonly ParticleSystem Particle;
         public readonly Vector2 Position;
         public readonly ECoordinateType CoordinateType;
-#warning dodaj obsługę inntych typów koordynatów dla ParticleControllera
+
         public CreateParticleEA(ParticleSystem particle, Vector2 position, ECoordinateType coordType = ECoordinateType.World)
         {
             Particle = particle;
             Position = position;
+            CoordinateType = coordType;
         }
 
         public enum ECoordinateType

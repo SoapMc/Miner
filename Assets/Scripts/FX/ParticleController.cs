@@ -66,7 +66,10 @@ namespace Miner.FX
         {
             if(args is CreateParticleEA cp)
             {
-                Instantiate(cp.Particle.gameObject, cp.Position, Quaternion.identity);
+                if (cp.CoordinateType == CreateParticleEA.ECoordinateType.World)
+                    Instantiate(cp.Particle.gameObject, cp.Position, Quaternion.identity);
+                else if (cp.CoordinateType == CreateParticleEA.ECoordinateType.Grid)
+                    Instantiate(cp.Particle.gameObject, _worldGrid.GetCellCenterWorld(new Vector3Int((int)cp.Position.x, (int)cp.Position.y, 0)), Quaternion.identity);
             }
             else
             {
