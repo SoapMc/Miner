@@ -30,6 +30,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _chooseNextUsableItem = null;
         [SerializeField] private GameEvent _choosePreviousUsableItem = null;
         [SerializeField] private GameEvent _useItemRequest = null;
+        [SerializeField] private GameEvent _playerDead = null;
 
         private float _maxSpeed = 25f;
         private Grid _worldGrid = null;
@@ -116,12 +117,14 @@ namespace Miner.Gameplay
         {
             _playerPosition.Value = transform.position;
             _playerFuel.Value -= _playerFuelUsage * Time.deltaTime;
+            if(_playerFuel.Value <= 0f)
+                _playerDead.Raise();
             _currentSpeed.Value = _rigidbody.velocity;
             _gridPosition.Value = (Vector2Int)_worldGrid.WorldToCell(transform.position);
             if (_rigidbody.velocity.magnitude > _maxSpeed)
                 _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, _maxSpeed);
 
-                if (_locked) return;
+            if (_locked) return;
             _horizontalMove = Input.GetAxis("Horizontal") * _playerEnginePower.Value;
             _verticalMove = Mathf.Clamp(Input.GetAxis("Vertical") * 2 * _playerEnginePower.Value, 0f, float.MaxValue);
 

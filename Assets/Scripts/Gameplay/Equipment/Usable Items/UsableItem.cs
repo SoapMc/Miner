@@ -21,5 +21,12 @@ namespace Miner.Gameplay
         public string ShortDescription => _shortDescription;
         public List<UsableItemEffect> Effects => _effects;
 
+        public void Execute()
+        {
+            foreach(var eff in Effects)
+            {
+                eff.Execute();
+            }
+        }
     }
 }

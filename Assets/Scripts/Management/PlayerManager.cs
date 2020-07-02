@@ -220,11 +220,9 @@ namespace Miner.Management
             if (args is UpdatePlayerDataEA upd)
             {
                 _money.Value += upd.MoneyChange;
-
                 _maxHull.Value += upd.MaxHullChange;
                 _hull.Value += upd.HullChange;
                 _hull.Value = Mathf.Clamp(_hull.Value, 0, _maxHull.Value);
-
                 _fuel.Value += upd.FuelChange;
                 _maxFuel.Value += upd.MaxFuelChange;
                 if (_fuel > _maxFuel)
@@ -343,6 +341,7 @@ namespace Miner.Management
                 if (_chosenUsableItemIndex < _usableItems.Count && _chosenUsableItemIndex >= 0)
                 {
                     Debug.Log("Use item : " + _usableItems[_chosenUsableItemIndex].Item.Name + " at position " + uir.GridPosition);
+                    _usableItems[_chosenUsableItemIndex].Item.Execute();
                     UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
                     upd.RemoveUsableItemsChange.Add(new UsableItemTable.Element() { Item = _usableItems[_chosenUsableItemIndex].Item, Amount = 1 });
                     _updatePlayerData.Raise(upd);

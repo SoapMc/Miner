@@ -79,6 +79,21 @@ namespace Miner.Gameplay
             StartCoroutine(PlayerDead(5f));
         }
 
+        public void OnDestroyTiles(EventArgs args)
+        {
+            if(args is DestroyTilesEA dt)
+            {
+                foreach(var coord in dt.Coordinates)
+                {
+                    DestroyTile(coord);
+                }
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
         private IEnumerator PlayerDead(float seconds)
         {
             yield return new WaitForSeconds(seconds);

@@ -276,6 +276,7 @@ GameObject:
   - component: {fileID: 5836207694600775301}
   - component: {fileID: 1368874604979321841}
   - component: {fileID: 7759090993627195199}
+  - component: {fileID: 5040917435967474238}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -332,8 +333,6 @@ MonoBehaviour:
   _worldLoaded: {fileID: 11400000, guid: 287002e75ecd37f4db905724166447b8, type: 2}
   _leadToDigPlace: {fileID: 11400000, guid: 9719fbe7cba519649afaaf2958decb4b, type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
-  _updateInfrastructureData: {fileID: 11400000, guid: 3263737974f642943b373f837e8515a3,
-    type: 2}
   _restoreGameAfterPlayerDestroyed: {fileID: 11400000, guid: 5d355295ad65ef041a90085d282ddd2e,
     type: 2}
   _playerOnSurface: {fileID: 11400000, guid: d5bba6f7705a60a44a428f972c70d413, type: 2}
@@ -420,6 +419,33 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5040917435967474238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2470983532209691713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 617417c6c84ea8a458f0b8fa6ee22c69, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2470983532209691713}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -62,6 +62,18 @@ namespace Miner.FX
             }
         }
 
+        public void  OnCreateParticle(EventArgs args)
+        {
+            if(args is CreateParticleEA cp)
+            {
+                Instantiate(cp.Particle.gameObject, cp.Position, Quaternion.identity);
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
         private IEnumerator FollowPlayer(Vector3 playerPosition)
         {
             while (true)

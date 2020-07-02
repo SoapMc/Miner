@@ -6,10 +6,6 @@ namespace Miner.Gameplay
 {
     public abstract class UsableItemEffect : ScriptableObject
     {
-        [TextArea, SerializeField] private string _description = null;
-
-        public string Description => _description;
-
         public abstract void Execute();
     }
 }

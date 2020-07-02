@@ -18,4 +18,5 @@ MonoBehaviour:
   _id: 1000
   _cost: 1500
   _shortDescription: Classic dynamite sticks with timer.
-  _effects: []
+  _effects:
+  - {fileID: 11400000, guid: ef630587aafa06c498bdffd5817657ce, type: 2}

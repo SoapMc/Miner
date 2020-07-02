@@ -193,6 +193,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &337397379 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8208876476875884154, guid: 3a716489ae6041140ac8f4d873c5055f,
+    type: 3}
+  m_PrefabInstance: {fileID: 727344030963817989}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e5f16a3f2d4464d88f9c5bd230950c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &422709839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,6 +1216,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 275423164586149602, guid: 3a716489ae6041140ac8f4d873c5055f,
+        type: 3}
+      propertyPath: _response.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 337397379}
+    - target: {fileID: 275423164586149602, guid: 3a716489ae6041140ac8f4d873c5055f,
+        type: 3}
+      propertyPath: _response.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCreateParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 275423164586149602, guid: 3a716489ae6041140ac8f4d873c5055f,
+        type: 3}
+      propertyPath: _response.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 275423164586149602, guid: 3a716489ae6041140ac8f4d873c5055f,
+        type: 3}
+      propertyPath: _response.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a716489ae6041140ac8f4d873c5055f, type: 3}

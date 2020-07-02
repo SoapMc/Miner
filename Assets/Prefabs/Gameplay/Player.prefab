@@ -659,6 +659,7 @@ MonoBehaviour:
   _choosePreviousUsableItem: {fileID: 11400000, guid: 4c7a869caf536234b8a4afa00399f884,
     type: 2}
   _useItemRequest: {fileID: 11400000, guid: cb73b3f236b01d4419ae916188d20ede, type: 2}
+  _playerDead: {fileID: 11400000, guid: 94a4262cd54f06742b09b9bebffdc9e2, type: 2}
 --- !u!114 &3615222439350159771
 MonoBehaviour:
   m_ObjectHideFlags: 0

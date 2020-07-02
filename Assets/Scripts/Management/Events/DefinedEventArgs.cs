@@ -52,6 +52,25 @@ namespace Miner.Management.Events
         }
     }
 
+    public class CreateParticleEA : EventArgs
+    {
+        public readonly ParticleSystem Particle;
+        public readonly Vector2 Position;
+        public readonly ECoordinateType CoordinateType;
+#warning dodaj obsługę inntych typów koordynatów dla ParticleControllera
+        public CreateParticleEA(ParticleSystem particle, Vector2 position, ECoordinateType coordType = ECoordinateType.World)
+        {
+            Particle = particle;
+            Position = position;
+        }
+
+        public enum ECoordinateType
+        {
+            World,
+            Grid
+        }
+    }
+
     public class CreateWindowEA : EventArgs
     {
         public readonly GameObject WindowPrefab;
@@ -59,6 +78,16 @@ namespace Miner.Management.Events
         public CreateWindowEA(GameObject windowPrefab)
         {
             WindowPrefab = windowPrefab;
+        }
+    }
+
+    public class DestroyTilesEA : EventArgs
+    {
+        public List<Vector2Int> Coordinates = null;
+
+        public DestroyTilesEA(List<Vector2Int> coordinates)
+        {
+            Coordinates = coordinates;
         }
     }
 
@@ -202,7 +231,7 @@ namespace Miner.Management.Events
 
     public class UseItemRequestEA : EventArgs
     {
-        public Vector2Int GridPosition;
+        public readonly Vector2Int GridPosition;
 
         public UseItemRequestEA(Vector2Int gridPosition)
         {

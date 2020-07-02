@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1586bcdee01d67c4cbf4dc89a0634851, type: 3}
+  m_Name: Dynamite Effect
+  m_EditorClassIdentifier: 
+  _cameraShake: {fileID: 11400000, guid: fd1056168fef23840829a706515d337a, type: 2}
+  _destroyTiles: {fileID: 11400000, guid: 617417c6c84ea8a458f0b8fa6ee22c69, type: 2}
+  _createParticle: {fileID: 11400000, guid: 41dc9c5b1e6bc5f4aa8c3f71b4e8f644, type: 2}
+  _playerGridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d,
+    type: 2}
+  _playerPosition: {fileID: 11400000, guid: 31cfa17e85919e34689240c545469bc5, type: 2}
+  _explosionEffect: {fileID: 1875663711075389147, guid: 37e32349f765a9749b65f361f7687a89,
+    type: 3}
+  _groundExplosionParticles: {fileID: 0}
+  _cameraShakeAmplitude: 0.5
