@@ -90,6 +90,18 @@ namespace Miner.Gameplay
             }
         }
 
+        public void OnMovePlayer(EventArgs args)
+        {
+            if(args is MovePlayerEA mp)
+            {
+                transform.position = mp.Position;
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
         public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
         {
             _locked = true;

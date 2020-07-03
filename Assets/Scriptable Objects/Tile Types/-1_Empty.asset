@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: -1_Empty
   m_EditorClassIdentifier: 
   _name: 
+  _id: -1
   _tiles:
   - {fileID: 11400000, guid: 8c3498dad47b5f94f9c971999216ade7, type: 2}
   - {fileID: 11400000, guid: 79eaa8182336a234592d36e2ec52b235, type: 2}
@@ -34,3 +35,5 @@ MonoBehaviour:
   _value: 0
   _isFuel: 0
   _isDestroyable: 0
+  _mass: 0
+  _showBriefInfoOnDig: 0

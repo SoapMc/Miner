@@ -18,6 +18,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7d34b6b604341749acf26c617d21f59, type: 2}
   _hardiness: 1
   _value: 10
-  _isFuel: 1
+  _isFuel: 0
   _isDestroyable: 1
-  _mass: 100
+  _mass: 80
+  _showBriefInfoOnDig: 1

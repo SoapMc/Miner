@@ -6,6 +6,8 @@ namespace Miner.Gameplay
 {
     public abstract class UsableItemEffect : ScriptableObject
     {
+        virtual public string Description() { return string.Empty; }
+
         public abstract void Execute();
     }
 }

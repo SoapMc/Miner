@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3799738a49238db44859fd475a4866dc, type: 3}
   m_Name: Fuel Reserve Effect
   m_EditorClassIdentifier: 
-  _updatePlayerData: {fileID: 0}
+  _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
   _reserveVolume: 25

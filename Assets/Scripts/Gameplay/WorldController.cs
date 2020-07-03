@@ -25,6 +25,7 @@ namespace Miner.Gameplay
         [SerializeField, Range(0.02f, 1f)] private float _temperatureGradient = 0.25f;  //per tile
         [SerializeField] private TilemapController _tilemapController = null;
         [SerializeField] private UndergroundTrigger _undergroundTrigger = null;
+        [SerializeField] private Vector2Reference _playerSpawnPointReference = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _worldLoaded = null;
@@ -52,7 +53,7 @@ namespace Miner.Gameplay
                 if(_tilemapController.GetTile(_dugCoords) is Tile tile)
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
-                    if (_dugTile != null && dr.DrillSharpness > 0.001f)
+                    if (_dugTile != null && dr.DrillSharpness > 0.001f && _dugTile.IsDestroyable)
                     {
                         _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f, dr.PlayerTransform));
                     }
@@ -87,6 +88,19 @@ namespace Miner.Gameplay
                 {
                     DestroyTile(coord);
                 }
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
+        public void OnMovePlayer(EventArgs args)
+        {
+            if(args is MovePlayerEA mp)
+            {
+                if (mp.Position.y >= _grid.CellToWorld(new Vector3Int(_surfaceDepth, 0, 0)).y)
+                    _playerOnSurface.Raise();
             }
             else
             {
@@ -316,6 +330,7 @@ namespace Miner.Gameplay
             _vecticalWorldBorders.Value = new Vector2Int(_vecticalWorldBorders.Value.x, totalDepth);
             int worldWidth = Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y);
             _undergroundTrigger.Initialize(_undergroundTriggerDepth, worldWidth);
+            _playerSpawnPointReference.Value = _playerSpawnPoint.position;
 
             _worldLoaded.Raise(new WorldLoadedEA(_grid, _playerSpawnPoint));
             StartCoroutine(UpdateExternalTemperature());

@@ -136,6 +136,16 @@ namespace Miner.Management.Events
         }
     }
 
+    public class MovePlayerEA : EventArgs
+    {
+        public readonly Vector2 Position;
+
+        public MovePlayerEA(Vector2 position)
+        {
+            Position = position;
+        }
+    }
+
     public class RestoreGameAfterPlayerDestroyedEA : EventArgs
     {
         public readonly Transform PlayerSpawnPoint;

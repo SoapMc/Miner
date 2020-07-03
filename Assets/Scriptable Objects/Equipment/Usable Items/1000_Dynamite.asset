@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19efeea21ddbc24488e289edf3491f65, type: 3}
-  m_Name: Fuel Reserve
+  m_Name: 1000_Dynamite
   m_EditorClassIdentifier: 
-  _name: Fuel Reserve
-  _sprite: {fileID: -7256236616356967240, guid: 24b9441a05447fd49a914053ed5cffba,
+  _name: Dynamite
+  _sprite: {fileID: -1940183536868830446, guid: 24b9441a05447fd49a914053ed5cffba,
     type: 3}
-  _id: 1001
-  _cost: 4000
-  _shortDescription: Provides certain amount of fuel in underground work.
-  _effects: []
+  _id: 1000
+  _cost: 1500
+  _shortDescription: Classic dynamite sticks with timer.
+  _effects:
+  - {fileID: 11400000, guid: ef630587aafa06c498bdffd5817657ce, type: 2}

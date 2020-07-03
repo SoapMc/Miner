@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19efeea21ddbc24488e289edf3491f65, type: 3}
-  m_Name: Dynamite
+  m_Name: 1002_Emergency Teleporter
   m_EditorClassIdentifier: 
-  _name: Dynamite
-  _sprite: {fileID: -1940183536868830446, guid: 24b9441a05447fd49a914053ed5cffba,
-    type: 3}
-  _id: 1000
-  _cost: 1500
-  _shortDescription: Classic dynamite sticks with timer.
+  _name: Emergency Teleporter
+  _sprite: {fileID: 1821654955742796763, guid: 24b9441a05447fd49a914053ed5cffba, type: 3}
+  _id: 1002
+  _cost: 2500
+  _shortDescription: In case of emergency takes the Miner to the surface.
   _effects:
-  - {fileID: 11400000, guid: ef630587aafa06c498bdffd5817657ce, type: 2}
+  - {fileID: 11400000, guid: 4527929df4a6b7c4f921e20cf50cef12, type: 2}

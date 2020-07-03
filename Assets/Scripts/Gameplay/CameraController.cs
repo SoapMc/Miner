@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Miner.Management.Events;
+using Miner.Management.Exceptions;
 
 namespace Miner.Gameplay
 {
@@ -28,7 +30,17 @@ namespace Miner.Gameplay
             _bottomBorder = _verticalWorldBorders.Value.y * _worldGrid.cellSize.y + _camera.orthographicSize;
         }
 
-        
+        public void OnMovePlayer(EventArgs args)
+        {
+            if(args is MovePlayerEA mp)
+            {
+                transform.position = mp.Position;
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
 
         void Awake()
         {

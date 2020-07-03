@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ecbf6975610e1b4095b7484cedc48a2, type: 3}
-  m_Name: 2_Iron
+  m_Name: 5_Gold
   m_EditorClassIdentifier: 
-  _name: Iron
-  _id: 2
+  _name: Gold
+  _id: 5
   _tiles:
-  - {fileID: 11400000, guid: b3bee264fa7c75e46abe3fd8ba5388a5, type: 2}
+  - {fileID: 11400000, guid: 00fca6ec78b944f43a3a213068c78991, type: 2}
   _hardiness: 1
-  _value: 25
+  _value: 250
   _isFuel: 0
   _isDestroyable: 1
-  _mass: 120
+  _mass: 160
   _showBriefInfoOnDig: 1

@@ -20,5 +20,6 @@ MonoBehaviour:
   _playerPosition: {fileID: 11400000, guid: 31cfa17e85919e34689240c545469bc5, type: 2}
   _explosionEffect: {fileID: 1875663711075389147, guid: 37e32349f765a9749b65f361f7687a89,
     type: 3}
-  _groundExplosionParticles: {fileID: 0}
+  _groundExplosionParticles: {fileID: 8533467426630825801, guid: f033456fd8193b947b33092f67e093b7,
+    type: 3}
   _cameraShakeAmplitude: 0.5
