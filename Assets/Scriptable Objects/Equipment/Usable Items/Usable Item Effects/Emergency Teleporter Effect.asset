@@ -24,3 +24,5 @@ MonoBehaviour:
     type: 3}
   _playerPosition: {fileID: 11400000, guid: 31cfa17e85919e34689240c545469bc5, type: 2}
   _playerCargo: {fileID: 11400000, guid: b489b169d0e499449a1a1a6a2215693b, type: 2}
+  _delay: 0.1
+  _holder: {fileID: 9180225699378346991, guid: bc2f48d4983886645896ab3cd9f93ea6, type: 3}

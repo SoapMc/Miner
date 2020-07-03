@@ -101,6 +101,7 @@ namespace Miner.Gameplay
             {
                 if (mp.Position.y >= _grid.CellToWorld(new Vector3Int(_surfaceDepth, 0, 0)).y)
                     _playerOnSurface.Raise();
+                _tilemapController.ActivateSurface();
             }
             else
             {

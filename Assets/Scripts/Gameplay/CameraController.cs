@@ -34,7 +34,7 @@ namespace Miner.Gameplay
         {
             if(args is MovePlayerEA mp)
             {
-                transform.position = mp.Position;
+                transform.position = new Vector3(mp.Position.x, mp.Position.y, _camera.transform.position.z);
             }
             else
             {

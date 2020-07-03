@@ -24,5 +24,7 @@ MonoBehaviour:
     Probability: 0.035
   - Type: {fileID: 11400000, guid: 041e0635004cc414a8166515b1153455, type: 2}
     Probability: 0.035
-  - Type: {fileID: 11400000, guid: 32cf794ae8cbaad4a80caf764c6365dc, type: 2}
-    Probability: 0.015
+  - Type: {fileID: 11400000, guid: 29df14e24b424d940b22363671604565, type: 2}
+    Probability: 0.02
+  - Type: {fileID: 11400000, guid: b79cf62e3946e954e925a69e534d5cb1, type: 2}
+    Probability: 0.01

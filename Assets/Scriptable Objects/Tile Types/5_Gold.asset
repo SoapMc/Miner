@@ -17,7 +17,7 @@ MonoBehaviour:
   _tiles:
   - {fileID: 11400000, guid: 00fca6ec78b944f43a3a213068c78991, type: 2}
   _hardiness: 1
-  _value: 250
+  _value: 500
   _isFuel: 0
   _isDestroyable: 1
   _mass: 160
