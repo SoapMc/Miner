@@ -24,10 +24,11 @@ namespace Miner.UI
         {
             while (true)
             {
-                if (_internalTemp != (int)_playerInternalTemperature.Value || _externalTemp != (int)_playerExternalTemperature.Value)
-                {
-                    _TempText.text = _internalTemp.ToString() + " / " + _externalTemp.ToString() + " C deg";
-                }
+                _internalTemp = (int)_playerInternalTemperature.Value;
+                _externalTemp = (int)_playerExternalTemperature.Value;
+                _heatFlowSlider.value = Mathf.Abs(_heatFlow.Value / _heatScale);
+                _TempText.text = _internalTemp.ToString() + " / " + _externalTemp.ToString() + " C deg";
+                
 
                 if(_heatFlow.Value >= 0f)
                 {
@@ -39,9 +40,6 @@ namespace Miner.UI
                     _sliderFill.color = _cooling;
                     _TempText.color = _cooling;
                 }
-                _heatFlowSlider.value = Mathf.Abs(_heatFlow.Value / _heatScale);
-                _internalTemp = (int)_playerInternalTemperature.Value;
-                _externalTemp = (int)_playerExternalTemperature.Value;
                 yield return new WaitForSeconds(0.5f);
             }
         }

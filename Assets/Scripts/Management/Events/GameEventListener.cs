@@ -6,10 +6,8 @@ namespace Miner.Management.Events
 {
     public class GameEventListener : MonoBehaviour
     {
-        [SerializeField]
-        private GameEvent _event = null;
-        [SerializeField]
-        private UnityEventWithParameter _response = null;
+        [SerializeField] private GameEvent _event = null;
+        [SerializeField] private UnityEventWithParameter _response = null;
 
         private void OnEnable()
         {

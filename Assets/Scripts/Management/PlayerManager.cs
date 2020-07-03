@@ -95,7 +95,7 @@ namespace Miner.Management
                     break;
                 case EngineReferencePart engine:
                     _equipment.Engine = engine;
-                    _enginePower.Value = (int)(engine.Power * part.Durability);
+                    _enginePower.Value = (int)(engine.Power * part.Durability * 1000);
                     _fuelUsage.Value = engine.FuelUsage;
                     break;
                 case FuelTankReferencePart fuelTank:

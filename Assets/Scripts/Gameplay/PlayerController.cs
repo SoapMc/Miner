@@ -44,7 +44,7 @@ namespace Miner.Gameplay
 
         private void Flip()
         {
-            //transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
 
         public void OnWorldLoaded(EventArgs args)
@@ -76,7 +76,7 @@ namespace Miner.Gameplay
 
         public void OnMassChanged(int oldMass, int newMass)
         {
-            _rigidbody.mass += (newMass - oldMass)/1000f;
+            _rigidbody.mass += (newMass - oldMass);
         }
         public void OnRestoreGameAfterPlayerDestroyed(EventArgs args)
         {
@@ -158,10 +158,13 @@ namespace Miner.Gameplay
                     _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform));
                 }
             }
-            
-            
-            if (_rigidbody.velocity.x * _previousHorizontalMove < 0f)
+
+
+            if (10E+6 * _rigidbody.velocity.x * _previousHorizontalMove < 0f)
+            {
+                Debug.Log(_rigidbody.velocity.x + " " + _previousHorizontalMove);
                 Flip();
+            }
 
             _previousHorizontalMove = _rigidbody.velocity.x;
 
