@@ -9,20 +9,19 @@ using Miner.Management.Exceptions;
 
 namespace Miner.Gameplay
 {
+    [RequireComponent(typeof(PlayerInput), typeof(PlayerRaycaster))]
     public class PlayerController : MonoBehaviour
     {
+        [Header("Resources")]
         [SerializeField] private IntReference _playerEnginePower = null;
         [SerializeField] private FloatReference _playerFuel = null;
         [SerializeField] private FloatReference _playerFuelUsage = null;
         [SerializeField] private Vector2IntReference _gridPosition = null;
-        [SerializeField] private BoolReference _canDigRight = null;
-        [SerializeField] private BoolReference _canDigDown = null;
-        [SerializeField] private BoolReference _canDigLeft = null;
         [SerializeField] private Vector2Reference _currentSpeed = null;
         [SerializeField] private FloatReference _drillSharpness = null;
         [SerializeField] private IntReference _playerCargoMass = null;
         [SerializeField] private Vector2Reference _playerPosition = null;
-
+        
         [Header("Events")]
         [SerializeField] private GameEvent _digRequest = null;
         [SerializeField] private GameEvent _digComplete = null;
@@ -32,20 +31,34 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _useItemRequest = null;
         [SerializeField] private GameEvent _playerDead = null;
 
+        private PlayerInputSheet _input = null;
+        private PlayerRaycaster _raycaster = null;
         private float _maxSpeed = 25f;
         private Grid _worldGrid = null;
         private Rigidbody2D _rigidbody = null;
-        private float _verticalMove = 0f;
-        private float _horizontalMove = 0f;
-        private float _previousHorizontalMove = 0f;
         private bool _locked = true;
 
-        public int TotalScore { get; private set; }
 
-        private void Flip()
+        #region COROUTINES
+        public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            _locked = true;
+            Vector3 worldCoords = _worldGrid.GetCellCenterWorld((Vector3Int) coords);
+            float lerpCoeff = 0f;
+            Vector3 startPosition = transform.position;
+
+            while(Vector2.SqrMagnitude(worldCoords - transform.position) > 0.1f)
+            {
+                lerpCoeff += speed;
+                transform.position = Vector3.Lerp(startPosition, worldCoords, lerpCoeff);
+                yield return null;
+            }
+            _digComplete.Raise();
+            _locked = false;
         }
+        #endregion
+
+        #region EVENT RESPONSES
 
         public void OnWorldLoaded(EventArgs args)
         {
@@ -64,7 +77,7 @@ namespace Miner.Gameplay
 
         public void OnLeadToDigPlace(EventArgs args)
         {
-            if(args is LeadToDigPlaceEA ltdp)
+            if (args is LeadToDigPlaceEA ltdp)
             {
                 StartCoroutine(FollowToDigPlace(ltdp.Place, ltdp.Speed));
             }
@@ -78,9 +91,10 @@ namespace Miner.Gameplay
         {
             _rigidbody.mass += (newMass - oldMass);
         }
+
         public void OnRestoreGameAfterPlayerDestroyed(EventArgs args)
         {
-            if(args is RestoreGameAfterPlayerDestroyedEA rgapd)
+            if (args is RestoreGameAfterPlayerDestroyedEA rgapd)
             {
                 transform.position = rgapd.PlayerSpawnPoint.position;
             }
@@ -92,7 +106,7 @@ namespace Miner.Gameplay
 
         public void OnMovePlayer(EventArgs args)
         {
-            if(args is MovePlayerEA mp)
+            if (args is MovePlayerEA mp)
             {
                 transform.position = mp.Position;
             }
@@ -102,27 +116,45 @@ namespace Miner.Gameplay
             }
         }
 
-        public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
+        private void OnConfirmKeyPressed()
         {
-            _locked = true;
-            Vector3 worldCoords = _worldGrid.GetCellCenterWorld((Vector3Int) coords);
-            float lerpCoeff = 0f;
-            Vector3 startPosition = transform.position;
-
-            while(Vector2.SqrMagnitude(worldCoords - transform.position) > 0.1f)
-            {
-                lerpCoeff += speed;
-                transform.position = Vector3.Lerp(startPosition, worldCoords, lerpCoeff);
-                yield return null;
-            }
-            _digComplete.Raise();
-            _locked = false;
+            _triggerInteraction.Raise();
         }
 
+        public void OnCancelKeyPressed()
+        {
+
+        }
+
+        private void OnPreviousKeyPressed()
+        {
+            _choosePreviousUsableItem.Raise();
+        }
+
+        private void OnNextKeyPressed()
+        {
+            _chooseNextUsableItem.Raise();
+        }
+
+        private void OnUseKeyPressed()
+        {
+            _useItemRequest.Raise(new UseItemRequestEA(_gridPosition));
+        }
+        #endregion
+
+        #region UNITY CALLBACKS
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _raycaster = GetComponent<PlayerRaycaster>();
+            _input = GetComponent<PlayerInput>().InputSheet;
             _playerCargoMass.ValueChanged += OnMassChanged;
+
+            _input.ConfirmKeyPressed += OnConfirmKeyPressed;
+            _input.CancelKeyPressed += OnCancelKeyPressed;
+            _input.PreviousKeyPressed += OnPreviousKeyPressed;
+            _input.NextKeyPressed += OnNextKeyPressed;
+            _input.UseKeyPressed += OnUseKeyPressed;
         }
 
         private void Update()
@@ -137,67 +169,41 @@ namespace Miner.Gameplay
                 _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, _maxSpeed);
 
             if (_locked) return;
-            _horizontalMove = Input.GetAxis("Horizontal") * _playerEnginePower.Value;
-            _verticalMove = Mathf.Clamp(Input.GetAxis("Vertical") * 2 * _playerEnginePower.Value, 0f, float.MaxValue);
 
-            if(_canDigDown.Value == true)
+            if(_raycaster.CanDigDown == true)   //is grounded
             {
-                if(Input.GetAxis("Vertical") < -0.6f)
+                if(_input.VerticalMove < -0.6f) //dig down
                 {
-                    //dig down
                     _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value, transform));
                 }
-                else if (_canDigRight && _horizontalMove > 0.8f)
+                else if (_raycaster.CanDigRight && _input.HorizontalMove > 0.8f) //dig right
                 {
-                    //dig right
                     _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value, transform));
                 }
-                else if (_canDigLeft && _horizontalMove < -0.8f)
+                else if (_raycaster.CanDigLeft && _input.HorizontalMove < -0.8f) //dig left
                 {
-                    //dig left
                     _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform));
                 }
-            }
-
-
-            if (10E+6 * _rigidbody.velocity.x * _previousHorizontalMove < 0f)
-            {
-                Debug.Log(_rigidbody.velocity.x + " " + _previousHorizontalMove);
-                Flip();
-            }
-
-            _previousHorizontalMove = _rigidbody.velocity.x;
-
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                _triggerInteraction.Raise();
-            }
-
-            if(Input.GetKeyDown(KeyCode.X))
-            {
-                _chooseNextUsableItem.Raise();
-            }
-            else if(Input.GetKeyDown(KeyCode.Z))
-            {
-                _choosePreviousUsableItem.Raise();
-            }
-            else if(Input.GetKeyDown(KeyCode.Space))
-            {
-                _useItemRequest.Raise(new UseItemRequestEA(_gridPosition.Value));
             }
         }
 
         private void FixedUpdate()
         {
             if (_locked) return;
-            _rigidbody.AddForce(new Vector2(_horizontalMove, _verticalMove));
-            _horizontalMove = 0f;
-            _verticalMove = 0f;
+            _rigidbody.AddForce(new Vector2(_input.HorizontalMove * _playerEnginePower.Value, Mathf.Clamp(_input.VerticalMove * 2 * _playerEnginePower.Value, 0f, float.MaxValue)));
         }
 
         private void OnDestroy()
         {
             _playerCargoMass.ValueChanged -= OnMassChanged;
+
+            _input.ConfirmKeyPressed -= OnConfirmKeyPressed;
+            _input.CancelKeyPressed -= OnCancelKeyPressed;
+            _input.PreviousKeyPressed -= OnPreviousKeyPressed;
+            _input.NextKeyPressed -= OnNextKeyPressed;
+            _input.UseKeyPressed -= OnUseKeyPressed;
         }
+
+        #endregion
     }
 }

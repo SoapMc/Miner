@@ -14,9 +14,13 @@ namespace Miner.Gameplay
         [SerializeField] private Transform _rightSource = null;
         [SerializeField] private Transform _downSource = null;
         [SerializeField] private Transform _leftSource = null;
-        [SerializeField] private BoolReference _canDigRight = null;
-        [SerializeField] private BoolReference _canDigDown = null;
-        [SerializeField] private BoolReference _canDigLeft = null;
+        private bool _canDigRight = false;
+        private bool _canDigDown = false;
+        private bool _canDigLeft = false;
+
+        public bool CanDigRight => _canDigRight;
+        public bool CanDigDown => _canDigDown;
+        public bool CanDigLeft => _canDigLeft;
 
         private bool Raycast(Transform source, Vector2 direction)
         {
@@ -33,9 +37,9 @@ namespace Miner.Gameplay
 
         private void Update()
         {
-            _canDigRight.Value = Raycast(_rightSource, Vector2.right);
-            _canDigDown.Value = Raycast(_downSource, Vector2.down);
-            _canDigLeft.Value = Raycast(_leftSource, Vector2.left);
+            _canDigRight = Raycast(_rightSource, Vector2.right);
+            _canDigDown = Raycast(_downSource, Vector2.down);
+            _canDigLeft = Raycast(_leftSource, Vector2.left);
         }
 
     }

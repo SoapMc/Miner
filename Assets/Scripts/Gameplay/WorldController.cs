@@ -270,6 +270,8 @@ namespace Miner.Gameplay
                 groundLayer.Initialize(minimumDepthForCurrentLayer, maximumDepthForCurrentLayer, Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y), i + 1, mainCamera.orthographicSize);
                 _tilemapController.AddTilemap(groundLayer, maximumDepthForCurrentLayer);
 
+                List<float> resourceProbabilities = _layers[i].GetResourceProbabilitiesForGeneration();
+
                 for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
                 {
                     for (int y = minimumDepthForCurrentLayer; y > maximumDepthForCurrentLayer; --y)
@@ -278,12 +280,14 @@ namespace Miner.Gameplay
                         prob = Random.Range(0f, 1f);
                         for (int j = 0; j < _layers[i].Resources.Count; ++j)
                         {
-                            if (prob <= _layers[i].Resources[j].Probability)
+                            if (prob <= resourceProbabilities[j])
                             {
                                 groundLayer.Tilemap.SetTile(new Vector3Int(x, y, 0), _layers[i].Resources[j].Type.ClasifiedTiles[0]);
                                 tileSet = true;
+                                break;
                             }
                         }
+
                         if (!tileSet)
                         {
                             groundLayer.Tilemap.SetTile(new Vector3Int(x, y, 0), _layers[i].DefaultTiles[0].ClasifiedTiles[0]);

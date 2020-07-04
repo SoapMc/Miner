@@ -12,7 +12,6 @@ namespace Miner.UI
     public class FuelStationWindow : MonoBehaviour
     {
         [SerializeField] private FloatReference _fuelSupply = null;
-        [SerializeField] private CargoTable _playerCargo = null;
         [SerializeField] private FloatReference _playerFuel = null;
         [SerializeField] private FloatReference _playerMaxFuel = null;
         [SerializeField] private IntReference _playerMoney = null;

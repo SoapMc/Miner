@@ -25,10 +25,12 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _cameraShake = null;
 
+        [Header("Signalization")]
+        [SerializeField, Range(0f, 1f)] private float _fuelSignalizationThreshold = 0.2f;
 
         private Vector2 _previousSpeed = Vector2.zero;
         private float _cameraShakeAmplitude = 0.2f;
-
+        private Coroutine _checkStatus = null;
 
         private void CalculateTemperatureFlow()
         {
@@ -69,8 +71,8 @@ namespace Miner.Gameplay
                 {
                     if (_internalTemperature.Value > _equipment.Engine.ThermalVulnerability)
                     {
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Engine, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 4f });
+                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 1f });
+                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Engine, Mode = TriggerStatusPanelEA.EMode.Warning});
                     }
                 }
 
@@ -79,13 +81,12 @@ namespace Miner.Gameplay
                     if (_internalTemperature.Value > _equipment.Battery.ThermalVulnerability)
                     {
                         
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning});
+                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 1f });
                         tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Battery, Mode = TriggerStatusPanelEA.EMode.Warning});
                     }
                     else
                     {
                         tsp.DisableIcons.Add(TriggerStatusPanelEA.ESymbol.Battery);
-                        
                     }
                 }
 
@@ -93,7 +94,7 @@ namespace Miner.Gameplay
                 {
                     if (_equipment.FuelTank.Volume != 0f)
                     {
-                        if (_fuel.Value / _equipment.FuelTank.Volume < 0.2f)
+                        if (_fuel.Value / _equipment.FuelTank.Volume < _fuelSignalizationThreshold)
                         {
                             tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Fuel, Mode = TriggerStatusPanelEA.EMode.Warning });
                         }
@@ -113,14 +114,11 @@ namespace Miner.Gameplay
         {
             CalculateTemperatureFlow();
             CheckForHit();
+            if(_checkStatus == null)
+                _checkStatus = StartCoroutine(CheckStatus());
         }
 
-        private void Start()
-        {
-            StartCoroutine(CheckStatus());
-        }
-
-        private void OnDisable()
+        private void OnDestroy()
         {
             StopAllCoroutines();
         }

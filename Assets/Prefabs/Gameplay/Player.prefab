@@ -144,6 +144,7 @@ MonoBehaviour:
     type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
   _cameraShake: {fileID: 11400000, guid: fd1056168fef23840829a706515d337a, type: 2}
+  _fuelSignalizationThreshold: 0.2
 --- !u!114 &8494862637188388605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,6 +669,7 @@ GameObject:
   - component: {fileID: 4611043191066324227}
   - component: {fileID: 4695645801165528804}
   - component: {fileID: 3937270534799640176}
+  - component: {fileID: 6103871857893670283}
   m_Layer: 19
   m_Name: Player
   m_TagString: Untagged
@@ -757,7 +759,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 6839613901156741212}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6b555b63af2c3e24b949d81cad5e1029, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -788,12 +790,12 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 5000
   m_LinearDrag: 2
-  m_AngularDrag: 0.05
+  m_AngularDrag: 1
   m_GravityScale: 1.5
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6b555b63af2c3e24b949d81cad5e1029, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &6839613901156741159
 MonoBehaviour:
@@ -811,9 +813,6 @@ MonoBehaviour:
   _playerFuel: {fileID: 11400000, guid: 4cb1a26a87f5cc54dab5b31daaca6428, type: 2}
   _playerFuelUsage: {fileID: 11400000, guid: a328fda8f1e63e14097116a75570e55d, type: 2}
   _gridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d, type: 2}
-  _canDigRight: {fileID: 11400000, guid: 5e50f66de49e164439ddfc79113fa744, type: 2}
-  _canDigDown: {fileID: 11400000, guid: 32506a04f5c35924287d26b8d09d5845, type: 2}
-  _canDigLeft: {fileID: 11400000, guid: 11a9d1e61a0cae14391b98348da240fe, type: 2}
   _currentSpeed: {fileID: 11400000, guid: cd5a1668e28522543a001d71fa84f429, type: 2}
   _drillSharpness: {fileID: 11400000, guid: b8f90f2696e4eac47b837cece0d66a16, type: 2}
   _playerCargoMass: {fileID: 11400000, guid: 1008af18477897143b5ad40eb3fef20c, type: 2}
@@ -846,9 +845,6 @@ MonoBehaviour:
   _rightSource: {fileID: 7017251603084721485}
   _downSource: {fileID: 5260974735932321865}
   _leftSource: {fileID: 8730610875442025539}
-  _canDigRight: {fileID: 11400000, guid: 5e50f66de49e164439ddfc79113fa744, type: 2}
-  _canDigDown: {fileID: 11400000, guid: 32506a04f5c35924287d26b8d09d5845, type: 2}
-  _canDigLeft: {fileID: 11400000, guid: 11a9d1e61a0cae14391b98348da240fe, type: 2}
 --- !u!114 &2816434429549565705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1025,6 +1021,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6103871857893670283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6839613901156741212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c131ba309981c324cb6dc3d028a79af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputSheet: {fileID: 11400000, guid: 33a55fa4a03740e4a92e3be789cd5fcc, type: 2}
 --- !u!1 &7093258644324331538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,11 +1126,11 @@ CircleCollider2D:
   m_GameObject: {fileID: 7093258644324331538}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6b555b63af2c3e24b949d81cad5e1029, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.4, y: 0}
+  m_Offset: {x: 0.33, y: 0}
   serializedVersion: 2
   m_Radius: 0.08
 --- !u!58 &1634699652517719920
@@ -1133,11 +1142,11 @@ CircleCollider2D:
   m_GameObject: {fileID: 7093258644324331538}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6b555b63af2c3e24b949d81cad5e1029, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.4, y: 0}
+  m_Offset: {x: -0.33, y: 0}
   serializedVersion: 2
   m_Radius: 0.08
 --- !u!1001 &1290532370234318283

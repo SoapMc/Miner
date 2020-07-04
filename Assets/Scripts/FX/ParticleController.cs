@@ -13,9 +13,18 @@ namespace Miner.FX
         [SerializeField] private ParticleSystem _groundDust = null;
 
         private Grid _worldGrid = null;
-        private Transform _playerTransform = null;
         private Coroutine _groundParticlesFollowing = null;
-        
+
+        private IEnumerator FollowPlayer(Vector3 playerPosition)
+        {
+            while (true)
+            {
+                _groundParticles.transform.position = playerPosition;
+                yield return null;
+            }
+        }
+
+        #region EVENT RESPONSES
         public void OnLeadToDigPlace(EventArgs args)
         {
             if (args is LeadToDigPlaceEA ltdp)
@@ -76,14 +85,7 @@ namespace Miner.FX
                 throw new InvalidEventArgsException();
             }
         }
+        #endregion
 
-        private IEnumerator FollowPlayer(Vector3 playerPosition)
-        {
-            while (true)
-            {
-                _groundParticles.transform.position = playerPosition;
-                yield return null;
-            }
-        }
     }
 }

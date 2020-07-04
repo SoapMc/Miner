@@ -19,10 +19,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:
   - Type: {fileID: 11400000, guid: 73351b9eb828430479fa8a86d045af1e, type: 2}
-    Probability: 0.03
-  - Type: {fileID: 11400000, guid: 531d791ba0e1b0f48bd635ce4f55af79, type: 2}
-    Probability: 0.02
-  - Type: {fileID: 11400000, guid: 041e0635004cc414a8166515b1153455, type: 2}
-    Probability: 0.02
-  - Type: {fileID: 11400000, guid: 29df14e24b424d940b22363671604565, type: 2}
     Probability: 0.01
+  - Type: {fileID: 11400000, guid: 531d791ba0e1b0f48bd635ce4f55af79, type: 2}
+    Probability: 0.007
+  - Type: {fileID: 11400000, guid: 041e0635004cc414a8166515b1153455, type: 2}
+    Probability: 0.01
+  - Type: {fileID: 11400000, guid: 29df14e24b424d940b22363671604565, type: 2}
+    Probability: 0.005

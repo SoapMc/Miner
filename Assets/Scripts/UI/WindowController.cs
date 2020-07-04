@@ -21,8 +21,11 @@ namespace Miner.UI
         {
             if(args is CreateWindowEA cw)
             {
-                if (_openedWindows.FirstOrDefault( x => x.name == cw.WindowPrefab.name) == null)
-                    _openedWindows.Add(Instantiate(cw.WindowPrefab, transform));
+                GameObject newWindow = Instantiate(cw.WindowPrefab, transform);
+                if (_openedWindows.FirstOrDefault(x => x.name == newWindow.name) == null)
+                    _openedWindows.Add(newWindow);
+                else
+                    Destroy(newWindow);
 
                 if (_openedWindows.Count > 0)
                     _disablePlayerController.Raise();

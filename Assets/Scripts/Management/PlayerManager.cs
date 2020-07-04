@@ -215,6 +215,20 @@ namespace Miner.Management
             }
         }
 
+        private void DealPermaDamage(ReferencePart part, int amount)
+        {
+            if (amount > 0)
+            {
+                if (part != null)
+                {
+                    part.Durability -= amount / 100f;
+                    Equip(part, part.Durability);
+                }
+            }
+        }
+
+        #region EVENT RESPONSES
+
         public void OnUpdatePlayerData(EventArgs args)
         {
             if (args is UpdatePlayerDataEA upd)
@@ -302,7 +316,7 @@ namespace Miner.Management
                 throw new InvalidEventArgsException();
             }
         }
-
+       
         public void OnRestoreGameAfterPlayerDestroyed()
         {
             _hull.Value = _maxHull.Value;
@@ -340,7 +354,6 @@ namespace Miner.Management
             {
                 if (_chosenUsableItemIndex < _usableItems.Count && _chosenUsableItemIndex >= 0)
                 {
-                    Debug.Log("Use item : " + _usableItems[_chosenUsableItemIndex].Item.Name + " at position " + uir.GridPosition);
                     _usableItems[_chosenUsableItemIndex].Item.Execute();
                     UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
                     upd.RemoveUsableItemsChange.Add(new UsableItemTable.Element() { Item = _usableItems[_chosenUsableItemIndex].Item, Amount = 1 });
@@ -352,18 +365,7 @@ namespace Miner.Management
                 throw new InvalidEventArgsException();
             }
         }
-
-        private void DealPermaDamage(ReferencePart part, int amount)
-        {
-            if (amount > 0)
-            {
-                if (part != null)
-                {
-                    part.Durability -= amount / 100f;
-                    Equip(part, part.Durability);
-                }
-            }
-        }
+        #endregion
 
     }
 }
