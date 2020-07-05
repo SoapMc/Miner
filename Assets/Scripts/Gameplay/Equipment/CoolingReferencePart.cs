@@ -9,6 +9,7 @@ namespace Miner.Gameplay
     {
         [SerializeField] private float _effectiveCooling = 0f;
 
+
         public float EffectiveCooling => _effectiveCooling;
     }
 }

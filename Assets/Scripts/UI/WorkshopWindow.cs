@@ -8,25 +8,21 @@ namespace Miner.UI
 {
     public class WorkshopWindow : MonoBehaviour
     {
+        [Header("Input")]
+        [SerializeField] private PlayerInputSheet _input = null;
+
         [Header("Events")]
         [SerializeField] private GameEvent _closeWindow = null;
 
         private void CloseWindow()
         {
             _closeWindow.Raise(new CloseWindowEA(gameObject));
+            _input.CancelKeyPressed -= CloseWindow;
         }
 
-        private void Awake()
+        private void Start()
         {
-            
-        }
-
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Escape))
-            {
-                CloseWindow();
-            }
+            _input.CancelKeyPressed += CloseWindow;
         }
     }
 }

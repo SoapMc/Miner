@@ -34,7 +34,7 @@ namespace Miner.Gameplay
         {
             _horizontalMove = Input.GetAxis("Horizontal");
             _verticalMove = Input.GetAxis("Vertical");
-            if (Mathf.Abs(Input.GetAxis("Inventory")) > 0.1f)
+            if (Input.GetAxis("Inventory") != 0)
             {
                 if (_inventory == false)
                     InventoryViewKeyPressed?.Invoke();
@@ -47,7 +47,7 @@ namespace Miner.Gameplay
                 _inventory = false;
             }
 
-            if (Mathf.Abs(Input.GetAxis("Confirm")) > 0.1f)
+            if (Input.GetAxisRaw("Confirm") != 0)
             {
                 if (_confirm == false)
                     ConfirmKeyPressed?.Invoke();
@@ -56,7 +56,7 @@ namespace Miner.Gameplay
             else
                 _confirm = false;
 
-            if (Mathf.Abs(Input.GetAxis("Cancel")) > 0.1f)
+            if (Input.GetAxisRaw("Cancel") != 0)
             {
                 if (_cancel == false)
                     CancelKeyPressed?.Invoke();
@@ -65,7 +65,7 @@ namespace Miner.Gameplay
             else
                 _cancel = false;
 
-            if (Mathf.Abs(Input.GetAxis("Use")) > 0.1f)
+            if (Input.GetAxisRaw("Use") != 0)
             {
                 if (_use == false)
                     UseKeyPressed?.Invoke();
@@ -74,7 +74,7 @@ namespace Miner.Gameplay
             else
                 _use = false;
 
-            if (Mathf.Abs(Input.GetAxis("Previous")) > 0.1f)
+            if (Input.GetAxisRaw("Previous") != 0)
             {
                 if (_previous == false)
                     PreviousKeyPressed?.Invoke();
@@ -83,7 +83,7 @@ namespace Miner.Gameplay
             else
                 _previous = false;
 
-            if (Mathf.Abs(Input.GetAxis("Next")) > 0.1f)
+            if (Input.GetAxisRaw("Next") != 0)
             {
                 if (_next == false)
                     NextKeyPressed?.Invoke();

@@ -9,7 +9,7 @@ using Miner.Management.Exceptions;
 
 namespace Miner.Gameplay
 {
-    [RequireComponent(typeof(PlayerInput), typeof(PlayerRaycaster))]
+    [RequireComponent(typeof(PlayerInput), typeof(PlayerRaycaster), typeof(Animator))]
     public class PlayerController : MonoBehaviour
     {
         [Header("Resources")]
@@ -21,7 +21,9 @@ namespace Miner.Gameplay
         [SerializeField] private FloatReference _drillSharpness = null;
         [SerializeField] private IntReference _playerCargoMass = null;
         [SerializeField] private Vector2Reference _playerPosition = null;
-        
+        [SerializeField] private Transform _playerCanvas = null;
+        [SerializeField] private ParticleSystem _rocket = null;
+
         [Header("Events")]
         [SerializeField] private GameEvent _digRequest = null;
         [SerializeField] private GameEvent _digComplete = null;
@@ -31,13 +33,34 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _useItemRequest = null;
         [SerializeField] private GameEvent _playerDead = null;
 
+        private ParticleSystem.EmissionModule _rocketEmission;
+        private Animator _animator = null;
         private PlayerInputSheet _input = null;
         private PlayerRaycaster _raycaster = null;
         private float _maxSpeed = 25f;
         private Grid _worldGrid = null;
         private Rigidbody2D _rigidbody = null;
+        private bool _isFacingRight = true;
         private bool _locked = true;
 
+        public bool IsFacingRight
+        {
+            get => _isFacingRight;
+            set
+            {
+                if (_isFacingRight != value)
+                {
+                    _animator.SetTrigger("Flip");
+                }
+                _isFacingRight = value;
+            }
+        }
+
+        public void Flip()
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            _playerCanvas.localScale = new Vector3(-_playerCanvas.localScale.x, _playerCanvas.localScale.y, _playerCanvas.localScale.z);
+        }
 
         #region COROUTINES
         public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
@@ -148,6 +171,8 @@ namespace Miner.Gameplay
             _rigidbody = GetComponent<Rigidbody2D>();
             _raycaster = GetComponent<PlayerRaycaster>();
             _input = GetComponent<PlayerInput>().InputSheet;
+            _animator = GetComponent<Animator>();
+            _rocketEmission = _rocket.emission;
             _playerCargoMass.ValueChanged += OnMassChanged;
 
             _input.ConfirmKeyPressed += OnConfirmKeyPressed;
@@ -167,6 +192,19 @@ namespace Miner.Gameplay
             _gridPosition.Value = (Vector2Int)_worldGrid.WorldToCell(transform.position);
             if (_rigidbody.velocity.magnitude > _maxSpeed)
                 _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, _maxSpeed);
+            if (_rigidbody.velocity.x > 0.1f)
+                IsFacingRight = true;
+            else if(_rigidbody.velocity.x < -0.1f)
+                IsFacingRight = false;
+
+            if (_input.VerticalMove > 0.1f)
+                _rocketEmission.enabled = true;
+            else
+                _rocketEmission.enabled = false;
+            
+            transform.rotation = Quaternion.Euler(0, 0, -_rigidbody.velocity.x);
+            _playerCanvas.rotation = Quaternion.Euler(0, 0, _rigidbody.velocity.x);
+            
 
             if (_locked) return;
 

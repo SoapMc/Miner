@@ -27,6 +27,7 @@ namespace Miner.UI
         [SerializeField] private TextMeshProUGUI _repairPriceText = null;
         [SerializeField] private IntReference _playerHull = null;
         [SerializeField] private IntReference _playerMaxHull = null;
+        [SerializeField] private PlayerInputSheet _input = null;
         private int _repairCostPerPoint = 25;
         private List<UsableItemOffer> _offers;
 
@@ -76,6 +77,7 @@ namespace Miner.UI
         private void CloseWindow()
         {
             _closeWindow.Raise(new CloseWindowEA(gameObject));
+            _input.CancelKeyPressed -= CloseWindow;
         }
 
         private void LoadUsableItemOffers()
@@ -127,7 +129,6 @@ namespace Miner.UI
         {
             LoadPerformanceInfos();
             LoadUsableItemOffers();
-            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_firstSelectedElement.gameObject);
             _firstSelectedElement.OnSelect(null);
             CalculateRepairCost();
@@ -136,13 +137,7 @@ namespace Miner.UI
         private void Start()
         {
             _firstSelectedElement.onClick.Invoke();
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-                CloseWindow();
-
+            _input.CancelKeyPressed += CloseWindow;
         }
     }
 }

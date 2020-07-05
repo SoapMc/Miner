@@ -15,7 +15,7 @@ namespace Miner.UI
         [SerializeField] private FloatReference _playerFuel = null;
         [SerializeField] private FloatReference _playerMaxFuel = null;
         [SerializeField] private IntReference _playerMoney = null;
-
+        [SerializeField] private PlayerInputSheet _input = null;
         [SerializeField] private TextMeshProUGUI _price = null;
         [SerializeField] private TextMeshProUGUI _fuelSupplyText = null;
         [SerializeField] private TextMeshProUGUI _fullRefillCostText = null;
@@ -128,6 +128,8 @@ namespace Miner.UI
         public void CloseWindow()
         {
             _closeWindow.Raise(new CloseWindowEA(gameObject));
+            Time.timeScale = 1f;
+            _input.CancelKeyPressed -= CloseWindow;
         }
 
         private void CalculateFuelPrice()
@@ -141,24 +143,13 @@ namespace Miner.UI
             _fullRefillCost = Mathf.CeilToInt((_playerMaxFuel.Value - _playerFuel.Value) * _fuelPrice);
         }
 
-        private void Awake()
+        private void Start()
         {
             Time.timeScale = 0f;
             RefreshUI();
-            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_firstSelectedObject.gameObject);
             _firstSelectedObject.OnSelect(null);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-                CloseWindow();
-        }
-
-        private void OnDestroy()
-        {
-            Time.timeScale = 1f;
+            _input.CancelKeyPressed += CloseWindow;
         }
     }
 }

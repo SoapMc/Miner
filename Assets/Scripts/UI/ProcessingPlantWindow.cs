@@ -13,6 +13,7 @@ namespace Miner.UI
         [SerializeField] private ProcessingPlantElement _processingPlantElementPrefab = null;
         [SerializeField] private Transform _layout = null;
         [SerializeField] private Selectable _firstSelectedObject = null;
+        [SerializeField] private PlayerInputSheet _input = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _updatePlayerData = null;
@@ -21,6 +22,8 @@ namespace Miner.UI
         public void CloseWindow()
         {
             _closeWindow.Raise(new CloseWindowEA(gameObject));
+            Time.timeScale = 1f;
+            _input.CancelKeyPressed -= CloseWindow;
         }
 
         public void SellAll()
@@ -42,7 +45,7 @@ namespace Miner.UI
             }
         }
 
-        private void Awake()
+        private void Start()
         {
             Time.timeScale = 0f;
             foreach(var element in _playerCargo)
@@ -51,7 +54,6 @@ namespace Miner.UI
                 ppe.Initialize(element);
             }
 
-            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_firstSelectedObject.gameObject);
             _firstSelectedObject.OnSelect(null);
 
@@ -59,17 +61,8 @@ namespace Miner.UI
             {
                 _firstSelectedObject.navigation = new Navigation() { mode = Navigation.Mode.Explicit, selectOnDown = _layout.GetChild(0).GetComponent<Selectable>(), selectOnUp = _layout.GetChild(_layout.childCount - 1).GetComponent<Selectable>() };
             }
-        }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-                CloseWindow();
-        }
-
-        private void OnDestroy()
-        {
-            Time.timeScale = 1f;
+            _input.CancelKeyPressed += CloseWindow;
         }
     }
 }

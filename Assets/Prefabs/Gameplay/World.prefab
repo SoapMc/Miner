@@ -522,6 +522,7 @@ GameObject:
   - component: {fileID: 2470983532921997277}
   - component: {fileID: 2470983532921997278}
   - component: {fileID: 1208018592098057726}
+  - component: {fileID: 941767504155769064}
   m_Layer: 20
   m_Name: Grid
   m_TagString: Untagged
@@ -577,6 +578,42 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!66 &941767504155769064
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2470983532921997276}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 1
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 2470983533128611355}
+    m_ColliderPaths:
+    - - X: 809999971
+        Y: -10000000
+      - X: 809999971
+        Y: 0
+      - X: 0
+        Y: -29
+      - X: 29
+        Y: -10000000
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 80.99999, y: -1}
+      - {x: 80.99999, y: 0}
+      - {x: 0, y: -0.0000058}
+      - {x: 0.0000058, y: -1}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.000005
 --- !u!1 &2470983533128611351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,7 +1517,7 @@ TilemapCollider2D:
   m_Material: {fileID: 6200000, guid: 8e5ae7d676af59341ba5e8978ef45b72, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001

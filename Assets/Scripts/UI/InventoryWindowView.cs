@@ -25,6 +25,7 @@ namespace Miner.UI
         [SerializeField] private TextMeshProUGUI _batteryValue = null;
         [SerializeField] private TextMeshProUGUI _cargoName = null;
         [SerializeField] private TextMeshProUGUI _cargoValue = null;
+        [SerializeField] private PlayerInputSheet _input = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _playerMaxHull = null;
@@ -106,21 +107,17 @@ namespace Miner.UI
             }
         }
 
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Tab))
-            {
-                _onKeyDown.Invoke();
-            }
-            else if(Input.GetKeyUp(KeyCode.Tab))
-            {
-                _onKeyUp.Invoke();
-            }
-        }
-
         private void Start()
         {
             _onKeyUp.Invoke();
+            _input.InventoryViewKeyPressed += _onKeyDown.Invoke;
+            _input.InventoryViewKeyUp += _onKeyUp.Invoke;
+        }
+
+        private void OnDestroy()
+        {
+            _input.InventoryViewKeyPressed -= _onKeyDown.Invoke;
+            _input.InventoryViewKeyUp -= _onKeyUp.Invoke;
         }
     }
 }

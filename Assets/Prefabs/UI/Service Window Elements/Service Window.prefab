@@ -109,6 +109,7 @@ MonoBehaviour:
   _repairPriceText: {fileID: 5129949292068871428}
   _playerHull: {fileID: 11400000, guid: f45cbd05d90518a47a3b5d8ac0f36fc9, type: 2}
   _playerMaxHull: {fileID: 11400000, guid: be7f45b775b767e439d2b13c6fb44053, type: 2}
+  _input: {fileID: 11400000, guid: 33a55fa4a03740e4a92e3be789cd5fcc, type: 2}
 --- !u!1 &1742558894992129889
 GameObject:
   m_ObjectHideFlags: 0

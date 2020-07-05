@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Depth: 50
   ProbabilityOfEmptySpaces: 0.02
-  _backgroundColor: {r: 0.36862746, g: 0.23137255, b: 0.1764706, a: 1}
+  _backgroundColor: {r: 0.41509432, g: 0.27104205, b: 0.21342114, a: 1}
   DefaultTiles:
   - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:

@@ -37,9 +37,9 @@ namespace Miner.Gameplay
 
         private void Update()
         {
-            _canDigRight = Raycast(_rightSource, Vector2.right);
-            _canDigDown = Raycast(_downSource, Vector2.down);
-            _canDigLeft = Raycast(_leftSource, Vector2.left);
+            _canDigRight = Raycast(_rightSource, transform.right);
+            _canDigDown = Raycast(_downSource, -transform.up);
+            _canDigLeft = Raycast(_leftSource, -transform.right);
         }
 
     }
