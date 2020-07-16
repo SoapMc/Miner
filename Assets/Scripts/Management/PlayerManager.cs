@@ -122,7 +122,7 @@ namespace Miner.Management
                     break;
                 case CoolingReferencePart cooling:
                     _equipment.Cooling = cooling;
-                    
+                    _effectiveCooling.Value = cooling.EffectiveCooling;
                     break;
             }
         }

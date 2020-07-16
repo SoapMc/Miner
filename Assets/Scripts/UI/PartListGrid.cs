@@ -21,7 +21,6 @@ namespace Miner.UI
         [SerializeField] private Vector2 _spacingBetweenElements = Vector2.zero;
         private Coroutine _currentViewMoving = null;
         private List<List<PartGridElement>> _partGridElements = new List<List<PartGridElement>>();
-        private bool _initialized = false;
 
         public void MoveViewRequest(Vector2 target)
         {
@@ -122,7 +121,6 @@ namespace Miner.UI
             _partGridElements.Add(LoadParts(_partList.Cargos.OfType<ReferencePart>().ToList(), 5, _playerEquipment.Cargo));
             _partGridElements.Add(LoadParts(_partList.Batteries.OfType<ReferencePart>().ToList(), 6, _playerEquipment.Battery));
 
-            if (_initialized) return;
             if (transform.childCount > 0)
             {
                 EventSystem.current.SetSelectedGameObject(null);
@@ -130,7 +128,6 @@ namespace Miner.UI
                 {
                     EventSystem.current.SetSelectedGameObject(s.gameObject);
                     s.OnSelect(null);
-                    _initialized = true;
                 }
                 else
                 {
