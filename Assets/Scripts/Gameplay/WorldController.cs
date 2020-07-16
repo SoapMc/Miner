@@ -55,7 +55,7 @@ namespace Miner.Gameplay
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
                     if (_dugTile != null && dr.DrillSharpness > 0.001f && _dugTile.IsDestroyable)
                     {
-                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f, dr.PlayerTransform));
+                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f, dr.PlayerPosition));
                     }
                 }
             }

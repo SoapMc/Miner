@@ -128,9 +128,6 @@ MonoBehaviour:
   _updateInfrastructureData: {fileID: 11400000, guid: 3263737974f642943b373f837e8515a3,
     type: 2}
   _cargoFull: {fileID: 11400000, guid: d3d469507f229ff478978359d07357c8, type: 2}
-  _useItem: {fileID: 11400000, guid: 23ff78ba550d12944ad54ed979d81fde, type: 2}
-  _gridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d, type: 2}
-  _position: {fileID: 11400000, guid: 31cfa17e85919e34689240c545469bc5, type: 2}
   _money: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _maxHull: {fileID: 11400000, guid: be7f45b775b767e439d2b13c6fb44053, type: 2}
   _hull: {fileID: 11400000, guid: f45cbd05d90518a47a3b5d8ac0f36fc9, type: 2}
@@ -148,6 +145,8 @@ MonoBehaviour:
   _resistanceToHit: {fileID: 11400000, guid: 12d00c28f9a0cf04692248dd3b647a8a, type: 2}
   _thermalInsulation: {fileID: 11400000, guid: 377cfe59ef2889a45a0701400a2049d5, type: 2}
   _cargoMass: {fileID: 11400000, guid: 1008af18477897143b5ad40eb3fef20c, type: 2}
+  _chanceForLoseResource: {fileID: 11400000, guid: 978206841e8c84c4e9dc43ea50e4f641,
+    type: 2}
   _partList: {fileID: 11400000, guid: d90ee6c8926a8f640b9856fa3f0be8a6, type: 2}
   _usableItemList: {fileID: 11400000, guid: cfbb51338fe95f449b6dfd607edf0da8, type: 2}
   _tileTypes: {fileID: 11400000, guid: 0cf9998c3ea5754459aca1dd53012051, type: 2}
@@ -156,7 +155,7 @@ MonoBehaviour:
   _initialBattery: {fileID: 0}
   _initialEngine: {fileID: 11400000, guid: 01bdfc110f23be847b8b9aa6ea5dfe5b, type: 2}
   _initialDrill: {fileID: 11400000, guid: ff9dc1d6a8f49af41bb677fd0cec7227, type: 2}
-  _initialCooling: {fileID: 0}
+  _initialCooling: {fileID: 11400000, guid: 422798abdce481a4a86cb2dfc081f2d2, type: 2}
   _initialCargo: {fileID: 11400000, guid: 669cb4f6d26cff941b092c4b6d81608a, type: 2}
   _initialFuelTank: {fileID: 11400000, guid: 23936b00c430c714ca57206ef614d99e, type: 2}
 --- !u!114 &6223407357104942189

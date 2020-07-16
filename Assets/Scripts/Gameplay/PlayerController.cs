@@ -33,6 +33,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _useItemRequest = null;
         [SerializeField] private GameEvent _playerDead = null;
 
+        private SpriteRenderer _sprite = null;
         private ParticleSystem.EmissionModule _rocketEmission;
         private Animator _animator = null;
         private PlayerInputSheet _input = null;
@@ -58,8 +59,7 @@ namespace Miner.Gameplay
 
         public void Flip()
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            _playerCanvas.localScale = new Vector3(-_playerCanvas.localScale.x, _playerCanvas.localScale.y, _playerCanvas.localScale.z);
+            _sprite.flipX = !_sprite.flipX;
         }
 
         #region COROUTINES
@@ -69,14 +69,16 @@ namespace Miner.Gameplay
             Vector3 worldCoords = _worldGrid.GetCellCenterWorld((Vector3Int) coords);
             float lerpCoeff = 0f;
             Vector3 startPosition = transform.position;
-
-            while(Vector2.SqrMagnitude(worldCoords - transform.position) > 0.1f)
+            _rigidbody.simulated = false;
+            while(lerpCoeff <= 1f)
             {
-                lerpCoeff += speed;
+                lerpCoeff += speed * Time.deltaTime;
                 transform.position = Vector3.Lerp(startPosition, worldCoords, lerpCoeff);
                 yield return null;
             }
+            
             _digComplete.Raise();
+            _rigidbody.simulated = true;
             _locked = false;
         }
         #endregion
@@ -172,6 +174,7 @@ namespace Miner.Gameplay
             _raycaster = GetComponent<PlayerRaycaster>();
             _input = GetComponent<PlayerInput>().InputSheet;
             _animator = GetComponent<Animator>();
+            _sprite = GetComponent<SpriteRenderer>();
             _rocketEmission = _rocket.emission;
             _playerCargoMass.ValueChanged += OnMassChanged;
 
@@ -201,10 +204,10 @@ namespace Miner.Gameplay
                 _rocketEmission.enabled = true;
             else
                 _rocketEmission.enabled = false;
-            
-            transform.rotation = Quaternion.Euler(0, 0, -_rigidbody.velocity.x);
-            _playerCanvas.rotation = Quaternion.Euler(0, 0, _rigidbody.velocity.x);
-            
+
+
+            //transform.rotation = Quaternion.Euler(0, 0, -_rigidbody.velocity.x);
+            //_playerCanvas.rotation = Quaternion.Euler(0, 0, _rigidbody.velocity.x);
 
             if (_locked) return;
 
@@ -212,15 +215,15 @@ namespace Miner.Gameplay
             {
                 if(_input.VerticalMove < -0.6f) //dig down
                 {
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value, transform));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value, transform.position));
                 }
                 else if (_raycaster.CanDigRight && _input.HorizontalMove > 0.8f) //dig right
                 {
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value, transform));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value, transform.position));
                 }
                 else if (_raycaster.CanDigLeft && _input.HorizontalMove < -0.8f) //dig left
                 {
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform));
+                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform.position));
                 }
             }
         }

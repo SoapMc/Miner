@@ -34,7 +34,7 @@ namespace Miner.Gameplay
         {
             _horizontalMove = Input.GetAxis("Horizontal");
             _verticalMove = Input.GetAxis("Vertical");
-            if (Input.GetAxis("Inventory") != 0)
+            if (Input.GetAxisRaw("Inventory") != 0)
             {
                 if (_inventory == false)
                     InventoryViewKeyPressed?.Invoke();

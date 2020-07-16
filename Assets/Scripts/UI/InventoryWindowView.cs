@@ -67,7 +67,7 @@ namespace Miner.UI
         public void LoadEquipment()
         {
             LoadPart(_playerEquipment.Hull, _hullName, _hullValue, _playerHull.Value.ToString() + "/" + _playerMaxHull.Value.ToString());
-            LoadPart(_playerEquipment.Engine, _engineName, _engineValue, _playerEnginePower.Value.ToString() + " HP");
+            LoadPart(_playerEquipment.Engine, _engineName, _engineValue, (_playerEnginePower.Value / 1000).ToString() + " HP");
             LoadPart(_playerEquipment.FuelTank, _fuelTankName, _fuelTankValue, _playerFuel.Value.ToString("0.0") + "/" + _playerMaxFuel.Value.ToString());
             LoadPart(_playerEquipment.Drill, _drillName, _drillValue, _playerDrillSharpness.Value.ToString());
             LoadPart(_playerEquipment.Cooling, _coolingName, _coolingValue, _playerEffectiveCooling.Value.ToString());

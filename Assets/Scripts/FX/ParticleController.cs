@@ -35,7 +35,7 @@ namespace Miner.FX
                     emission.enabled = true;
                     emission = _groundDust.emission;
                     emission.enabled = true;
-                    _groundParticlesFollowing = StartCoroutine(FollowPlayer(ltdp.PlayerTransform.position));
+                    _groundParticlesFollowing = StartCoroutine(FollowPlayer(ltdp.PlayerPosition));
                     _groundDust.transform.position = _worldGrid.GetCellCenterWorld((Vector3Int)ltdp.Place);
                 }
             }

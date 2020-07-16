@@ -25,7 +25,7 @@ namespace Miner.UI
         public void OnShowPartDescription(EventArgs args)
         {
             if (args == null) return;
-            if (Input.GetMouseButton(0)) return;
+            
 
             if (args is ShowPartDescriptionEA partDescription)
             {

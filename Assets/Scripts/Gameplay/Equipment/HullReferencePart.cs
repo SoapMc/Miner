@@ -20,7 +20,9 @@ namespace Miner.Gameplay
 
         public override string[] GetSpecificDescription()
         {
-            return new string[1] {  "Max hull: " + _maxHull.ToString() };
+            return new string[3] {  "Max hull: " + _maxHull.ToString(),
+                                    "Thermal insulation: " + _thermalInsulation.ToString(),
+                                    "Resistance to hit: " + _resistanceToHit.ToString() };
         }
 
         public override string[] GetPerformanceDescription()

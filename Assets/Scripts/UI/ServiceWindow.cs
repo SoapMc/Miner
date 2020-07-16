@@ -23,7 +23,7 @@ namespace Miner.UI
         [SerializeField] private Transform _shopLayout = null;
         [SerializeField] private TextMeshProUGUI _preformanceInfoPrefab = null;
         [SerializeField] private UsableItemOffer _usableItemOfferPrefab = null;
-        [SerializeField] private Button _firstSelectedElement = null;
+        [SerializeField] private Selectable _firstSelectedElement = null;
         [SerializeField] private TextMeshProUGUI _repairPriceText = null;
         [SerializeField] private IntReference _playerHull = null;
         [SerializeField] private IntReference _playerMaxHull = null;
@@ -125,18 +125,22 @@ namespace Miner.UI
             LoadPerformanceInfo(_playerEquipment.Battery, "<size=24>Battery</size>");
         }
 
+        public void SetFocus(Selectable selectable)
+        {
+            selectable.Select();
+            
+        }
+
         private void Awake()
         {
             LoadPerformanceInfos();
             LoadUsableItemOffers();
-            EventSystem.current.SetSelectedGameObject(_firstSelectedElement.gameObject);
-            _firstSelectedElement.OnSelect(null);
             CalculateRepairCost();
         }
 
         private void Start()
         {
-            _firstSelectedElement.onClick.Invoke();
+            _firstSelectedElement.Select();
             _input.CancelKeyPressed += CloseWindow;
         }
     }

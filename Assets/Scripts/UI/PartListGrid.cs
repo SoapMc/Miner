@@ -21,6 +21,7 @@ namespace Miner.UI
         [SerializeField] private Vector2 _spacingBetweenElements = Vector2.zero;
         private Coroutine _currentViewMoving = null;
         private List<List<PartGridElement>> _partGridElements = new List<List<PartGridElement>>();
+        private bool _initialized = false;
 
         public void MoveViewRequest(Vector2 target)
         {
@@ -32,7 +33,7 @@ namespace Miner.UI
         private IEnumerator MoveViewToPosition(Vector2 target)
         {
             float lerpCoeff = 0f;
-            while(lerpCoeff < 0.999f)
+            while(lerpCoeff < 1f)
             {
                 transform.localPosition = Vector2.Lerp(transform.localPosition, target, lerpCoeff);
                 lerpCoeff += Time.deltaTime;
@@ -77,11 +78,19 @@ namespace Miner.UI
 
         public void BuyPart(PartGridElement element)
         {
-            foreach (var row in _partGridElements)
+
+            if (element.ReferencePart.Cost <= _playerMoney.Value)
             {
-                foreach (var elem in row)
+                element.Refresh(PartGridElement.State.Bought);
+                UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
+                upd.EquipmentChange.Add(element.ReferencePart);
+                upd.MoneyChange = -element.ReferencePart.Cost;
+                _updatePlayerData.Raise(upd);
+
+                
+                foreach (var elem in _partGridElements[element.Row])
                 {
-                    if (elem.CurrentState == PartGridElement.State.Bought) continue;
+                    if (elem == element) continue;
 
                     if (_playerMoney >= elem.ReferencePart.Cost)
                     {
@@ -92,30 +101,9 @@ namespace Miner.UI
                         elem.Refresh(PartGridElement.State.Unavailable);
                     }
                 }
+                
             }
 
-            foreach (var elem in _partGridElements[element.Row])
-            {
-                if(elem.CurrentState == PartGridElement.State.Bought)
-                {
-                    if (_playerMoney >= elem.ReferencePart.Cost)
-                    {
-                        elem.Refresh(PartGridElement.State.Available);
-                    }
-                    else
-                    {
-                        elem.Refresh(PartGridElement.State.Unavailable);
-                    }
-                }
-            }
-            element.Refresh(PartGridElement.State.Bought);
-
-            UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-            upd.EquipmentChange.Add(element.ReferencePart);
-            upd.MoneyChange -= element.ReferencePart.Cost;
-            _updatePlayerData.Raise(upd);
-
-            
         }
 
         public void ShowDescription(PartGridElement element)
@@ -123,7 +111,7 @@ namespace Miner.UI
             _showPartDescription.Raise(new ShowPartDescriptionEA(element.ReferencePart, element.CurrentState));
         }
 
-        private void Start()
+        private void Awake()
         {
 
             _partGridElements.Add(LoadParts(_partList.Hulls.OfType<ReferencePart>().ToList(), 0, _playerEquipment.Hull));
@@ -134,6 +122,7 @@ namespace Miner.UI
             _partGridElements.Add(LoadParts(_partList.Cargos.OfType<ReferencePart>().ToList(), 5, _playerEquipment.Cargo));
             _partGridElements.Add(LoadParts(_partList.Batteries.OfType<ReferencePart>().ToList(), 6, _playerEquipment.Battery));
 
+            if (_initialized) return;
             if (transform.childCount > 0)
             {
                 EventSystem.current.SetSelectedGameObject(null);
@@ -141,6 +130,7 @@ namespace Miner.UI
                 {
                     EventSystem.current.SetSelectedGameObject(s.gameObject);
                     s.OnSelect(null);
+                    _initialized = true;
                 }
                 else
                 {

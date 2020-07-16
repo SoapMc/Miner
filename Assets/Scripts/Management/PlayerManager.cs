@@ -40,6 +40,7 @@ namespace Miner.Management
         [SerializeField] private IntReference _resistanceToHit = null;
         [SerializeField] private IntReference _thermalInsulation = null;
         [SerializeField] private IntReference _cargoMass = null;
+        [SerializeField] private FloatReference _chanceForLoseResource = null;
         [SerializeField] private ReferencePartList _partList = null;
         [SerializeField] private UsableItemList _usableItemList = null;
         [SerializeField] private TileTypes _tileTypes = null;
@@ -113,6 +114,7 @@ namespace Miner.Management
                 case CargoReferencePart cargo:
                     _equipment.Cargo = cargo;
                     _cargoMaxMass.Value = cargo.MaxMass;
+                    _chanceForLoseResource.Value = cargo.ChanceForLoseResource();
                     break;
                 case BatteryReferencePart battery:
                     _equipment.Battery = battery;
@@ -248,6 +250,10 @@ namespace Miner.Management
                 {
                     if (Mathf.Abs(_cargoMaxMass.Value - _cargoMass.Value) >= (addElem.Type.Mass * addElem.Amount))
                     {
+                        bool isResourceLost = false;
+                        float prob = Random.Range(0f, 1f);
+                        if (prob <= _chanceForLoseResource)
+                            isResourceLost = true;
                         if (!addElem.Type.IsFuel)
                         {
                             int addedMass = addElem.Type.Mass * addElem.Amount;
@@ -258,13 +264,12 @@ namespace Miner.Management
                         {
                             _updateInfrastructureData.Raise(new UpdateInfrastructureEA() { FuelSupplyChange = addElem.Type.Mass });
                         }
-                        _addResourceToCargo.Raise(new AddResourceToCargoEA(addElem));
+                        _addResourceToCargo.Raise(new AddResourceToCargoEA(addElem, isResourceLost));
                     }
                     else
                     {
                         _cargoFull.Raise();
-                    }
-                        
+                    }  
                 }
 
                 foreach (var removeElem in upd.RemoveCargoChange)

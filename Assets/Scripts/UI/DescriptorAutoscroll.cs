@@ -60,7 +60,8 @@ namespace Miner.UI
         public void OnShowPartDescription()
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(_content);
-            
+            if (_scrollRect == null)
+                Awake();
             _scrollRect.verticalNormalizedPosition = 1f;
             if(transform.parent.gameObject.activeSelf && gameObject.activeSelf)
                 StartCoroutine(WaitAndScrollDown());

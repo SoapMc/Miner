@@ -21,7 +21,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01bdfc110f23be847b8b9aa6ea5dfe5b, type: 2}
   _cargos:
   - {fileID: 11400000, guid: 669cb4f6d26cff941b092c4b6d81608a, type: 2}
-  _coolings: []
+  - {fileID: 11400000, guid: 5e88d0e74fec1a24d8ae022750efff55, type: 2}
+  _coolings:
+  - {fileID: 11400000, guid: 422798abdce481a4a86cb2dfc081f2d2, type: 2}
   _batteries: []
   _drills:
   - {fileID: 11400000, guid: ff9dc1d6a8f49af41bb677fd0cec7227, type: 2}

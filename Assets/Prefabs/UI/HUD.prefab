@@ -58,6 +58,7 @@ MonoBehaviour:
   _moneyChangeText: {fileID: 6976498475168752810}
   _positivaChangeColor: {r: 0, g: 1, b: 0, a: 1}
   _negativeChangeColor: {r: 1, g: 0, b: 0, a: 1}
+  _rateOfDisappearingChangeText: 0.01
 --- !u!1 &8492114957399502797
 GameObject:
   m_ObjectHideFlags: 0
@@ -2808,12 +2809,12 @@ PrefabInstance:
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -603
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -305
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
@@ -2828,27 +2829,27 @@ PrefabInstance:
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}

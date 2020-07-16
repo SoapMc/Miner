@@ -7,6 +7,7 @@ using Miner.Management.Events;
 using Miner.UI;
 using System.IO;
 using Miner.Gameplay;
+using UnityEngine.EventSystems;
 
 namespace Miner.Management
 {

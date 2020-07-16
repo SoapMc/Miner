@@ -15,17 +15,17 @@ namespace Miner.UI
         [SerializeField] private GameEvent _disablePlayerController = null;
         [SerializeField] private GameObject _mainMenuWindow = null;
 
-        private List<GameObject> _openedWindows = new List<GameObject>();
+        private List<Tuple<string, GameObject>> _openedWindows = new List<Tuple<string, GameObject>>();
 
         public void OnCreateWindow(EventArgs args)
         {
             if(args is CreateWindowEA cw)
             {
-                GameObject newWindow = Instantiate(cw.WindowPrefab, transform);
-                if (_openedWindows.FirstOrDefault(x => x.name == newWindow.name) == null)
-                    _openedWindows.Add(newWindow);
-                else
-                    Destroy(newWindow);
+                if (_openedWindows.FirstOrDefault(x => x.Item1 == cw.WindowPrefab.name) == null)
+                {
+                    GameObject newWindow = Instantiate(cw.WindowPrefab, transform);
+                    _openedWindows.Add(new Tuple<string, GameObject>(cw.WindowPrefab.name, newWindow));
+                }
 
                 if (_openedWindows.Count > 0)
                     _disablePlayerController.Raise();
@@ -40,8 +40,17 @@ namespace Miner.UI
         {
             if (args is CloseWindowEA cw)
             {
-                Destroy(cw.ClosedWindow);
-                _openedWindows.Remove(cw.ClosedWindow);
+                try
+                {
+                    _openedWindows.Remove(_openedWindows.Find(x => x.Item2 == cw.ClosedWindow));
+                    Destroy(cw.ClosedWindow);
+                }
+                catch(ArgumentNullException ex)
+                {
+                    Debug.LogException(ex);
+                    if(cw.ClosedWindow != null)
+                        DestroyImmediate(cw.ClosedWindow);
+                }
 
                 if (_openedWindows.Count == 0)
                     _enablePlayerController.Raise();

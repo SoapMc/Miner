@@ -59,10 +59,14 @@ namespace Miner.UI
             {
                 if (artc.Resource.Type.ShowBriefInfoOnDig)
                 {
+
                     if(!artc.Resource.Type.IsFuel)
                         _wholeText = "+" + artc.Resource.Amount.ToString() + " " + artc.Resource.Type.Name + " (" + artc.Resource.Type.Value + " $)";
                     else
                         _wholeText = artc.Resource.Type.Mass.ToString() + " l of fuel added to fuel supplies";
+
+                    if (artc.IsLost)
+                        _wholeText += " LOST!";
 
                     if (_coroutine == null)
                     {

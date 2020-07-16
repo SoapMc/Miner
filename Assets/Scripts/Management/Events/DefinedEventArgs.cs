@@ -11,10 +11,12 @@ namespace Miner.Management.Events
     public class AddResourceToCargoEA : EventArgs
     {
         public readonly CargoTable.Element Resource;
+        public bool IsLost;
 
-        public AddResourceToCargoEA(CargoTable.Element resource)
+        public AddResourceToCargoEA(CargoTable.Element resource, bool isLost = false)
         {
             Resource = resource;
+            IsLost = isLost;
         }
     }
 
@@ -96,13 +98,13 @@ namespace Miner.Management.Events
     {
         public readonly Vector2Int Coordinates;
         public readonly float DrillSharpness;
-        public readonly Transform PlayerTransform;
+        public readonly Vector3 PlayerPosition;
 
-        public DigRequestEA(Vector2Int coordinates, float drillSharpness, Transform playerTransform)
+        public DigRequestEA(Vector2Int coordinates, float drillSharpness, Vector3 playerPosition)
         {
             Coordinates = coordinates;
             DrillSharpness = drillSharpness;
-            PlayerTransform = playerTransform;
+            PlayerPosition = playerPosition;
         }
     }
 
@@ -124,15 +126,15 @@ namespace Miner.Management.Events
         public readonly Vector2Int Place;
         public readonly float Speed;
         public readonly float Hardness;
-        public readonly Transform PlayerTransform;
+        public readonly Vector3 PlayerPosition;
 
-        public LeadToDigPlaceEA(TileType tile, Vector2Int place, float speed, float hardness, Transform playerTransform)
+        public LeadToDigPlaceEA(TileType tile, Vector2Int place, float speed, float hardness, Vector3 playerPosition)
         {
             Tile = tile;
             Place = place;
             Speed = speed;
             Hardness = hardness;
-            PlayerTransform = playerTransform;
+            PlayerPosition = playerPosition;
         }
     }
 
