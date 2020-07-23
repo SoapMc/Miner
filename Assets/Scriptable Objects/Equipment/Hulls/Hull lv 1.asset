@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2c0b148ab2fa0a40b524243bf6afd03, type: 3}
-  m_Name: Basic Hull
+  m_Name: Hull lv 1
   m_EditorClassIdentifier: 
-  _name: Basic Hull
+  _name: Hull lv 1
   _sprite: {fileID: 6987615213105630014, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
   _id: 600
   _cost: 0
@@ -20,4 +20,4 @@ MonoBehaviour:
   _maxHull: 10
   _resistanceToHit: 100
   _thermalInsulation: 10
-  _permaDamageThreshold: 0.3
+  _permaDamageThreshold: 0.5

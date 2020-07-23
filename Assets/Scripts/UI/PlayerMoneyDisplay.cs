@@ -18,10 +18,26 @@ namespace Miner.UI
 
         private void OnValueChanged(int oldValue, int newValue)
         {
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
-            _coroutine = StartCoroutine(ToDesiredValue(newValue));
-            StartCoroutine(ShowChange(newValue - oldValue));
+            try
+            {
+                if (gameObject.activeInHierarchy == true)
+                {
+                    if (_coroutine != null)
+                        StopCoroutine(_coroutine);
+                    _coroutine = StartCoroutine(ToDesiredValue(newValue));
+                    StartCoroutine(ShowChange(newValue - oldValue));
+                }
+                else
+                {
+                    _currentValue = newValue;
+                    _text.text = _currentValue.ToString() + " $";
+                }
+            }
+            catch
+            {
+                _currentValue = newValue;
+                _text.text = _currentValue.ToString() + " $";
+            }
         }
 
         private IEnumerator ToDesiredValue(int desiredValue)

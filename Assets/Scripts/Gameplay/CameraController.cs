@@ -42,9 +42,29 @@ namespace Miner.Gameplay
             }
         }
 
+        public void OnPlayerLoaded(EventArgs args)
+        {
+            if(args is PlayerLoadedEA pl)
+            {
+                _target = pl.Player.transform;
+                enabled = true;
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
+        public void OnPlayerDestroyed()
+        {
+            _target = null;
+            enabled = false;
+        }
+
         void Awake()
         {
             _camera = GetComponent<Camera>();
+            enabled = false;
         }
 
         void FixedUpdate()

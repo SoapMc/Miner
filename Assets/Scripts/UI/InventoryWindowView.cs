@@ -10,22 +10,8 @@ namespace Miner.UI
     public class InventoryWindowView : MonoBehaviour
     {
         [SerializeField] private Transform _resourceLayout = null;
+        [SerializeField] private Transform _equipmentLayout = null;
         [SerializeField] private Transform _itemLayout = null;
-        [SerializeField] private TextMeshProUGUI _hullName = null;
-        [SerializeField] private TextMeshProUGUI _hullValue = null;
-        [SerializeField] private TextMeshProUGUI _fuelTankName = null;
-        [SerializeField] private TextMeshProUGUI _fuelTankValue = null;
-        [SerializeField] private TextMeshProUGUI _engineName = null;
-        [SerializeField] private TextMeshProUGUI _engineValue = null;
-        [SerializeField] private TextMeshProUGUI _coolingName = null;
-        [SerializeField] private TextMeshProUGUI _coolingValue = null;
-        [SerializeField] private TextMeshProUGUI _drillName = null;
-        [SerializeField] private TextMeshProUGUI _drillValue = null;
-        [SerializeField] private TextMeshProUGUI _batteryName = null;
-        [SerializeField] private TextMeshProUGUI _batteryValue = null;
-        [SerializeField] private TextMeshProUGUI _cargoName = null;
-        [SerializeField] private TextMeshProUGUI _cargoValue = null;
-        [SerializeField] private PlayerInputSheet _input = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _playerMaxHull = null;
@@ -43,12 +29,9 @@ namespace Miner.UI
         [SerializeField] private UsableItemTable _playerItems = null;
         [SerializeField] private InventoryResourceElementDisplay _resourceElementPrefab = null;
         [SerializeField] private UsableItemElementDisplay _usableItemElementPrefab = null;
+        [SerializeField] private InventoryEquipmentElement _equipmentElementPrefab = null;
 
-
-        [SerializeField] private UnityEvent _onKeyDown = null;
-        [SerializeField] private UnityEvent _onKeyUp = null;
-
-        public void LoadItems()
+        private void LoadItems()
         {
             foreach(var item in _playerItems)
             {
@@ -56,7 +39,7 @@ namespace Miner.UI
             }
         }
 
-        public void LoadCargo()
+        private void LoadCargo()
         {
             foreach (var elem in _playerCargo)
             {
@@ -64,34 +47,27 @@ namespace Miner.UI
             }
         }
 
-        public void LoadEquipment()
+        private void LoadEquipment()
         {
-            LoadPart(_playerEquipment.Hull, _hullName, _hullValue, _playerHull.Value.ToString() + "/" + _playerMaxHull.Value.ToString());
-            LoadPart(_playerEquipment.Engine, _engineName, _engineValue, (_playerEnginePower.Value / 1000).ToString() + " HP");
-            LoadPart(_playerEquipment.FuelTank, _fuelTankName, _fuelTankValue, _playerFuel.Value.ToString("0.0") + "/" + _playerMaxFuel.Value.ToString());
-            LoadPart(_playerEquipment.Drill, _drillName, _drillValue, _playerDrillSharpness.Value.ToString());
-            LoadPart(_playerEquipment.Cooling, _coolingName, _coolingValue, _playerEffectiveCooling.Value.ToString());
-            LoadPart(_playerEquipment.Battery, _batteryName, _batteryValue, _playerAvailableCells.Value.ToString());
-            LoadPart(_playerEquipment.Cargo, _cargoName, _cargoValue, _playerCargoVolume.Value.ToString() + " kg");
+            LoadPart(_playerEquipment.Hull, _playerHull.Value.ToString() + "/" + _playerMaxHull.Value.ToString());
+            LoadPart(_playerEquipment.Engine, (_playerEnginePower.Value / 1000).ToString() + " HP");
+            LoadPart(_playerEquipment.FuelTank, _playerFuel.Value.ToString("0.0") + "/" + _playerMaxFuel.Value.ToString());
+            LoadPart(_playerEquipment.Drill, _playerDrillSharpness.Value.ToString());
+            LoadPart(_playerEquipment.Cooling, _playerEffectiveCooling.Value.ToString());
+            LoadPart(_playerEquipment.Battery, _playerAvailableCells.Value.ToString());
+            LoadPart(_playerEquipment.Cargo, _playerCargoVolume.Value.ToString() + " kg");
         }
 
-        private void LoadPart(ReferencePart referencePart, TextMeshProUGUI name, TextMeshProUGUI status, string statusText)
+        private void LoadPart(ReferencePart referencePart, string statusText)
         {
             if (referencePart != null)
             {
-                name.transform.parent.gameObject.SetActive(true);
-                name.text = referencePart.Name;
-                status.text = statusText;
-                name.color = Color.Lerp(Color.red, Color.green, 2 * referencePart.Durability - 1);
-                status.color = Color.Lerp(Color.red, Color.green, 2 * referencePart.Durability - 1);
-            }
-            else
-            {
-                name.transform.parent.gameObject.SetActive(false);
+                InventoryEquipmentElement iee = Instantiate(_equipmentElementPrefab, _equipmentLayout);
+                iee.Initialize(referencePart, statusText);
             }
         }
-        
-        public void UnloadItems()
+
+        private void UnloadItems()
         {
             foreach (Transform child in _itemLayout.transform)
             {
@@ -99,7 +75,7 @@ namespace Miner.UI
             }
         }
 
-        public void UnloadCargo()
+        private void UnloadCargo()
         {
             foreach(Transform child in _resourceLayout.transform)
             {
@@ -107,17 +83,28 @@ namespace Miner.UI
             }
         }
 
-        private void Start()
+        private void UnloadEquipment()
         {
-            _onKeyUp.Invoke();
-            _input.InventoryViewKeyPressed += _onKeyDown.Invoke;
-            _input.InventoryViewKeyUp += _onKeyUp.Invoke;
+            foreach(Transform child in _equipmentLayout)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
-        private void OnDestroy()
+        public void Open()
         {
-            _input.InventoryViewKeyPressed -= _onKeyDown.Invoke;
-            _input.InventoryViewKeyUp -= _onKeyUp.Invoke;
+            LoadCargo();
+            LoadEquipment();
+            LoadItems();
+            gameObject.SetActive(true);
+        }
+
+        public void Close()
+        {
+            UnloadCargo();
+            UnloadEquipment();
+            UnloadItems();
+            gameObject.SetActive(false);
         }
     }
 }

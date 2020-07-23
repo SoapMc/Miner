@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eecdf44fda402d8459c67cd381d28b79, type: 3}
+  m_Name: Ground Layer 4
+  m_EditorClassIdentifier: 
+  _playMusic: {fileID: 11400000, guid: 0742c78ce3196e045bae63de8e7ca9e9, type: 2}
+  LayerNumber: 4
+  Depth: 100
+  ProbabilityOfEmptySpaces: 0.015
+  _backgroundColor: {r: 0.2893993, g: 0.38679248, b: 0.2791474, a: 1}
+  Music:
+  - {fileID: 8300000, guid: 83094b4160013084d9dcf14a2ae7514c, type: 3}
+  DefaultTiles:
+  - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
+  Resources:
+  - Type: {fileID: 11400000, guid: 531d791ba0e1b0f48bd635ce4f55af79, type: 2}
+    Probability: 0.01
+  - Type: {fileID: 11400000, guid: 29df14e24b424d940b22363671604565, type: 2}
+    Probability: 0.012
+  - Type: {fileID: 11400000, guid: b79cf62e3946e954e925a69e534d5cb1, type: 2}
+    Probability: 0.009
+  - Type: {fileID: 11400000, guid: 32cf794ae8cbaad4a80caf764c6365dc, type: 2}
+    Probability: 0.008
+  - Type: {fileID: 11400000, guid: 041e0635004cc414a8166515b1153455, type: 2}
+    Probability: 0.009
+  - Type: {fileID: 11400000, guid: 3bfc1c55020dc654b88991ffa3ff758f, type: 2}
+    Probability: 0.003
+  - Type: {fileID: 11400000, guid: 1e838999d0025324a873c49cd6183c50, type: 2}
+    Probability: 0.02

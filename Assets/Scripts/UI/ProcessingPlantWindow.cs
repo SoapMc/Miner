@@ -3,6 +3,7 @@ using UnityEngine;
 using Miner.Gameplay;
 using Miner.Management.Events;
 using UnityEngine.UI;
+using Miner.FX;
 
 namespace Miner.UI
 {

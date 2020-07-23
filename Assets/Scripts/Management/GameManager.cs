@@ -86,6 +86,12 @@ namespace Miner.Management
             SaveLoadSystem.SaveToFile(sd, _profileFileName);
         }
 
+        public void Unload()
+        {
+            SaveToFile();
+            _player.Unload();
+        }
+
         public void ResetState()
         {
             SaveLoadSystem.RemoveSaveState(_profileFileName);

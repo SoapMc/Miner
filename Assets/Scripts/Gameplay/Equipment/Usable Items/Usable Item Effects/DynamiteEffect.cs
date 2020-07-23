@@ -38,6 +38,8 @@ namespace Miner.Gameplay
             }
 
             _destroyTiles.Raise(new DestroyTilesEA(destroyedTiles));
+            if(_soundOnUse != null)
+                _soundOnUse.Play();
         }
     }
 }

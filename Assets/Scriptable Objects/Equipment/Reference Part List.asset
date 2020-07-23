@@ -15,15 +15,50 @@ MonoBehaviour:
   _hulls:
   - {fileID: 11400000, guid: 08012d68ee9096044bba99a274644f3c, type: 2}
   - {fileID: 11400000, guid: 77c121761a412c54f80d50675087c037, type: 2}
+  - {fileID: 11400000, guid: 2fb4c49c5fa585345845d567261ac8d7, type: 2}
+  - {fileID: 11400000, guid: 94eaa0fc0ec03a14c95d3d0ef69b0411, type: 2}
+  - {fileID: 11400000, guid: 3e3f40462b60c004584b83cb204d8cfb, type: 2}
+  - {fileID: 11400000, guid: 032a4e9efbce3964a80b8fa1a64f33aa, type: 2}
+  - {fileID: 11400000, guid: 175e300e75b75e6408a2dd3e48148b73, type: 2}
+  - {fileID: 11400000, guid: 733d29af90c2c5447addd5601ac59f75, type: 2}
   _fuelTanks:
   - {fileID: 11400000, guid: 23936b00c430c714ca57206ef614d99e, type: 2}
+  - {fileID: 11400000, guid: 97c1339d92d57434eaa2588437aedc7e, type: 2}
+  - {fileID: 11400000, guid: f5dbb5f6dbf1dd04b8d84bdbc4d7b5ac, type: 2}
+  - {fileID: 11400000, guid: 57a794278b5f1b9418a952a6410a29e2, type: 2}
+  - {fileID: 11400000, guid: 16de60ea1d5ad0e4ca0827598bd019de, type: 2}
+  - {fileID: 11400000, guid: 0f898f26c6e09d04ba0c9e37f308c690, type: 2}
+  - {fileID: 11400000, guid: f083b33eb21b7ee4bb9f974cbd9cce7b, type: 2}
+  - {fileID: 11400000, guid: 4705f6655b2660443a4bb6062c68ee38, type: 2}
   _engines:
   - {fileID: 11400000, guid: 01bdfc110f23be847b8b9aa6ea5dfe5b, type: 2}
+  - {fileID: 11400000, guid: cd8565af0d314454f917b161b8e9ccfb, type: 2}
+  - {fileID: 11400000, guid: 0d848fff73123a84da76beddc03a2865, type: 2}
+  - {fileID: 11400000, guid: 065ecb71ec663814d9a1ea3230d6d558, type: 2}
+  - {fileID: 11400000, guid: 37b84fc58efad4147a79271ebc597545, type: 2}
+  - {fileID: 11400000, guid: caecb304043cb0745b1244129d2470f9, type: 2}
+  - {fileID: 11400000, guid: e57f6a5af6a66fa458a20a623cb1d913, type: 2}
+  - {fileID: 11400000, guid: 7aafd1d4f5a377a46b05880a8200d405, type: 2}
   _cargos:
   - {fileID: 11400000, guid: 669cb4f6d26cff941b092c4b6d81608a, type: 2}
   - {fileID: 11400000, guid: 5e88d0e74fec1a24d8ae022750efff55, type: 2}
+  - {fileID: 11400000, guid: ab30bdccf88134046a099266ce5bc056, type: 2}
+  - {fileID: 11400000, guid: 80f03a05abb0045439963053677e3558, type: 2}
+  - {fileID: 11400000, guid: 8384fc2c86619a342b92600a13e51ee5, type: 2}
   _coolings:
   - {fileID: 11400000, guid: 422798abdce481a4a86cb2dfc081f2d2, type: 2}
+  - {fileID: 11400000, guid: 9f5224014d9811448b572b5179723b95, type: 2}
+  - {fileID: 11400000, guid: 2de572a8c3f3f61468c88e843782b77e, type: 2}
+  - {fileID: 11400000, guid: 1e7592688da80ce469d83ffca5dbb9bd, type: 2}
+  - {fileID: 11400000, guid: 668fb210045748041b7a93c28cfb8a00, type: 2}
+  - {fileID: 11400000, guid: bf7d2ce1b8b3e1744a462e0444169dca, type: 2}
+  - {fileID: 11400000, guid: a4669a7aee6319a4ebbe027d68410b5b, type: 2}
+  - {fileID: 11400000, guid: 5febe3905b414e14385fa83035621c97, type: 2}
   _batteries: []
   _drills:
   - {fileID: 11400000, guid: ff9dc1d6a8f49af41bb677fd0cec7227, type: 2}
+  - {fileID: 11400000, guid: e243906901d8e7b4890521a372ed1ad6, type: 2}
+  - {fileID: 11400000, guid: 85fb31ac585aceb47b752032a98bf09f, type: 2}
+  - {fileID: 11400000, guid: fca519a2543762a4285340b2196b9ff9, type: 2}
+  - {fileID: 11400000, guid: 301ae2f7f2615c647868393236ee2268, type: 2}
+  - {fileID: 11400000, guid: d076d90bd27cec548944355cff6170c7, type: 2}

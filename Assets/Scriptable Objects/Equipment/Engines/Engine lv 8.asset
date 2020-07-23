@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da219057ee87ce41ae9e44ea50f0b4c, type: 3}
   m_Name: Engine lv 8
   m_EditorClassIdentifier: 
-  _name: 
-  _sprite: {fileID: 0}
-  _id: 0
-  _cost: 0
+  _name: Engine lv 8
+  _sprite: {fileID: 3134064079502224622, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _id: 407
+  _cost: 500000
   _shortDescription: 
-  _power: 0
-  _fuelUsage: 0
-  _thermalVulnerability: 100
+  _power: 360
+  _fuelUsage: 0.45
+  _thermalVulnerability: 250
   _permaDamageLoadThreshold: 0

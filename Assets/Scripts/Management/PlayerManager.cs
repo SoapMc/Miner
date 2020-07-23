@@ -15,12 +15,15 @@ namespace Miner.Management
     public class PlayerManager : MonoBehaviour
     {
         [Header("Events")]
+        [SerializeField] private GameEvent _playerLoaded = null;
+        [SerializeField] private GameEvent _playerDestroyed = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _playerDead = null;
         [SerializeField] private GameEvent _chooseUsableItem = null;
         [SerializeField] private GameEvent _addResourceToCargo = null;
         [SerializeField] private GameEvent _updateInfrastructureData = null;
         [SerializeField] private GameEvent _cargoFull = null;
+        [SerializeField] private GameEvent _useItem = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _money = null;
@@ -44,6 +47,7 @@ namespace Miner.Management
         [SerializeField] private ReferencePartList _partList = null;
         [SerializeField] private UsableItemList _usableItemList = null;
         [SerializeField] private TileTypes _tileTypes = null;
+        [SerializeField] private GameObject _playerPrefab = null;
 
         [Header("Initial resources")]
         [SerializeField] private int _initialMoney = 0;
@@ -55,6 +59,7 @@ namespace Miner.Management
         [SerializeField] private CargoReferencePart _initialCargo = null;
         [SerializeField] private FuelTankReferencePart _initialFuelTank = null;
 
+        private GameObject _player = null;
         private int _chosenUsableItemIndex = 0;
 
         public int Money => _money;
@@ -68,6 +73,10 @@ namespace Miner.Management
         
         public void ResetCharacter()
         {
+            if (_player != null)
+                Destroy(_player.gameObject);
+            _player = Instantiate(_playerPrefab);
+            _equipment.Clear();
             _money.Value = _initialMoney;
             Equip(_initialHull);
             Equip(_initialEngine);
@@ -77,7 +86,10 @@ namespace Miner.Management
             Equip(_initialCooling);
             Equip(_initialCargo);
             Equip(_initialBattery);
+            _cargo.Clear();
             _usableItems.Clear();
+
+            _playerLoaded.Raise(new PlayerLoadedEA(_player.gameObject));
         }
 
         private void Equip(ReferencePart part, float durability = 1f)
@@ -124,6 +136,8 @@ namespace Miner.Management
                     _equipment.Cooling = cooling;
                     _effectiveCooling.Value = cooling.EffectiveCooling;
                     break;
+                default:
+                    break;
             }
         }
         
@@ -146,7 +160,7 @@ namespace Miner.Management
             }
             if (_equipment.FuelTank != null)
             {
-                pd.FuelTankPartId = _equipment.Hull.Id;
+                pd.FuelTankPartId = _equipment.FuelTank.Id;
                 pd.FuelTankDurability = _equipment.FuelTank.Durability;
             }
             if (_equipment.Engine != null)
@@ -188,12 +202,13 @@ namespace Miner.Management
 
         public void Load(PlayerData data)
         {
-            if (data.Money < 0 || data.MaxHull <= 0 || data.MaxFuel <= 0 || data.Hull < 0 || data.Fuel < 0)
+            if (data.Money < 0 || data.MaxHull <= 0 || data.MaxFuel <= 0)
             {
                 Debug.LogException(new InvalidSaveStateException());
                 throw new InvalidSaveStateException();
             }
 
+            ResetCharacter();
             _money.Value = data.Money;
             _maxHull.Value = data.MaxHull;
             _hull.Value = data.Hull;
@@ -215,6 +230,13 @@ namespace Miner.Management
             {
                 _cargo.Add(new CargoTable.Element() { Type = _tileTypes.GetTileType(cargoElem.Id), Amount = cargoElem.Amount });
             }
+        }
+
+        public void Unload()
+        {
+            _playerDestroyed.Raise();
+            if (_player != null)
+                Destroy(_player.gameObject);
         }
 
         private void DealPermaDamage(ReferencePart part, int amount)
@@ -248,6 +270,7 @@ namespace Miner.Management
 
                 foreach (var addElem in upd.AddCargoChange)
                 {
+                    if (!_cargo.IsAcceptedType(addElem)) return;
                     if (Mathf.Abs(_cargoMaxMass.Value - _cargoMass.Value) >= (addElem.Type.Mass * addElem.Amount))
                     {
                         bool isResourceLost = false;
@@ -328,6 +351,7 @@ namespace Miner.Management
             _fuel.Value = _maxFuel.Value;
 
             _cargo.Clear();
+            _cargoMass.Value = 0;
         }
 
         public void OnChooseNextUsableItem()
@@ -353,21 +377,23 @@ namespace Miner.Management
             }
         }
 
-        public void OnUseItemRequest(EventArgs args)
+        public void OnUseItemRequest()
         {
-            if(args is UseItemRequestEA uir)
+            if (_chosenUsableItemIndex < _usableItems.Count && _chosenUsableItemIndex >= 0)
             {
-                if (_chosenUsableItemIndex < _usableItems.Count && _chosenUsableItemIndex >= 0)
+                bool changeUsableItemIndex = false;
+                UsableItem item = _usableItems[_chosenUsableItemIndex].Item;
+                if (_usableItems[_chosenUsableItemIndex].Amount == 1)   //last item used
+                    changeUsableItemIndex = true;
+                item.Execute();
+                UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
+                upd.RemoveUsableItemsChange.Add(new UsableItemTable.Element() { Item = _usableItems[_chosenUsableItemIndex].Item, Amount = 1 });
+                _updatePlayerData.Raise(upd);
+                _useItem.Raise(new UseItemEA(item));
+                if(changeUsableItemIndex)
                 {
-                    _usableItems[_chosenUsableItemIndex].Item.Execute();
-                    UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-                    upd.RemoveUsableItemsChange.Add(new UsableItemTable.Element() { Item = _usableItems[_chosenUsableItemIndex].Item, Amount = 1 });
-                    _updatePlayerData.Raise(upd);
+                    _chosenUsableItemIndex = 0;
                 }
-            }
-            else
-            {
-                throw new InvalidEventArgsException();
             }
         }
         #endregion

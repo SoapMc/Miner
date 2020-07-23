@@ -17,18 +17,19 @@ namespace Miner.Gameplay
         private bool _confirm = false;
         private bool _cancel = false;
         private bool _use = false;
+        private float _cancelKeyHoldTime = 0f;
 
         public float HorizontalMove => _horizontalMove;
         public float VerticalMove => _verticalMove;
 
         public event Action InventoryViewKeyPressed;
         public event Action InventoryViewKeyUp;
-
         public event Action ConfirmKeyPressed;
         public event Action NextKeyPressed;
         public event Action PreviousKeyPressed;
         public event Action UseKeyPressed;
         public event Action CancelKeyPressed;
+        public event Action CancelKeyHold;
 
         public void Update()
         {
@@ -37,7 +38,9 @@ namespace Miner.Gameplay
             if (Input.GetAxisRaw("Inventory") != 0)
             {
                 if (_inventory == false)
+                {
                     InventoryViewKeyPressed?.Invoke();
+                }
                 _inventory = true;
             }
             else
@@ -59,8 +62,14 @@ namespace Miner.Gameplay
             if (Input.GetAxisRaw("Cancel") != 0)
             {
                 if (_cancel == false)
+                {
+                    _cancelKeyHoldTime = 0f;
                     CancelKeyPressed?.Invoke();
+                }
                 _cancel = true;
+                _cancelKeyHoldTime += Time.unscaledDeltaTime;
+                if (_cancelKeyHoldTime >= 1f)
+                    CancelKeyHold.Invoke();
             }
             else
                 _cancel = false;
@@ -91,6 +100,21 @@ namespace Miner.Gameplay
             }
             else
                 _next = false;
+        }
+
+        public void Reset()
+        {
+            if(_inventory == true)
+                InventoryViewKeyUp.Invoke();
+
+            _horizontalMove = 0f;
+            _verticalMove = 0f;
+            _inventory = false;
+            _next = false;
+            _previous = false;
+            _confirm = false;
+            _cancel = false;
+            _use = false;
         }
 
     }

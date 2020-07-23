@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 73651285140010531}
   - component: {fileID: 7274350952754874510}
   - component: {fileID: 338416509836079486}
+  - component: {fileID: 1684222499459350557}
   m_Layer: 5
   m_Name: Equipment Element
   m_TagString: Untagged
@@ -75,6 +76,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1684222499459350557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3384322229539587005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fa5026042159b499fd72ae6b60bda2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: {fileID: 3805490111351751985}
+  _status: {fileID: 1985664128224130783}
 --- !u!1001 &1638927538399079323
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -255,6 +270,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1638927538399079323}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3805490111351751985 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2481891251780316842, guid: bf993dcefe9cb244689d27ae2e3af530,
+    type: 3}
+  m_PrefabInstance: {fileID: 1638927538399079323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4179074306611550325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -435,3 +462,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4179074306611550325}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1985664128224130783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2481891251780316842, guid: bf993dcefe9cb244689d27ae2e3af530,
+    type: 3}
+  m_PrefabInstance: {fileID: 4179074306611550325}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

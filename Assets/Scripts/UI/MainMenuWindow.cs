@@ -14,12 +14,17 @@ namespace Miner.UI
         [SerializeField] private Selectable _firstSelectedElement = null;
         [SerializeField] private GameEvent _disableHUD = null;
         [SerializeField] private GameEvent _enableHUD = null;
+        [SerializeField] private GameEvent _disablePlayerController = null;
+        [SerializeField] private GameEvent _enablePlayerController = null;
+        [SerializeField] private GameEvent _playMusic = null;
+        [SerializeField] private AudioClip _menuMusic = null;
 
         public void StartNewGame()
         {
             GameManager.Instance.ResetState();
             _closeWindow.Raise(new CloseWindowEA(gameObject));
             _enableHUD.Raise();
+            _enablePlayerController.Raise();
         }
 
         public void LoadGame()
@@ -27,6 +32,7 @@ namespace Miner.UI
             GameManager.Instance.LoadFromFile();
             _closeWindow.Raise(new CloseWindowEA(gameObject));
             _enableHUD.Raise();
+            _enablePlayerController.Raise();
         }
 
         public void Exit()
@@ -36,9 +42,12 @@ namespace Miner.UI
 
         private void Start()
         {
+            GameManager.Instance.Unload();
             EventSystem.current.SetSelectedGameObject(_firstSelectedElement.gameObject);
             _firstSelectedElement.OnSelect(null);
             _disableHUD.Raise();
+            _disablePlayerController.Raise();
+            _playMusic.Raise(new PlayMusicEA(_menuMusic));
         }
     }
 }

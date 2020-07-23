@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 7759090993627195199}
   - component: {fileID: 5040917435967474238}
   - component: {fileID: 6988535446095923826}
+  - component: {fileID: 5172859005583829449}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -322,13 +323,6 @@ MonoBehaviour:
     type: 3}
   _grid: {fileID: 2470983532921997278}
   _playerSpawnPoint: {fileID: 2470983532336830613}
-  _playerGridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d,
-    type: 2}
-  _playerExternalTemperature: {fileID: 11400000, guid: 35c82e192601db64a81db322a3c7ce6f,
-    type: 2}
-  _surfaceTemperature: {fileID: 11400000, guid: 35cf215deac673a48afa0723331c2ae7,
-    type: 2}
-  _temperatureGradient: 0.25
   _tilemapController: {fileID: 879342429156977968}
   _undergroundTrigger: {fileID: 982921261048368713}
   _playerSpawnPointReference: {fileID: 11400000, guid: 0f06db959cecaee4fa6822d975d7355b,
@@ -481,6 +475,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5172859005583829449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2470983532209691713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed4c9be9c85e224093c53f548036ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerGridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d,
+    type: 2}
+  _surfaceTemperature: {fileID: 11400000, guid: 35cf215deac673a48afa0723331c2ae7,
+    type: 2}
+  _playerExternalTemperature: {fileID: 11400000, guid: 35c82e192601db64a81db322a3c7ce6f,
+    type: 2}
+  _temperatureGradient: 0.4
 --- !u!1 &2470983532336830612
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,7 +535,6 @@ GameObject:
   - component: {fileID: 2470983532921997277}
   - component: {fileID: 2470983532921997278}
   - component: {fileID: 1208018592098057726}
-  - component: {fileID: 941767504155769064}
   m_Layer: 20
   m_Name: Grid
   m_TagString: Untagged
@@ -578,42 +590,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!66 &941767504155769064
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2470983532921997276}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 1
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 2470983533128611355}
-    m_ColliderPaths:
-    - - X: 809999971
-        Y: -10000000
-      - X: 809999971
-        Y: 0
-      - X: 0
-        Y: -29
-      - X: 29
-        Y: -10000000
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 80.99999, y: -1}
-      - {x: 80.99999, y: 0}
-      - {x: 0, y: -0.0000058}
-      - {x: 0.0000058, y: -1}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.000005
 --- !u!1 &2470983533128611351
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +626,7 @@ Transform:
   - {fileID: 6759709221125325587}
   - {fileID: 5401095903675112635}
   - {fileID: 5303440493578220479}
+  - {fileID: 6168567568510579899}
   m_Father: {fileID: 2470983532921997277}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1517,7 +1494,7 @@ TilemapCollider2D:
   m_Material: {fileID: 6200000, guid: 8e5ae7d676af59341ba5e8978ef45b72, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
@@ -1533,10 +1510,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a16ce2907b3834e9c9e4f312aecdbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _topLayerTrigger: {fileID: 0}
+  _topLayerTrigger: {fileID: 8211193198667436700}
   _bottomLayerTrigger: {fileID: 0}
   _tilemap: {fileID: 2470983533128611354}
-  _triggerOffset: 2
+  _triggerOffset: 0
+--- !u!1 &3658983079093989917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6168567568510579899}
+  - component: {fileID: 7985914967257756548}
+  - component: {fileID: 8211193198667436700}
+  m_Layer: 21
+  m_Name: Top Layer Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6168567568510579899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3658983079093989917}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2470983533128611352}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &7985914967257756548
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3658983079093989917}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &8211193198667436700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3658983079093989917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ea7eb21c62be242b4438365ab8848c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _triggerTopLayer: {fileID: 11400000, guid: 5423582ed7adb454ea3c116ccbf55b74, type: 2}
+  _triggerBottomLayer: {fileID: 11400000, guid: 2c51264678c8dac4a98f5686fc41b33c,
+    type: 2}
+  _topLayerActivity: 1
+  _bottomLayerActivity: 1
 --- !u!1 &6514814357408848829
 GameObject:
   m_ObjectHideFlags: 0

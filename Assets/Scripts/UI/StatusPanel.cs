@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using System;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
+using Miner.FX;
+using System.Linq;
 
 namespace Miner.UI
 {
@@ -19,8 +21,10 @@ namespace Miner.UI
         [SerializeField] private float _blinkPeriod = 0.3f;
         [SerializeField] private Color _warningColor = Color.yellow;
         [SerializeField] private Color _failureColor = Color.red;
+        [SerializeField] private SoundEffect _alarmSound = null;
 
         private Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine> _coroutines = new Dictionary<TriggerStatusPanelEA.ESymbol, Coroutine>();
+        private AudioSource _audioSource = null;
 
         private IEnumerator TriggerIcon(TriggerStatusPanelEA.ESymbol symbol, Image icon, float duration, TriggerStatusPanelEA.EMode mode)
         {
@@ -96,6 +100,8 @@ namespace Miner.UI
                 { 
                     if(_coroutines[icon.Symbol] == null)
                         _coroutines[icon.Symbol] = StartCoroutine(TriggerIcon(icon.Symbol, GetImage(icon.Symbol), icon.Time, icon.Mode));
+                    if(!_audioSource.isPlaying)
+                        _alarmSound.Play(_audioSource);
                 }
 
                 foreach(var symbol in tsp.DisableIcons)
@@ -107,6 +113,8 @@ namespace Miner.UI
                     }
                     _coroutines[symbol] = null;
                 }
+
+                if (_coroutines.All(x => x.Value == null)) _audioSource.Stop();
             }
             else
             {
@@ -114,8 +122,9 @@ namespace Miner.UI
             }
         }
 
-        private void Start()
+        private void Awake()
         {
+            _audioSource = GetComponent<AudioSource>();
             foreach(TriggerStatusPanelEA.ESymbol symbol in Enum.GetValues(typeof(TriggerStatusPanelEA.ESymbol)))
             {
                 _coroutines.Add(symbol, null);

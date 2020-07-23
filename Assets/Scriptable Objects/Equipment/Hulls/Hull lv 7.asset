@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c0b148ab2fa0a40b524243bf6afd03, type: 3}
   m_Name: Hull lv 7
   m_EditorClassIdentifier: 
-  _name: 
-  _sprite: {fileID: 0}
-  _id: 0
-  _cost: 0
+  _name: Hull lv 7
+  _sprite: {fileID: 8602164171127035671, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _id: 606
+  _cost: 220000
   _shortDescription: 
-  _maxHull: 0
-  _resistanceToHit: 0
-  _thermalInsulation: 0
-  _permaDamageThreshold: 0.5
+  _maxHull: 400
+  _resistanceToHit: 400
+  _thermalInsulation: 20
+  _permaDamageThreshold: 0.35

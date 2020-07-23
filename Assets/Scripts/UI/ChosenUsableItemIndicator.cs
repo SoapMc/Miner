@@ -13,9 +13,9 @@ namespace Miner.UI
     {
         [SerializeField] private UsableItemList _usableItemList = null;
         [SerializeField] private ChosenUsableItem _chosenUsableItemPrefab = null;
-        [SerializeField] private float _spacing = 10f;
+        [SerializeField] private float _spacing = 0f;
         private List<ChosenUsableItem> _content = new List<ChosenUsableItem>();
-        private float _itemWidth = 0;
+        private float _itemWidth = 0f;
         private Coroutine _currentViewMoving = null;
 
         public void OnUpdatePlayerData(EventArgs args)
@@ -97,7 +97,7 @@ namespace Miner.UI
             while (lerpCoeff < 0.999f)
             {
                 transform.localPosition = Vector2.Lerp(transform.localPosition, target, lerpCoeff);
-                lerpCoeff += Time.deltaTime;
+                lerpCoeff += Time.unscaledDeltaTime;
                 yield return null;
             }
             _currentViewMoving = null;

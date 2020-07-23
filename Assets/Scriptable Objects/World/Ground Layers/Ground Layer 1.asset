@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eecdf44fda402d8459c67cd381d28b79, type: 3}
   m_Name: Ground Layer 1
   m_EditorClassIdentifier: 
+  _playMusic: {fileID: 11400000, guid: 0742c78ce3196e045bae63de8e7ca9e9, type: 2}
+  LayerNumber: 1
   Depth: 50
   ProbabilityOfEmptySpaces: 0.04
   _backgroundColor: {r: 0.5660378, g: 0.45680377, b: 0.2803489, a: 1}
+  Music:
+  - {fileID: 8300000, guid: 8786509bce399d541acb0d7b2245c93f, type: 3}
   DefaultTiles:
   - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:

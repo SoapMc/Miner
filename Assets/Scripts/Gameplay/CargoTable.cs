@@ -15,6 +15,7 @@ namespace Miner.Gameplay
         public int Count => _content.Count;
 
         public bool IsReadOnly => false;
+        public bool IsAcceptedType(Element item) => _ignoredTileTypes.TrueForAll(x => x != item.Type);
 
         public void Add(Element item)
         {

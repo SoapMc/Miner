@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fcbc8c5fb5d726449e5d207f1bd8a50, type: 3}
   m_Name: Drill lv 5
   m_EditorClassIdentifier: 
-  _name: 
-  _sprite: {fileID: 0}
-  _id: 0
-  _cost: 0
+  _name: Drill lv 5
+  _sprite: {fileID: -1433595848297821553, guid: b9dc27e656e818248911db90ba7d9f4e,
+    type: 3}
+  _id: 304
+  _cost: 50000
   _shortDescription: 
-  _sharpness: 0.1
+  _sharpness: 3

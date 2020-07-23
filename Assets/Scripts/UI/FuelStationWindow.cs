@@ -107,6 +107,7 @@ namespace Miner.UI
 
         private void SellFuelToPlayer(float amount, int price)
         {
+            if (amount == 0) return;
             _updatePlayerData.Raise(new UpdatePlayerDataEA()
             {
                 MoneyChange = -price,
@@ -120,8 +121,8 @@ namespace Miner.UI
         {
             CalculateFuelPrice();
             CalculateFullRefillCost();
-            _fuelSupplyText.text = ((int)_fuelSupply).ToString() + "l";
-            _price.text = _fuelPrice.ToString() + " $/ l";
+            _fuelSupplyText.text = ((int)_fuelSupply).ToString() + " L";
+            _price.text = _fuelPrice.ToString() + " $/ L";
             _fullRefillCostText.text = _fullRefillCost.ToString() + " $";
         }
 

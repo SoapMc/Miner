@@ -16,6 +16,7 @@ namespace Miner.Gameplay
 
         public override void Execute()
         {
+            _soundOnUse.Play();
             UpdatePlayerDataEA upd = new UpdatePlayerDataEA() { FuelChange = _reserveVolume };
             _updatePlayerData.Raise(upd);
         }

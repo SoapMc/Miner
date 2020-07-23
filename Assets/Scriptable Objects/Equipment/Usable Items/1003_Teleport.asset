@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19efeea21ddbc24488e289edf3491f65, type: 3}
+  m_Name: 1003_Teleport
+  m_EditorClassIdentifier: 
+  _name: Teleporter
+  _sprite: {fileID: 173761282350276360, guid: 24b9441a05447fd49a914053ed5cffba, type: 3}
+  _id: 1003
+  _cost: 15000
+  _shortDescription: The Miner returns to the base in a blink from any place.
+  _effects:
+  - {fileID: 11400000, guid: 6ca7b72159259ed489800e4f6554b643, type: 2}

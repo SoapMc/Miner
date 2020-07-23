@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2c0b148ab2fa0a40b524243bf6afd03, type: 3}
-  m_Name: Enforced Hull
+  m_Name: Hull lv 2
   m_EditorClassIdentifier: 
-  _name: Enforced Hull
+  _name: Hull lv 2
   _sprite: {fileID: 6658516375458014310, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
   _id: 601
   _cost: 1000

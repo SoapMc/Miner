@@ -57,6 +57,7 @@ MonoBehaviour:
   _partGridElementPrefab: {fileID: 6457216078306569074, guid: dad9374d2bd156942a79c497759bc8df,
     type: 3}
   _partList: {fileID: 11400000, guid: d90ee6c8926a8f640b9856fa3f0be8a6, type: 2}
+  _buyPart: {fileID: 11400000, guid: 4ac339e01b7e945438ff53641edf73ea, type: 2}
   _spacingBetweenElements: {x: 10, y: 10}
 --- !u!114 &2808735494188112214
 MonoBehaviour:

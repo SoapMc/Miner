@@ -16,12 +16,14 @@ namespace Miner.UI
 
         private void CloseWindow()
         {
+            Time.timeScale = 1f;
             _closeWindow.Raise(new CloseWindowEA(gameObject));
             _input.CancelKeyPressed -= CloseWindow;
         }
 
         private void Start()
         {
+            Time.timeScale = 0f;
             _input.CancelKeyPressed += CloseWindow;
         }
     }

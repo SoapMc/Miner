@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using System.Linq;
 using UnityEngine.UI;
 using Miner.Management.Events;
+using Miner.FX;
 
 namespace Miner.UI
 {
@@ -18,6 +19,7 @@ namespace Miner.UI
         [SerializeField] private EquipmentTable _playerEquipment = null;
         [SerializeField] private PartGridElement _partGridElementPrefab = null;
         [SerializeField] private ReferencePartList _partList = null;
+        [SerializeField] private SoundEffect _buyPart = null;
         [SerializeField] private Vector2 _spacingBetweenElements = Vector2.zero;
         private Coroutine _currentViewMoving = null;
         private List<List<PartGridElement>> _partGridElements = new List<List<PartGridElement>>();
@@ -35,7 +37,7 @@ namespace Miner.UI
             while(lerpCoeff < 1f)
             {
                 transform.localPosition = Vector2.Lerp(transform.localPosition, target, lerpCoeff);
-                lerpCoeff += Time.deltaTime;
+                lerpCoeff += Time.unscaledDeltaTime;
                 yield return null;
             }
             _currentViewMoving = null;
@@ -85,7 +87,7 @@ namespace Miner.UI
                 upd.EquipmentChange.Add(element.ReferencePart);
                 upd.MoneyChange = -element.ReferencePart.Cost;
                 _updatePlayerData.Raise(upd);
-
+                _buyPart.Play();
                 
                 foreach (var elem in _partGridElements[element.Row])
                 {
@@ -112,7 +114,6 @@ namespace Miner.UI
 
         private void Awake()
         {
-
             _partGridElements.Add(LoadParts(_partList.Hulls.OfType<ReferencePart>().ToList(), 0, _playerEquipment.Hull));
             _partGridElements.Add(LoadParts(_partList.FuelTanks.OfType<ReferencePart>().ToList(), 1, _playerEquipment.FuelTank));
             _partGridElements.Add(LoadParts(_partList.Engines.OfType<ReferencePart>().ToList(), 2, _playerEquipment.Engine));
@@ -120,7 +121,10 @@ namespace Miner.UI
             _partGridElements.Add(LoadParts(_partList.Coolings.OfType<ReferencePart>().ToList(), 4, _playerEquipment.Cooling));
             _partGridElements.Add(LoadParts(_partList.Cargos.OfType<ReferencePart>().ToList(), 5, _playerEquipment.Cargo));
             _partGridElements.Add(LoadParts(_partList.Batteries.OfType<ReferencePart>().ToList(), 6, _playerEquipment.Battery));
+        }
 
+        private void Start()
+        {
             if (transform.childCount > 0)
             {
                 EventSystem.current.SetSelectedGameObject(null);

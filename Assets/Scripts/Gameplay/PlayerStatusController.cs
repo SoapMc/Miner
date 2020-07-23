@@ -4,11 +4,13 @@ using UnityEngine;
 using Miner.Management.Events;
 using UnityEngine.Events;
 using Miner.Management;
+using Miner.FX;
 
 namespace Miner.Gameplay
 {
     public class PlayerStatusController : MonoBehaviour
     {
+        [SerializeField, Range(0.1f, 2f)] private float _updateTime = 1f;
         [SerializeField] private FloatReference _externalTemperature = null;
         [SerializeField] private FloatReference _internalTemperature = null;
         [SerializeField] private FloatReference _effectiveCooling = null;
@@ -19,6 +21,8 @@ namespace Miner.Gameplay
         [SerializeField] private EquipmentTable _equipment = null;
         [SerializeField] private FloatReference _heatFlow = null;
         [SerializeField] private FloatReference _fuel = null;
+        [SerializeField] private Vector2IntReference _gridPosition = null;
+        [SerializeField] private SoundEffect _hitSound = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _triggerStatusPanel = null;
@@ -31,26 +35,38 @@ namespace Miner.Gameplay
         private Vector2 _previousSpeed = Vector2.zero;
         private float _cameraShakeAmplitude = 0.2f;
         private Coroutine _checkStatus = null;
+        private bool _engineOverheated = false;
+        private float _engineOverheatTime = 0f;
+        private bool _batteryOverheated = false;
 
         private void CalculateTemperatureFlow()
         {
             _heatFlow.Value = (_externalTemperature.Value - _effectiveCooling.Value - _internalTemperature.Value) * Time.deltaTime / (float)(_thermalInsulation.Value + 1);
+            if (_internalTemperature.Value < 0f && _heatFlow.Value < 0f)
+                return;
             _internalTemperature.Value += _heatFlow.Value;
         }
 
         private void CheckForHit()
         {
             float sqrSpeedChange = Vector2.SqrMagnitude(_previousSpeed - _currentSpeed.Value);
-            if (sqrSpeedChange > _resistanceToHit)
+            if (sqrSpeedChange > _resistanceToHit && _gridPosition.Value.y < 0)
             {
                 UpdatePlayerDataEA upd = new UpdatePlayerDataEA() { HullChange = -GameRules.Instance.CalculateDamageFromGroundHit(5 * sqrSpeedChange) };
                 if (_equipment.Hull != null)
                 {
                     if (Mathf.Abs(upd.HullChange) >= _equipment.Hull.MaxHull * _equipment.Hull.PermaDamageThreshold)
+                    {
+                        TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
+                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Fuel, Mode = TriggerStatusPanelEA.EMode.Failure, Time = 3f });
                         upd.HullPermaDamage = 1;
+                        upd.FuelTankPermaDamage = 1;
+                        _triggerStatusPanel.Raise(tsp);
+                    }
                 }
                 _updatePlayerData.Raise(upd);
                 _cameraShake.Raise(new CameraShakeEA(_cameraShakeAmplitude));
+                _hitSound.Play();
             }
             _previousSpeed = _currentSpeed.Value;
         }
@@ -71,23 +87,29 @@ namespace Miner.Gameplay
                 {
                     if (_internalTemperature.Value > _equipment.Engine.ThermalVulnerability)
                     {
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 1f });
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Engine, Mode = TriggerStatusPanelEA.EMode.Warning});
+                        _engineOverheated = true;
+                        _engineOverheatTime += _updateTime;
+                        if (_engineOverheatTime > 15f)
+                        {
+                            _updatePlayerData.Raise(new UpdatePlayerDataEA() { EnginePermaDamage = 1 });
+                            tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Engine, Mode = TriggerStatusPanelEA.EMode.Failure, Time = 3f } );
+                            _engineOverheatTime = 0f;
+                        }
                     }
+                    else
+                    {
+                        _engineOverheated = false;
+                        _engineOverheatTime = 0f;
+                    }
+
                 }
 
                 if (_equipment.Battery != null)
                 {
                     if (_internalTemperature.Value > _equipment.Battery.ThermalVulnerability)
-                    {
-                        
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning, Time = 1f });
-                        tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Battery, Mode = TriggerStatusPanelEA.EMode.Warning});
-                    }
+                        _batteryOverheated = true;
                     else
-                    {
-                        tsp.DisableIcons.Add(TriggerStatusPanelEA.ESymbol.Battery);
-                    }
+                        _batteryOverheated = false;
                 }
 
                 if(_equipment.FuelTank != null)
@@ -104,23 +126,32 @@ namespace Miner.Gameplay
                         }
                     }
                 }
-                if(!tsp.IsEmpty())
+
+                if(_engineOverheated || _batteryOverheated)
+                    tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Temperature, Mode = TriggerStatusPanelEA.EMode.Warning });
+                else
+                    tsp.DisableIcons.Add(TriggerStatusPanelEA.ESymbol.Temperature);
+
+                if (!tsp.IsEmpty())
                     _triggerStatusPanel.Raise(tsp);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(_updateTime);
             }
+        }
+
+        private void Start()
+        {
+            _checkStatus = StartCoroutine(CheckStatus());
         }
 
         private void Update()
         {
             CalculateTemperatureFlow();
             CheckForHit();
-            if(_checkStatus == null)
-                _checkStatus = StartCoroutine(CheckStatus());
         }
 
         private void OnDestroy()
         {
-            StopAllCoroutines();
+            StopCoroutine(_checkStatus);
         }
     }
 }

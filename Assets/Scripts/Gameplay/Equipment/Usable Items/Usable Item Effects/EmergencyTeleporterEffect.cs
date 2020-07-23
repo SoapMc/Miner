@@ -28,10 +28,12 @@ namespace Miner.Gameplay
 
         public override void Execute()
         {
+            _soundOnUse.Play();
             _disablePlayerController.Raise();
             CoroutineHolder handler = Instantiate(_holder);
             handler.StartCoroutine(Teleport(handler.gameObject));
             _enablePlayerController.Raise();
+
         }
 
         public override string Description()

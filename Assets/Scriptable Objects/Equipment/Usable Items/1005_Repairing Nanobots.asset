@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19efeea21ddbc24488e289edf3491f65, type: 3}
+  m_Name: 1005_Repairing Nanobots
+  m_EditorClassIdentifier: 
+  _name: Repairing Nanobots
+  _sprite: {fileID: -533023302130663511, guid: 24b9441a05447fd49a914053ed5cffba, type: 3}
+  _id: 1005
+  _cost: 10000
+  _shortDescription: Restores 100 hull points immediately.
+  _effects:
+  - {fileID: 11400000, guid: 5bae3add276e4864e99658558d77eaa4, type: 2}

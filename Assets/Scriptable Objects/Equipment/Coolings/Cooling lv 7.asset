@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ae6b450166a7204185cda0475db1c82, type: 3}
   m_Name: Cooling lv 7
   m_EditorClassIdentifier: 
-  _name: 
-  _sprite: {fileID: 0}
-  _id: 0
-  _cost: 0
+  _name: Cooling lv 7
+  _sprite: {fileID: -5027839843163407530, guid: b9dc27e656e818248911db90ba7d9f4e,
+    type: 3}
+  _id: 206
+  _cost: 180000
   _shortDescription: 
-  _effectiveCooling: 0
+  _effectiveCooling: 400

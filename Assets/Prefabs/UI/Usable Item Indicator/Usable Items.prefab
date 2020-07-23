@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2946579048776378173
 MonoBehaviour:
@@ -53,7 +53,7 @@ MonoBehaviour:
   _usableItemList: {fileID: 11400000, guid: cfbb51338fe95f449b6dfd607edf0da8, type: 2}
   _chosenUsableItemPrefab: {fileID: 1880296741994539646, guid: 7d1ac97440c0c714fba304436d9d6afe,
     type: 3}
-  _spacing: 10
+  _spacing: 16
 --- !u!114 &4320271955681102100
 MonoBehaviour:
   m_ObjectHideFlags: 0

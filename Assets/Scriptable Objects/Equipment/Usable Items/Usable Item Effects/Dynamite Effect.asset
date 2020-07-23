@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1586bcdee01d67c4cbf4dc89a0634851, type: 3}
   m_Name: Dynamite Effect
   m_EditorClassIdentifier: 
+  _soundOnUse: {fileID: 11400000, guid: 827f2ced6b51da340b9779ac5eb74cea, type: 2}
   _cameraShake: {fileID: 11400000, guid: fd1056168fef23840829a706515d337a, type: 2}
   _destroyTiles: {fileID: 11400000, guid: 617417c6c84ea8a458f0b8fa6ee22c69, type: 2}
   _createParticle: {fileID: 11400000, guid: 41dc9c5b1e6bc5f4aa8c3f71b4e8f644, type: 2}

@@ -8,6 +8,7 @@ using System.Text;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
+using Miner.FX;
 
 namespace Miner.UI
 {
@@ -28,11 +29,15 @@ namespace Miner.UI
         [SerializeField] private IntReference _playerHull = null;
         [SerializeField] private IntReference _playerMaxHull = null;
         [SerializeField] private PlayerInputSheet _input = null;
+        [SerializeField] private SoundEffect _buySound = null;
+        [SerializeField] private SoundEffect _repairSound = null;
+
         private int _repairCostPerPoint = 25;
         private List<UsableItemOffer> _offers;
 
         public void Repair()
         {
+            if (_playerMaxHull.Value - _playerHull.Value <= 0) return;
             int repairCost = (_playerMaxHull.Value - _playerHull.Value) * _repairCostPerPoint;
             if(repairCost <= _playerMoney.Value)
             {
@@ -42,7 +47,7 @@ namespace Miner.UI
             {
                 _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -_playerMoney, HullChange = Mathf.CeilToInt(_playerMoney.Value / (float)_repairCostPerPoint) });
             }
-
+            _repairSound.Play();
             CalculateRepairCost();
         }
 
@@ -61,6 +66,7 @@ namespace Miner.UI
                 upd.AddUsableItemsChange.Add(new UsableItemTable.Element() { Item = item, Amount = 1 });
                 upd.MoneyChange = -item.Cost;
                 _updatePlayerData.Raise(upd);
+                _buySound.Play();
                 return 1;
             }
             return 0;
@@ -76,6 +82,7 @@ namespace Miner.UI
 
         private void CloseWindow()
         {
+            Time.timeScale = 1f;
             _closeWindow.Raise(new CloseWindowEA(gameObject));
             _input.CancelKeyPressed -= CloseWindow;
         }
@@ -140,6 +147,7 @@ namespace Miner.UI
 
         private void Start()
         {
+            Time.timeScale = 0f;
             _firstSelectedElement.Select();
             _input.CancelKeyPressed += CloseWindow;
         }

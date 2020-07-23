@@ -6,7 +6,8 @@ using Miner.Management.Exceptions;
 using Miner.Management.Events;
 using System.Linq;
 using Miner.Management;
-
+using Miner.FX;
+using Miner.Gameplay;
 namespace Miner.UI
 {
     public class WindowController : MonoBehaviour
@@ -14,7 +15,8 @@ namespace Miner.UI
         [SerializeField] private GameEvent _enablePlayerController = null;
         [SerializeField] private GameEvent _disablePlayerController = null;
         [SerializeField] private GameObject _mainMenuWindow = null;
-
+        [SerializeField] private SoundEffect _openWindowSFX = null;
+        [SerializeField] private PlayerInputSheet _input = null;
         private List<Tuple<string, GameObject>> _openedWindows = new List<Tuple<string, GameObject>>();
 
         public void OnCreateWindow(EventArgs args)
@@ -25,6 +27,7 @@ namespace Miner.UI
                 {
                     GameObject newWindow = Instantiate(cw.WindowPrefab, transform);
                     _openedWindows.Add(new Tuple<string, GameObject>(cw.WindowPrefab.name, newWindow));
+                    _openWindowSFX.Play();
                 }
 
                 if (_openedWindows.Count > 0)
@@ -63,9 +66,20 @@ namespace Miner.UI
             }
         }
 
-        private void Start()
+        public void OnCancelKeyHold()
         {
             OnCreateWindow(new CreateWindowEA(_mainMenuWindow));
+        }
+
+        private void Start()
+        {
+            _input.CancelKeyHold += OnCancelKeyHold;
+            OnCreateWindow(new CreateWindowEA(_mainMenuWindow));
+        }
+
+        private void OnDestroy()
+        {
+            _input.CancelKeyHold -= OnCancelKeyHold;
         }
     }
 }

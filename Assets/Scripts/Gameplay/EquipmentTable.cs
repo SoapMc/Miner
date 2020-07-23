@@ -15,5 +15,16 @@ namespace Miner.Gameplay
         public EngineReferencePart Engine { get; set; }
         public CoolingReferencePart Cooling { get; set; }
         public DrillReferencePart Drill { get; set; }
+
+        public void Clear()
+        {
+            Hull = null;
+            FuelTank = null;
+            Battery = null;
+            Cargo = null;
+            Engine = null;
+            Cooling = null;
+            Drill = null;
+        }
     }
 }

@@ -68,16 +68,7 @@ namespace Miner.UI
                     if (artc.IsLost)
                         _wholeText += " LOST!";
 
-                    if (_coroutine == null)
-                    {
-                        _coroutine = StartCoroutine(TriggerAppearing());
-                    }
-                    else
-                    {
-                        StopCoroutine(_coroutine);
-                        _coroutine = null;
-                        _coroutine = StartCoroutine(TriggerDisappearing());
-                    }
+                    Show();
                 }
             }
             else
@@ -88,9 +79,25 @@ namespace Miner.UI
 
         public void OnCargoFull()
         {
-
             _wholeText = "Cargo is full!";
+            Show();
+        }
 
+        public void OnUseItem(EventArgs args)
+        {
+            if(args is UseItemEA ui)
+            {
+                _wholeText = ui.Item.Name + " has been used";
+                Show();
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
+        private void Show()
+        {
             if (_coroutine == null)
             {
                 _coroutine = StartCoroutine(TriggerAppearing());

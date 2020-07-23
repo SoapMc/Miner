@@ -16,6 +16,8 @@ namespace Miner.Management
 
         public void ResetState()
         {
+            if (_worldController != null)
+                Destroy(_worldController.gameObject);
             _worldController = Instantiate(_worldPrefab, Vector3.zero, Quaternion.identity);
             _seed = (int)System.DateTime.Now.Ticks;
             Random.InitState(_seed);
@@ -24,6 +26,8 @@ namespace Miner.Management
 
         public void Load(int seed)
         {
+            if (_worldController != null)
+                Destroy(_worldController.gameObject);
             _worldController = Instantiate(_worldPrefab, Vector3.zero, Quaternion.identity);
             _seed = seed;
             _worldController.GenerateWorld(seed);

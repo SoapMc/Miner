@@ -5,6 +5,8 @@ using System;
 using UnityEngine.Tilemaps;
 using Miner.Gameplay;
 using Miner.UI;
+using Miner.FX;
+using Miner.Management.Exceptions;
 
 namespace Miner.Management.Events
 {
@@ -148,6 +150,42 @@ namespace Miner.Management.Events
         }
     }
 
+    public class PlayMusicEA : EventArgs
+    {
+        public readonly AudioClip Music;
+
+        public PlayMusicEA(AudioClip music)
+        {
+            Music = music;
+        }
+    }
+
+    public class PlaySoundEA : EventArgs
+    {
+        public readonly SoundEffect SFX;
+        public readonly AudioSource Target;
+
+        public PlaySoundEA(SoundEffect sfx, AudioSource target = null)
+        {
+            SFX = sfx;
+            Target = target;
+            if (SFX.Loop == true && target == null)
+            {
+                Debug.LogError("SFX cannot be looped when using global audio source!");
+            }
+        }
+    }
+
+    public class PlayerLoadedEA : EventArgs
+    {
+        public readonly GameObject Player;
+
+        public PlayerLoadedEA(GameObject player)
+        {
+            Player = player;
+        }
+    }
+
     public class RestoreGameAfterPlayerDestroyedEA : EventArgs
     {
         public readonly Transform PlayerSpawnPoint;
@@ -242,13 +280,13 @@ namespace Miner.Management.Events
         
     }
 
-    public class UseItemRequestEA : EventArgs
+    public class UseItemEA : EventArgs
     {
-        public readonly Vector2Int GridPosition;
+        public readonly UsableItem Item;
 
-        public UseItemRequestEA(Vector2Int gridPosition)
+        public UseItemEA(UsableItem item)
         {
-            GridPosition = gridPosition;
+            Item = item;
         }
     }
 

@@ -9,9 +9,15 @@ namespace Miner.Gameplay
         [SerializeField] private PlayerInputSheet _inputSheet = null;
 
         public PlayerInputSheet InputSheet => _inputSheet;
+
         private void Update()
         {
             _inputSheet.Update();
+        }
+
+        private void OnDisable()
+        {
+            _inputSheet.Reset();
         }
     }
 }

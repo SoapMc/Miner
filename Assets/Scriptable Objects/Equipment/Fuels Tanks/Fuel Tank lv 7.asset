@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16d53dba6efb924a8f8295c2176e92a, type: 3}
   m_Name: Fuel Tank lv 7
   m_EditorClassIdentifier: 
-  _name: 
-  _sprite: {fileID: 0}
-  _id: 0
-  _cost: 0
+  _name: Fuel Tank lv 7
+  _sprite: {fileID: -5277459936963045593, guid: b9dc27e656e818248911db90ba7d9f4e,
+    type: 3}
+  _id: 506
+  _cost: 240000
   _shortDescription: 
-  _volume: 0
+  _volume: 280
   _maxLeaksDueToDamage: 1

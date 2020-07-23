@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da219057ee87ce41ae9e44ea50f0b4c, type: 3}
-  m_Name: Basic Engine
+  m_Name: Engine lv 1
   m_EditorClassIdentifier: 
-  _name: Basic Engine
+  _name: Engine lv 1
   _sprite: {fileID: 8782277557340573025, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
   _id: 400
   _cost: 0
   _shortDescription: 
-  _power: 150
+  _power: 100
   _fuelUsage: 0.09
   _thermalVulnerability: 100
   _permaDamageLoadThreshold: 0
