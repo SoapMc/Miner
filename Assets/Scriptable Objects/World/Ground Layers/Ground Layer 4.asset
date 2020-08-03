@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playMusic: {fileID: 11400000, guid: 0742c78ce3196e045bae63de8e7ca9e9, type: 2}
   LayerNumber: 4
-  Depth: 100
+  Depth: 40
   ProbabilityOfEmptySpaces: 0.015
-  _backgroundColor: {r: 0.2893993, g: 0.38679248, b: 0.2791474, a: 1}
+  BackgroundColor: {r: 0.30661356, g: 0.4056604, b: 0.26980242, a: 1}
+  AmbientLightColor: {r: 0, g: 0, b: 0, a: 1}
+  PredefinedWorldObjects: []
+  NaturalDisasters: []
   Music:
   - {fileID: 8300000, guid: 83094b4160013084d9dcf14a2ae7514c, type: 3}
-  DefaultTiles:
-  - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
+  DefaultTile: {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:
   - Type: {fileID: 11400000, guid: 531d791ba0e1b0f48bd635ce4f55af79, type: 2}
     Probability: 0.01

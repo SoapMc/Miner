@@ -7,10 +7,7 @@ namespace Miner.Gameplay
     [CreateAssetMenu(menuName = "Ground Layer List")]
     public class GroundLayerList : ScriptableObject, ICollection<GroundLayer>
     {
-        [SerializeField] private GroundLayer _surface = null;
         [SerializeField] private List<GroundLayer> _layers = new List<GroundLayer>();
-
-        public GroundLayer Surface => _surface;
 
         public int Count => _layers.Count;
 
@@ -51,6 +48,11 @@ namespace Miner.Gameplay
             return _layers.GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets underground layer with specified index.
+        /// </summary>
+        /// <param name="index">Number of underground layer.</param>
+        /// <returns></returns>
         public GroundLayer this[int index]
         {
             get => _layers[index];

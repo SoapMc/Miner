@@ -11,17 +11,14 @@ using Miner.Management;
 
 namespace Miner.Gameplay
 {
+
     public class WorldController : MonoBehaviour
     {
         [SerializeField] private TileTypes _tiles = null;
         [SerializeField] private TileType _tileEdges = null;
-        [SerializeField] private GroundLayerController _surfaceTilemap = null;
-        [SerializeField] private GroundLayerController _groundLayerPrefab = null;
         [SerializeField] private Grid _grid = null;
         [SerializeField] private Transform _playerSpawnPoint = null;
-        
         [SerializeField] private TilemapController _tilemapController = null;
-        [SerializeField] private UndergroundTrigger _undergroundTrigger = null;
         [SerializeField] private Vector2Reference _playerSpawnPointReference = null;
 
         [Header("Events")]
@@ -29,30 +26,25 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _leadToDigPlace = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _restoreGameAfterPlayerDestroyed = null;
-        [SerializeField] private GameEvent _playerOnSurface = null;
-
-        [Header("World Generation")]
-        [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
-        [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
-        [SerializeField] private IntReference _undergroundTriggerDepth = null;
-        [SerializeField] private GroundLayerList _layers = null;
-        private int _surfaceDepth = -2;
+        [SerializeField] private GameEvent _tryAddResourcesToPlayerCargo = null;
 
         private TileIdentifier _tileIdentifier = null;
         private Vector2Int _dugCoords;
         private TileType _dugTile = null;
 
+        public Grid Grid => _grid;
+
         public void OnDigRequest(EventArgs args)
         {
-            if(args is DigRequestEA dr)
+            if(args is TryDigEA dr)
             {
-                _dugCoords = dr.Coordinates;
+                _dugCoords = dr.GridCoordinates;
                 if(_tilemapController.GetTile(_dugCoords) is Tile tile)
                 {
                     _dugTile = _tileIdentifier.Identify(tile.sprite);
                     if (_dugTile != null && dr.DrillSharpness > 0.001f && _dugTile.IsDestroyable)
                     {
-                        _leadToDigPlace.Raise(new LeadToDigPlaceEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f, dr.PlayerPosition));
+                        _leadToDigPlace.Raise(new AllowDigEA(_dugTile, _dugCoords, dr.DrillSharpness * GameRules.Instance.GetDrillSharpnessCoefficient(_dugCoords.y), 1f, dr.StartPosition, dr.Direction));
                     }
                 }
             }
@@ -62,12 +54,9 @@ namespace Miner.Gameplay
             }
         }
 
-        public void OnDigComplete()
+        public void OnDigCompleted()
         {
-            
-            UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-            upd.AddCargoChange.Add(new CargoTable.Element() { Type = _dugTile, Amount = 1 });
-            _updatePlayerData.Raise(upd);
+            _tryAddResourcesToPlayerCargo.Raise(new TryChangeResourcesInPlayerCargoEA() { ResourcesToAdd = new List<CargoTable.Element>() { new CargoTable.Element() { Type = _dugTile, Amount = 1 } } });
             DestroyTile(_dugCoords);
             _dugTile = null;
         }
@@ -81,9 +70,27 @@ namespace Miner.Gameplay
         {
             if(args is DestroyTilesEA dt)
             {
-                foreach(var coord in dt.Coordinates)
+                if (dt.Source == DestroyTilesEA.ESource.Explosion)
                 {
-                    DestroyTile(coord);
+                    foreach (var coord in dt.Coordinates)
+                    {
+                        if (_tilemapController.GetTile(coord) is Tile tile)
+                        {
+                            TileType tt = _tileIdentifier.Identify(tile.sprite);
+                            if (tt != null)
+                            {
+                                if (!tt.ExplosionProofness)
+                                    DestroyTile(coord);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var coord in dt.Coordinates)
+                    {
+                        DestroyTile(coord);
+                    }
                 }
             }
             else
@@ -92,13 +99,11 @@ namespace Miner.Gameplay
             }
         }
 
-        public void OnMovePlayer(EventArgs args)
+        public void OnOverrideTiles(EventArgs args)
         {
-            if(args is MovePlayerEA mp)
+            if(args is OverrideTilesEA ot)
             {
-                if (mp.Position.y >= _grid.CellToWorld(new Vector3Int(_surfaceDepth, 0, 0)).y)
-                    _playerOnSurface.Raise();
-                _tilemapController.ActivateSurface();
+                StartCoroutine(DelayedTilesOverriding(ot));
             }
             else
             {
@@ -106,12 +111,20 @@ namespace Miner.Gameplay
             }
         }
 
+        //IMPORTANT NOTE: Scriptable tile overriding must be done at the end of frame
+        private IEnumerator DelayedTilesOverriding(OverrideTilesEA ot)
+        {
+            yield return new WaitForEndOfFrame();
+            foreach (var tileToOverride in ot.Coordinates)
+            {
+                _tilemapController.SetTile(tileToOverride.Key, tileToOverride.Value.ClasifiedTiles[0]);
+            }
+        }
+
         private IEnumerator PlayerDead(float seconds)
         {
             yield return new WaitForSeconds(seconds);
             _restoreGameAfterPlayerDestroyed.Raise(new RestoreGameAfterPlayerDestroyedEA(_playerSpawnPoint));
-            _tilemapController.ActivateSurface();
-            _playerOnSurface.Raise();
         }
 
         public void DestroyTile(Vector2Int gridPos)
@@ -126,6 +139,11 @@ namespace Miner.Gameplay
                 SetTileEdges(gridPos + Vector2Int.left);
             if (IsNotCollidableTile(gridPos + Vector2Int.right))
                 SetTileEdges(gridPos + Vector2Int.right);
+        }
+
+        public void OverrideTile(Vector2Int gridPos, TileType tile)
+        {
+            _tilemapController.SetTile(gridPos, tile.ClasifiedTiles[0]);
         }
 
         public bool IsNotCollidableTile(Vector2Int gridPos)
@@ -230,101 +248,14 @@ namespace Miner.Gameplay
             }
         }
 
-
-        public void GenerateWorld(int seed = -1)
-        {
-            if (seed != -1)
-                Random.InitState(seed);
-
-            float prob;
-            bool tileSet;
-            int minimumDepthForCurrentLayer = 0;
-            int maximumDepthForCurrentLayer = _surfaceDepth;
-            int worldWidth = Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y);
-            _undergroundTrigger.Initialize(_undergroundTriggerDepth, worldWidth);
-            int totalDepth = -_layers.Sum(x => x.Depth) + maximumDepthForCurrentLayer;
-            Camera mainCamera = Camera.main;
-
-            Tilemap surface = _surfaceTilemap.Tilemap;
-            for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
-            {
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(x, 20, 0), _tileEdges.ClasifiedTiles[13]);
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(x, totalDepth, 0), _tileEdges.ClasifiedTiles[13]);
-            }
-
-            for (int y = 20; y > totalDepth - 1; --y)
-            {
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.x - 1, y, 0), _tileEdges.ClasifiedTiles[13]);
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.y, y, 0), _tileEdges.ClasifiedTiles[13]);
-            }
-            _tilemapController.AddTilemap(_surfaceTilemap, _surfaceDepth);
-
-            for (int i = 0; i < _layers.Count; ++i)
-            {
-                minimumDepthForCurrentLayer = maximumDepthForCurrentLayer;  //minimum depth is maximum depth from previous layer 
-                maximumDepthForCurrentLayer -= _layers[i].Depth;
-                GroundLayerController groundLayer = Instantiate(_groundLayerPrefab, _grid.transform);
-                groundLayer.Initialize(_layers[i], minimumDepthForCurrentLayer, worldWidth, mainCamera.orthographicSize);
-                _tilemapController.AddTilemap(groundLayer, maximumDepthForCurrentLayer);
-
-                List<float> resourceProbabilities = _layers[i].GetResourceProbabilitiesForGeneration();
-
-                for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
-                {
-                    for (int y = minimumDepthForCurrentLayer; y > maximumDepthForCurrentLayer; --y)
-                    {
-                        tileSet = false;
-                        prob = Random.Range(0f, 1f);
-                        for (int j = 0; j < _layers[i].Resources.Count; ++j)
-                        {
-                            if (prob <= resourceProbabilities[j])
-                            {
-                                groundLayer.Tilemap.SetTile(new Vector3Int(x, y, 0), _layers[i].Resources[j].Type.ClasifiedTiles[0]);
-                                tileSet = true;
-                                break;
-                            }
-                        }
-
-                        if (!tileSet)
-                        {
-                            groundLayer.Tilemap.SetTile(new Vector3Int(x, y, 0), _layers[i].DefaultTiles[0].ClasifiedTiles[0]);
-                        }
-
-                    }
-                }
-                
-                for (int y = minimumDepthForCurrentLayer; y > (maximumDepthForCurrentLayer + 1); --y)
-                {
-                    for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
-                    {
-
-                        prob = Random.Range(0f, 1f);
-                        if (prob <= _layers[i].ProbabilityOfEmptySpaces)
-                        {
-                            DestroyTile(new Vector2Int(x, y));
-                        }
-                    }
-                }
-                    
-            }
-
-            _tilemapController.ActivateSurface();
-        }
-
         private void Awake()
         {
             _tileIdentifier = new TileIdentifier(_tiles);
-            _surfaceTilemap.Initialize(_layers.Surface, 0, Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y), 0);
         }
 
         private void Start()
         {
-            int totalDepth = -_layers.Sum(x => x.Depth) + _surfaceDepth;
-            _vecticalWorldBorders.Value = new Vector2Int(_vecticalWorldBorders.Value.x, totalDepth);
-            int worldWidth = Mathf.Abs(_horizontalWorldBorders.Value.x - _horizontalWorldBorders.Value.y);
-            _undergroundTrigger.Initialize(_undergroundTriggerDepth, worldWidth);
             _playerSpawnPointReference.Value = _playerSpawnPoint.position;
-
             _worldLoaded.Raise(new WorldLoadedEA(_grid, _playerSpawnPoint));
         }
 

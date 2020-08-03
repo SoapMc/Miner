@@ -11,11 +11,14 @@ namespace Miner.Gameplay
     {
         [SerializeField] private GameEvent _playMusic = null;
         public int LayerNumber = 0;
-        public int Depth = 0;
+        public int Depth = 0;   //always positive value <- in this case y axis points downwards
         [Range(0f, 1f)] public float ProbabilityOfEmptySpaces = 0.01f;
-        public Color _backgroundColor = Color.white;
+        public Color BackgroundColor = Color.white;
+        public Color AmbientLightColor = Color.black;
+        public List<PredefinedWorldObject> PredefinedWorldObjects = new List<PredefinedWorldObject>();
+        public List<NaturalDisaster> NaturalDisasters = new List<NaturalDisaster>();
         public List<AudioClip> Music = new List<AudioClip>();
-        public List<TileType> DefaultTiles = new List<TileType>();
+        public TileType DefaultTile = null;
         public List<Element> Resources = new List<Element>();
 
         public float TotalResourceProbability => Resources.Sum(x => x.Probability);

@@ -20,5 +20,5 @@ MonoBehaviour:
   _value: 10
   _isFuel: 0
   _isDestroyable: 1
+  _explosionProofness: 0
   _mass: 80
-  _showBriefInfoOnDig: 1

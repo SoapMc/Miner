@@ -21,7 +21,8 @@ namespace Miner.Management
             _worldController = Instantiate(_worldPrefab, Vector3.zero, Quaternion.identity);
             _seed = (int)System.DateTime.Now.Ticks;
             Random.InitState(_seed);
-            _worldController.GenerateWorld(_seed);
+            WorldGenerator wg = _worldController.GetComponent<WorldGenerator>();
+            wg.GenerateWorld(_worldController, _seed);
         }
 
         public void Load(int seed)
@@ -30,7 +31,8 @@ namespace Miner.Management
                 Destroy(_worldController.gameObject);
             _worldController = Instantiate(_worldPrefab, Vector3.zero, Quaternion.identity);
             _seed = seed;
-            _worldController.GenerateWorld(seed);
+            WorldGenerator wg = _worldController.GetComponent<WorldGenerator>();
+            wg.GenerateWorld(_worldController, seed);
         }
 
         public int RetrieveSerializableData()

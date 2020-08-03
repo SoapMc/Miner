@@ -37,7 +37,7 @@ namespace Miner.Gameplay
                 }
             }
 
-            _destroyTiles.Raise(new DestroyTilesEA(destroyedTiles));
+            _destroyTiles.Raise(new DestroyTilesEA(destroyedTiles, DestroyTilesEA.ESource.Explosion));
             if(_soundOnUse != null)
                 _soundOnUse.Play();
         }

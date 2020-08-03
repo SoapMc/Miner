@@ -4,6 +4,7 @@ using Miner.Gameplay;
 using Miner.Management.Events;
 using UnityEngine.UI;
 using Miner.FX;
+using System.Collections.Generic;
 
 namespace Miner.UI
 {
@@ -17,6 +18,7 @@ namespace Miner.UI
         [SerializeField] private PlayerInputSheet _input = null;
 
         [Header("Events")]
+        [SerializeField] private GameEvent _tryChangeResourcesInPlayerCargo = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
         [SerializeField] private GameEvent _closeWindow = null;
 
@@ -31,15 +33,13 @@ namespace Miner.UI
         {
             int sum = 0;
             UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-
             foreach (var element in _playerCargo)
             {
                 sum += element.Type.Value * element.Amount;
-                upd.RemoveCargoChange.Add(element);
             }
             upd.MoneyChange = sum;
             _updatePlayerData.Raise(upd);
-
+            _tryChangeResourcesInPlayerCargo.Raise(new TryChangeResourcesInPlayerCargoEA() { ResourcesToRemove = _playerCargo.Get() });
             foreach(Transform child in _layout)
             {
                 Destroy(child.gameObject);

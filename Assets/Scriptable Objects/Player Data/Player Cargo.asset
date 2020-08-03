@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6984abe8ff996b84cbba0ed777d7d0c5, type: 3}
+  m_Name: Player Cargo
+  m_EditorClassIdentifier: 
+  _resourcesGathered: {fileID: 11400000, guid: e1cd710addd142c4faec3a28d51bd885, type: 2}
+  _cargoFull: {fileID: 11400000, guid: d3d469507f229ff478978359d07357c8, type: 2}
+  _maxMass: {fileID: 11400000, guid: 94584331a48a4e34da985ce0e622e8b1, type: 2}
+  _mass: {fileID: 11400000, guid: 1008af18477897143b5ad40eb3fef20c, type: 2}
+  _ignoredTileTypes:
+  - {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}

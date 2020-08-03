@@ -27,16 +27,17 @@ namespace Miner.FX
         #region EVENT RESPONSES
         public void OnLeadToDigPlace(EventArgs args)
         {
-            if (args is LeadToDigPlaceEA ltdp)
+            if (args is AllowDigEA ltdp)
             {
                 if (_groundParticlesFollowing == null)
                 {
+                    
+                    _groundParticlesFollowing = StartCoroutine(FollowPlayer(ltdp.PlayerPosition));
+                    _groundDust.transform.position = _worldGrid.GetCellCenterWorld((Vector3Int)ltdp.Place);
                     ParticleSystem.EmissionModule emission = _groundParticles.emission;
                     emission.enabled = true;
                     emission = _groundDust.emission;
                     emission.enabled = true;
-                    _groundParticlesFollowing = StartCoroutine(FollowPlayer(ltdp.PlayerPosition));
-                    _groundDust.transform.position = _worldGrid.GetCellCenterWorld((Vector3Int)ltdp.Place);
                 }
             }
             else

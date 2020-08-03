@@ -15,10 +15,10 @@ MonoBehaviour:
   _name: Rock
   _id: 9
   _tiles:
-  - {fileID: 11400000, guid: ff83e9c73b2849548ac01192cdcf72c0, type: 2}
+  - {fileID: 11400000, guid: 62036adaadc2ce248b87980d24d8bcff, type: 2}
   _hardiness: 1
   _value: 0
   _isFuel: 0
   _isDestroyable: 0
+  _explosionProofness: 0
   _mass: 0
-  _showBriefInfoOnDig: 0

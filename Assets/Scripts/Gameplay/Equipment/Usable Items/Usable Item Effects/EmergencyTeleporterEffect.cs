@@ -10,7 +10,7 @@ namespace Miner.Gameplay
     public class EmergencyTeleporterEffect : UsableItemEffect
     {
         [Header("Events")]
-        [SerializeField] private GameEvent _updatePlayerData = null;
+        [SerializeField] private GameEvent _tryChangeResourcesInPlayerCargo = null;
         [SerializeField] private GameEvent _movePlayer = null;
         [SerializeField] private GameEvent _disablePlayerController = null;
         [SerializeField] private GameEvent _enablePlayerController = null;
@@ -46,12 +46,7 @@ namespace Miner.Gameplay
             _createParticle.Raise(new CreateParticleEA(_teleportEffect, _playerPosition.Value));
             _createParticle.Raise(new CreateParticleEA(_teleportEffect, _playerSpawnPoint.Value));
             yield return new WaitForSeconds(_delay);
-            UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-            foreach (var res in _playerCargo)
-            {
-                upd.RemoveCargoChange.Add(new CargoTable.Element() { Type = res.Type, Amount = res.Amount });
-            }
-            _updatePlayerData.Raise(upd);
+            _tryChangeResourcesInPlayerCargo.Raise(new TryChangeResourcesInPlayerCargoEA() { ResourcesToRemove = _playerCargo.Get() });
             _movePlayer.Raise(new MovePlayerEA(_playerSpawnPoint.Value));
             Destroy(obj);
         }

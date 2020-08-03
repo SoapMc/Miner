@@ -14,8 +14,10 @@ namespace Miner.UI
 {
     public class ServiceWindow : MonoBehaviour
     {
-        [SerializeField] private IntReference _playerMoney = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
+        [SerializeField] private GameEvent _playerRepaired = null;
+
+        [SerializeField] private IntReference _playerMoney = null;
         [SerializeField] private UsableItemList _usableItems = null;
         [SerializeField] private UsableItemTable _playerUsableItems = null;
         [SerializeField] private EquipmentTable _playerEquipment = null;
@@ -41,11 +43,13 @@ namespace Miner.UI
             int repairCost = (_playerMaxHull.Value - _playerHull.Value) * _repairCostPerPoint;
             if(repairCost <= _playerMoney.Value)
             {
-                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -repairCost, HullChange = _playerMaxHull.Value - _playerHull.Value });
+                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -repairCost });
+                _playerRepaired.Raise(new PlayerRepairedEA(_playerMaxHull.Value - _playerHull.Value));
             }
             else
             {
-                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -_playerMoney, HullChange = Mathf.CeilToInt(_playerMoney.Value / (float)_repairCostPerPoint) });
+                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -_playerMoney });
+                _playerRepaired.Raise(new PlayerRepairedEA(Mathf.CeilToInt(_playerMoney.Value / (float)_repairCostPerPoint)));
             }
             _repairSound.Play();
             CalculateRepairCost();

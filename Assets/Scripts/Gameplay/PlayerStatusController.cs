@@ -22,18 +22,19 @@ namespace Miner.Gameplay
         [SerializeField] private FloatReference _heatFlow = null;
         [SerializeField] private FloatReference _fuel = null;
         [SerializeField] private Vector2IntReference _gridPosition = null;
-        [SerializeField] private SoundEffect _hitSound = null;
+        
+        [SerializeField] private DamageType _damageTypeFromHit = null;
 
         [Header("Events")]
         [SerializeField] private GameEvent _triggerStatusPanel = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
-        [SerializeField] private GameEvent _cameraShake = null;
+        [SerializeField] private GameEvent _playerDamaged = null;
 
         [Header("Signalization")]
         [SerializeField, Range(0f, 1f)] private float _fuelSignalizationThreshold = 0.2f;
 
         private Vector2 _previousSpeed = Vector2.zero;
-        private float _cameraShakeAmplitude = 0.2f;
+        
         private Coroutine _checkStatus = null;
         private bool _engineOverheated = false;
         private float _engineOverheatTime = 0f;
@@ -52,10 +53,11 @@ namespace Miner.Gameplay
             float sqrSpeedChange = Vector2.SqrMagnitude(_previousSpeed - _currentSpeed.Value);
             if (sqrSpeedChange > _resistanceToHit && _gridPosition.Value.y < 0)
             {
-                UpdatePlayerDataEA upd = new UpdatePlayerDataEA() { HullChange = -GameRules.Instance.CalculateDamageFromGroundHit(5 * sqrSpeedChange) };
+                UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
+                int damage = GameRules.Instance.CalculateDamageFromGroundHit(5 * sqrSpeedChange);
                 if (_equipment.Hull != null)
                 {
-                    if (Mathf.Abs(upd.HullChange) >= _equipment.Hull.MaxHull * _equipment.Hull.PermaDamageThreshold)
+                    if (damage >= _equipment.Hull.MaxHull * _equipment.Hull.PermaDamageThreshold)
                     {
                         TriggerStatusPanelEA tsp = new TriggerStatusPanelEA();
                         tsp.EnableIcons.Add(new TriggerStatusPanelEA.Element() { Symbol = TriggerStatusPanelEA.ESymbol.Fuel, Mode = TriggerStatusPanelEA.EMode.Failure, Time = 3f });
@@ -63,10 +65,10 @@ namespace Miner.Gameplay
                         upd.FuelTankPermaDamage = 1;
                         _triggerStatusPanel.Raise(tsp);
                     }
+                    _playerDamaged.Raise(new PlayerDamagedEA(damage, _damageTypeFromHit));
                 }
                 _updatePlayerData.Raise(upd);
-                _cameraShake.Raise(new CameraShakeEA(_cameraShakeAmplitude));
-                _hitSound.Play();
+                
             }
             _previousSpeed = _currentSpeed.Value;
         }

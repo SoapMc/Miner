@@ -93,8 +93,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 052a5abcd9c73bb4f9c5e6f916dc59f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerMoney: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _playerRepaired: {fileID: 11400000, guid: eafdacdc2ddfb90428753ee34b949dac, type: 2}
+  _playerMoney: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _usableItems: {fileID: 11400000, guid: cfbb51338fe95f449b6dfd607edf0da8, type: 2}
   _playerUsableItems: {fileID: 11400000, guid: a7bb70400748a294187ff383869701c2, type: 2}
   _playerEquipment: {fileID: 11400000, guid: dad9e6299472349489e372ca5cbd098f, type: 2}

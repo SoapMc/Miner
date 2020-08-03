@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Emergency Teleporter Effect
   m_EditorClassIdentifier: 
   _soundOnUse: {fileID: 11400000, guid: c71d5be6c354b0346b9fb71b0049770f, type: 2}
-  _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _tryChangeResourcesInPlayerCargo: {fileID: 11400000, guid: 260866b41d939914c91dce708dd05a08,
+    type: 2}
   _movePlayer: {fileID: 11400000, guid: 84f3b7a9a1fde8a46a88c5e652611286, type: 2}
   _disablePlayerController: {fileID: 11400000, guid: 4cb5007587c142246812d3c6ed3f79d3,
     type: 2}

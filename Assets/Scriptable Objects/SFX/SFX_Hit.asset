@@ -16,8 +16,8 @@ MonoBehaviour:
   _soundList:
   - {fileID: 8300000, guid: fbbb274e5f72b16448af20701777ffd9, type: 3}
   _volumeRange:
-    minValue: 0.14893618
-    maxValue: 0.27659577
+    minValue: 0.06382981
+    maxValue: 0.10638302
   _pitchRange:
     minValue: 0.5659574
     maxValue: 1

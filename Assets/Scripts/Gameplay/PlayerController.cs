@@ -15,7 +15,6 @@ namespace Miner.Gameplay
     {
         [Header("Resources")]
         [SerializeField] private IntReference _playerEnginePower = null;
-        [SerializeField] private IntReference _playerHull = null;
         [SerializeField] private FloatReference _playerFuel = null;
         [SerializeField] private FloatReference _playerFuelUsage = null;
         [SerializeField] private Vector2IntReference _gridPosition = null;
@@ -26,9 +25,12 @@ namespace Miner.Gameplay
         [SerializeField] private ParticleSystem _rocket = null;
         [SerializeField] private PlayerInputSheet _input = null;
         [SerializeField, Range(10f, 100f)] private float _maxSpeed = 25f;
+        [SerializeField] private Light _light = null;
+        [SerializeField] private IntReference _playerLayer = null;
+
         [Header("Events")]
-        [SerializeField] private GameEvent _digRequest = null;
-        [SerializeField] private GameEvent _digComplete = null;
+        [SerializeField] private GameEvent _tryDig = null;
+        [SerializeField] private GameEvent _digCompleted = null;
         [SerializeField] private GameEvent _triggerInteraction = null;
         [SerializeField] private GameEvent _chooseNextUsableItem = null;
         [SerializeField] private GameEvent _choosePreviousUsableItem = null;
@@ -48,6 +50,8 @@ namespace Miner.Gameplay
         private Grid _worldGrid = null;
         private Rigidbody2D _rigidbody = null;
         private bool _isFacingRight = true;
+        private float _offsetY_playerCenter_cellCenter = 0f;
+        private bool _isNight = false;
 
         public bool IsFacingRight
         {
@@ -71,14 +75,26 @@ namespace Miner.Gameplay
             _animator.SetBool("Flip", false);
         }
 
+        private float CalculateHeightFromGround()
+        {
+            CircleCollider2D[] tracksColliders = GetComponentsInChildren<CircleCollider2D>();
+            CircleCollider2D lowerCollider = tracksColliders.OrderByDescending(x => x.transform.localPosition.y - x.radius).Last();
+            BoxCollider2D mainCollider = GetComponent<BoxCollider2D>();
+            return lowerCollider.radius + (-lowerCollider.transform.localPosition.y - mainCollider.size.y / 2f) + mainCollider.size.y / 2f;
+        }
+
         #region COROUTINES
-        public IEnumerator FollowToDigPlace(Vector2Int coords, float speed)
+        public IEnumerator FollowToDigPlace(Vector2Int coords, float speed, EDigDirection direction)
         {
             _locked = true;
             Vector3 worldCoords = _worldGrid.GetCellCenterWorld((Vector3Int) coords);
+            if (direction == EDigDirection.Left || direction == EDigDirection.Right)
+                worldCoords += new Vector3(0, _offsetY_playerCenter_cellCenter, 0);
+
             float lerpCoeff = 0f;
             Vector3 startPosition = transform.position;
             _rigidbody.simulated = false;
+
             while(lerpCoeff <= 1f)
             {
                 lerpCoeff += speed * Time.deltaTime;
@@ -86,7 +102,7 @@ namespace Miner.Gameplay
                 yield return null;
             }
             
-            _digComplete.Raise();
+            _digCompleted.Raise();
             _rigidbody.simulated = true;
             _locked = false;
         }
@@ -109,11 +125,11 @@ namespace Miner.Gameplay
             }
         }
 
-        public void OnLeadToDigPlace(EventArgs args)
+        public void OnAllowDig(EventArgs args)
         {
-            if (args is LeadToDigPlaceEA ltdp)
+            if (args is AllowDigEA ltdp)
             {
-                StartCoroutine(FollowToDigPlace(ltdp.Place, ltdp.Speed));
+                StartCoroutine(FollowToDigPlace(ltdp.Place, ltdp.Speed, ltdp.Direction));
             }
             else
             {
@@ -193,6 +209,48 @@ namespace Miner.Gameplay
             _closeInventory.Raise();
         }
 
+        private void OnUpMoveKeyPressed()
+        {
+            _rocketEmission.enabled = true;
+        }
+
+        private void OnUpMoveKeyUp()
+        {
+            _rocketEmission.enabled = false;
+        }
+
+        public void OnDayBegan()
+        {
+            _light.gameObject.SetActive(false);
+            _isNight = false;
+        }
+
+        public void OnNightBegan()
+        {
+            _light.gameObject.SetActive(true);
+            _isNight = true;
+        }
+
+        public void OnPlayerCameToLayer(EventArgs args)
+        {
+            if(args is PlayerCameToLayerEA pctl)
+            {
+                if(pctl.LayerNumber == 0)
+                {
+                    if (_isNight)
+                        _light.gameObject.SetActive(true);
+                    else
+                        _light.gameObject.SetActive(false);
+                }
+                else
+                    _light.gameObject.SetActive(true);
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
         #endregion
 
         #region UNITY CALLBACKS
@@ -214,6 +272,10 @@ namespace Miner.Gameplay
             _input.UseKeyPressed += OnUseKeyPressed;
             _input.InventoryViewKeyPressed += OnInventoryKeyPressed;
             _input.InventoryViewKeyUp += OnInventoryKeyUp;
+            _input.UpMoveKeyPressed += OnUpMoveKeyPressed;
+            _input.UpMoveKeyUp += OnUpMoveKeyUp;
+
+            _offsetY_playerCenter_cellCenter = -0.5f + CalculateHeightFromGround();
         }
 
         private void Update()
@@ -231,29 +293,23 @@ namespace Miner.Gameplay
             else if(_rigidbody.velocity.x < -0.1f)
                 IsFacingRight = false;
 
-            if (_input.VerticalMove > 0.1f)
-                _rocketEmission.enabled = true;
-            else
-                _rocketEmission.enabled = false;
-
-
             transform.rotation = Quaternion.Euler(0, 0, -_rigidbody.velocity.x);
 
             if (_locked) return;
-
-            if(_raycaster.CanDigDown == true)   //is grounded
+            _raycaster.UpdateRaycasts();
+            if(_raycaster.IsGrounded == true)
             {
                 if(_input.VerticalMove < -0.6f) //dig down
                 {
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.down, _drillSharpness.Value, transform.position));
+                    _tryDig.Raise(new TryDigEA(_gridPosition + Vector2Int.down, _drillSharpness.Value, transform.position, EDigDirection.Down));
                 }
                 else if (_raycaster.CanDigRight && _input.HorizontalMove > 0.8f) //dig right
                 {
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.right, _drillSharpness.Value, transform.position));
+                    _tryDig.Raise(new TryDigEA(_gridPosition + Vector2Int.right, _drillSharpness.Value, transform.position, EDigDirection.Right));
                 }
                 else if (_raycaster.CanDigLeft && _input.HorizontalMove < -0.8f) //dig left
                 {
-                    _digRequest.Raise(new DigRequestEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform.position));
+                    _tryDig.Raise(new TryDigEA(_gridPosition + Vector2Int.left, _drillSharpness.Value, transform.position, EDigDirection.Left));
                 }
             }
         }
@@ -275,6 +331,8 @@ namespace Miner.Gameplay
             _input.UseKeyPressed -= OnUseKeyPressed;
             _input.InventoryViewKeyPressed -= OnInventoryKeyPressed;
             _input.InventoryViewKeyUp -= OnInventoryKeyUp;
+            _input.UpMoveKeyPressed -= OnUpMoveKeyPressed;
+            _input.UpMoveKeyUp -= OnUpMoveKeyUp;
         }
 
         #endregion

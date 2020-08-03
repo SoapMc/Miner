@@ -53,23 +53,17 @@ namespace Miner.UI
                 _coroutine = null;
         }
 
-        public void OnAddResourceToCargo(EventArgs args)
+        public void OnResourceGathered(EventArgs args)
         {
-            if (args is AddResourceToCargoEA artc)
+            if (args is ResourcesGatheredEA rg)
             {
-                if (artc.Resource.Type.ShowBriefInfoOnDig)
+                _wholeText = string.Empty;
+                foreach(var gatheredResource in rg.Resources)
                 {
-
-                    if(!artc.Resource.Type.IsFuel)
-                        _wholeText = "+" + artc.Resource.Amount.ToString() + " " + artc.Resource.Type.Name + " (" + artc.Resource.Type.Value + " $)";
-                    else
-                        _wholeText = artc.Resource.Type.Mass.ToString() + " l of fuel added to fuel supplies";
-
-                    if (artc.IsLost)
-                        _wholeText += " LOST!";
-
-                    Show();
+                    _wholeText += "+" + gatheredResource.Amount.ToString() + " " + gatheredResource.Type.Name + " (" + gatheredResource.Type.Value + " $)\n";
                 }
+
+                Show();
             }
             else
             {
@@ -77,9 +71,47 @@ namespace Miner.UI
             }
         }
 
+        public void OnResourceLost(EventArgs args)
+        {
+            if (args is ResourcesLostEA rl)
+            {
+                _wholeText = string.Empty;
+                foreach (var lostResource in rl.Resources)
+                {
+                    if (!lostResource.Type.IsFuel)
+                        _wholeText += lostResource.Amount.ToString() + " " + lostResource.Type.Name + " LOST\n";
+                    else
+                        _wholeText += lostResource.Type.Mass.ToString() + " L of fuel LOST\n";
+                }
+
+                Show();
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
+        public void OnUpdateInfrastructureData(EventArgs args)
+        {
+            if(args is UpdateInfrastructureEA ui)
+            {
+                if (ui.FuelSupplyChange > 0)
+                {
+                    _wholeText += ui.FuelSupplyChange.ToString() + " L of fuel added to fuel supplies\n";
+                    Show();
+                }
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+            
+        }
+
         public void OnCargoFull()
         {
-            _wholeText = "Cargo is full!";
+            _wholeText = "Cargo is full!\n";
             Show();
         }
 
@@ -87,7 +119,7 @@ namespace Miner.UI
         {
             if(args is UseItemEA ui)
             {
-                _wholeText = ui.Item.Name + " has been used";
+                _wholeText = ui.Item.Name + " has been used\n";
                 Show();
             }
             else

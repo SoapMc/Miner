@@ -6,6 +6,7 @@ using System;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Miner.Gameplay
 {
@@ -28,24 +29,12 @@ namespace Miner.Gameplay
             _tilemaps.First(x => x.Item1 < pos.y).Item2.Tilemap.SetTile((Vector3Int)pos, tile);
         }
 
-        public void ActivateSurface()
-        {
-            if(_tilemaps.Count > 1)
-            {
-                _tilemaps[1].Item2.gameObject.SetActive(true);
-            }
-            for(int i = 2; i < _tilemaps.Count; ++i)
-            {
-                _tilemaps[i].Item2.gameObject.SetActive(false);
-            }
-        }
-
         public void OnTriggerUpperLayer(EventArgs args)
         {
             if(args is LayerTriggerEA lt)
             {
                 int triggeredLayer = lt.LayerNumber - 1;
-                if(triggeredLayer > 0 && triggeredLayer < _tilemaps.Count)
+                if (triggeredLayer > 0 && triggeredLayer < _tilemaps.Count && _tilemaps[triggeredLayer].Item2.gameObject.activeSelf != lt.LayerActivation)
                     _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
             }
             else
@@ -59,8 +48,8 @@ namespace Miner.Gameplay
             if (args is LayerTriggerEA lt)
             {
                 int triggeredLayer = lt.LayerNumber + 1;
-                if (triggeredLayer > 0 && triggeredLayer < _tilemaps.Count)
-                    _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
+                if (triggeredLayer > 0 && triggeredLayer < _tilemaps.Count && _tilemaps[triggeredLayer].Item2.gameObject.activeSelf != lt.LayerActivation)
+                        _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
             }
             else
             {

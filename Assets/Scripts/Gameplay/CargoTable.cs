@@ -3,48 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Miner.Management.Events;
+using System.Linq;
 
 namespace Miner.Gameplay
 {
     [CreateAssetMenu(menuName = "Cargo Table")]
-    public class CargoTable : ScriptableObject, ICollection<CargoTable.Element>, ISerializationCallbackReceiver
+    public class CargoTable : ScriptableObject, IEnumerable<CargoTable.Element>, ISerializationCallbackReceiver
     {
+        [Header("Events")]
+        [SerializeField] private GameEvent _resourcesGathered = null;
+        [SerializeField] private GameEvent _cargoFull = null;
+
+        [Header("Resources")]
+        [SerializeField] private IntReference _maxMass = null;
+        [SerializeField] private IntReference _mass = null;
         [SerializeField] private List<TileType> _ignoredTileTypes = new List<TileType>();
+
         private List<Element> _content = new List<Element>();
 
         public int Count => _content.Count;
-
         public bool IsReadOnly => false;
         public bool IsAcceptedType(Element item) => _ignoredTileTypes.TrueForAll(x => x != item.Type);
-
-        public void Add(Element item)
+        public int MaxMass
         {
-            if (!_ignoredTileTypes.TrueForAll(x => x != item.Type)) return;
+            get => _maxMass;
+            set => _maxMass.Value = value;
+        }
 
-            foreach (var elem in _content)
+        public void Add(List<Element> items)
+        {
+            List<Element> acceptedResources = (from res in items where IsAcceptedType(res) select res).OrderByDescending(x => x.Amount * x.Type.Value).ToList();
+            List<Element> addedResources = new List<Element>();
+
+            foreach (var item in acceptedResources)
             {
-                if(item.Type == elem.Type)
+                int amount = item.Amount;
+                while (amount * item.Type.Mass > (_maxMass - _mass))
                 {
-                    elem.Amount += item.Amount;
+                    amount--;
+                }
+
+                if (amount > 0)
+                {
+                    Element containedResourceType = _content.FirstOrDefault(x => item.Type == x.Type);
+                    if(containedResourceType != null)
+                    {
+                        containedResourceType.Amount += amount;
+                        _mass.Value += amount * item.Type.Mass;
+                    }
+                    else
+                    {
+                        _mass.Value += amount * item.Type.Mass;
+                        _content.Add(new Element() { Type = item.Type, Amount = amount });
+                    }
+                    addedResources.Add(new Element() { Type = item.Type, Amount = amount });
+                }
+                else
+                {
+                    _cargoFull.Raise();
                     return;
                 }
             }
-            _content.Add(item);
+            if(acceptedResources.Count > 0)
+                _resourcesGathered.Raise(new ResourcesGatheredEA(addedResources));
         }
 
         public void Clear()
         {
+            Remove(_content);
             _content.Clear();
-        }
-
-        public bool Contains(Element item)
-        {
-            return _content.Contains(item);
-        }
-
-        public void CopyTo(Element[] array, int arrayIndex)
-        {
-            _content.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<Element> GetEnumerator()
@@ -62,34 +89,39 @@ namespace Miner.Gameplay
 
         }
 
-        public bool Remove(Element item)
+        public bool Remove(List<Element> items)
         {
-            foreach (var elem in _content)
+            foreach (var resourceToRemove in items.ToList())
             {
-                if (item.Type == elem.Type)
+                if (resourceToRemove.Amount > 0)
                 {
-                    if (elem.Amount >= item.Amount)
+                    Element containedResourceType = _content.FirstOrDefault(x => resourceToRemove.Type == x.Type);
+                    if (containedResourceType != null)
                     {
-                        elem.Amount -= item.Amount;
-                        if(elem.Amount == 0)
-                            _content.Remove(elem);
-                        return true;
+                        if (containedResourceType.Amount >= resourceToRemove.Amount)
+                        {
+                            int amount = resourceToRemove.Amount;
+                            containedResourceType.Amount -= resourceToRemove.Amount;
+                            _mass.Value -= amount * resourceToRemove.Type.Mass;
+                            if (containedResourceType.Amount == 0)
+                                _content.Remove(containedResourceType);
+                        }
+                        else
+                            return false;
                     }
                     else
-                    {
-                        elem.Amount = 0;
-                        _content.Remove(elem);
                         return false;
-                    }
                 }
             }
-            return false;
+            return true;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _content.GetEnumerator();
         }
+
+        public List<Element> Get() => _content;
 
         public class Element
         {

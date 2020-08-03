@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Major Repair Effect
   m_EditorClassIdentifier: 
   _soundOnUse: {fileID: 11400000, guid: 4ac339e01b7e945438ff53641edf73ea, type: 2}
-  _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _playerRepaired: {fileID: 11400000, guid: eafdacdc2ddfb90428753ee34b949dac, type: 2}
   _repairValue: 100

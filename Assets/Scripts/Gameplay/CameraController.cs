@@ -47,6 +47,7 @@ namespace Miner.Gameplay
             if(args is PlayerLoadedEA pl)
             {
                 _target = pl.Player.transform;
+                transform.position = new Vector3(pl.Player.transform.position.x, pl.Player.transform.position.y, _camera.transform.position.z);
                 enabled = true;
             }
             else

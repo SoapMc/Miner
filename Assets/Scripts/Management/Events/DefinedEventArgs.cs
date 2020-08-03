@@ -10,15 +10,24 @@ using Miner.Management.Exceptions;
 
 namespace Miner.Management.Events
 {
-    public class AddResourceToCargoEA : EventArgs
-    {
-        public readonly CargoTable.Element Resource;
-        public bool IsLost;
 
-        public AddResourceToCargoEA(CargoTable.Element resource, bool isLost = false)
+    public class AllowDigEA : EventArgs
+    {
+        public readonly TileType Tile;
+        public readonly Vector2Int Place;
+        public readonly float Speed;
+        public readonly float Hardness;
+        public readonly Vector3 PlayerPosition;
+        public readonly EDigDirection Direction;
+
+        public AllowDigEA(TileType tile, Vector2Int place, float speed, float hardness, Vector3 playerPosition, EDigDirection direction)
         {
-            Resource = resource;
-            IsLost = isLost;
+            Tile = tile;
+            Place = place;
+            Speed = speed;
+            Hardness = hardness;
+            PlayerPosition = playerPosition;
+            Direction = direction;
         }
     }
 
@@ -89,24 +98,30 @@ namespace Miner.Management.Events
     public class DestroyTilesEA : EventArgs
     {
         public List<Vector2Int> Coordinates = null;
+        public ESource Source;
 
-        public DestroyTilesEA(List<Vector2Int> coordinates)
+        public DestroyTilesEA(List<Vector2Int> coordinates, ESource source = ESource.None)
         {
             Coordinates = coordinates;
+            Source = source;
+        }
+
+        public enum ESource
+        {
+            None,
+            Explosion
         }
     }
 
-    public class DigRequestEA : EventArgs
+    public class EarthquakeEA : EventArgs
     {
-        public readonly Vector2Int Coordinates;
-        public readonly float DrillSharpness;
-        public readonly Vector3 PlayerPosition;
+        public readonly float Duration;
+        public readonly float Intensity;
 
-        public DigRequestEA(Vector2Int coordinates, float drillSharpness, Vector3 playerPosition)
+        public EarthquakeEA(float duration, float intensity)
         {
-            Coordinates = coordinates;
-            DrillSharpness = drillSharpness;
-            PlayerPosition = playerPosition;
+            Duration = duration;
+            Intensity = intensity;
         }
     }
 
@@ -122,23 +137,7 @@ namespace Miner.Management.Events
         }
     }
 
-    public class LeadToDigPlaceEA : EventArgs
-    {
-        public readonly TileType Tile;
-        public readonly Vector2Int Place;
-        public readonly float Speed;
-        public readonly float Hardness;
-        public readonly Vector3 PlayerPosition;
-
-        public LeadToDigPlaceEA(TileType tile, Vector2Int place, float speed, float hardness, Vector3 playerPosition)
-        {
-            Tile = tile;
-            Place = place;
-            Speed = speed;
-            Hardness = hardness;
-            PlayerPosition = playerPosition;
-        }
-    }
+    
 
     public class MovePlayerEA : EventArgs
     {
@@ -147,6 +146,26 @@ namespace Miner.Management.Events
         public MovePlayerEA(Vector2 position)
         {
             Position = position;
+        }
+    }
+
+    public class OverrideTilesEA : EventArgs
+    {
+        public Dictionary<Vector2Int, TileType> Coordinates = new Dictionary<Vector2Int, TileType>();
+
+        public OverrideTilesEA(Dictionary<Vector2Int, TileType> coords)
+        {
+            Coordinates = coords;
+        }
+    }
+
+    public class PlayerCameToLayerEA : EventArgs
+    {
+        public readonly int LayerNumber;
+
+        public PlayerCameToLayerEA(int layerNumber)
+        {
+            LayerNumber = layerNumber;
         }
     }
 
@@ -176,6 +195,28 @@ namespace Miner.Management.Events
         }
     }
 
+    public class PlayerDamagedEA : EventArgs
+    {
+        public readonly int Damage;
+        public readonly DamageType Type;
+
+        public PlayerDamagedEA(int damage, DamageType type)
+        {
+            Damage = damage;
+            Type = type;
+        }
+    }
+
+    public class PlayerRepairedEA : EventArgs
+    {
+        public readonly int Repair;
+
+        public PlayerRepairedEA(int repair)
+        {
+            Repair = repair;
+        }
+    }
+
     public class PlayerLoadedEA : EventArgs
     {
         public readonly GameObject Player;
@@ -183,6 +224,26 @@ namespace Miner.Management.Events
         public PlayerLoadedEA(GameObject player)
         {
             Player = player;
+        }
+    }
+
+    public class ResourcesGatheredEA : EventArgs
+    {
+        public readonly List<CargoTable.Element> Resources;
+
+        public ResourcesGatheredEA(List<CargoTable.Element> resources)
+        {
+            Resources = resources;
+        }
+    }
+
+    public class ResourcesLostEA : EventArgs
+    {
+        public readonly List<CargoTable.Element> Resources;
+
+        public ResourcesLostEA(List<CargoTable.Element> resources)
+        {
+            Resources = resources;
         }
     }
 
@@ -244,6 +305,28 @@ namespace Miner.Management.Events
         }
     }
 
+    public class TryChangeResourcesInPlayerCargoEA : EventArgs
+    {
+        public List<CargoTable.Element> ResourcesToAdd = new List<CargoTable.Element>();
+        public List<CargoTable.Element> ResourcesToRemove = new List<CargoTable.Element>();
+    }
+
+    public class TryDigEA : EventArgs
+    {
+        public readonly Vector2Int GridCoordinates;
+        public readonly float DrillSharpness;
+        public readonly Vector3 StartPosition;
+        public readonly EDigDirection Direction;
+
+        public TryDigEA(Vector2Int gridCoordinates, float drillSharpness, Vector3 startPosition, EDigDirection direction)
+        {
+            GridCoordinates = gridCoordinates;
+            DrillSharpness = drillSharpness;
+            StartPosition = startPosition;
+            Direction = direction;
+        }
+    }
+
     public class UpdateCargoTableEA : EventArgs
     {
         public List<CargoTable.Element> AddedResources = new List<CargoTable.Element>();
@@ -261,7 +344,6 @@ namespace Miner.Management.Events
     public class UpdatePlayerDataEA : EventArgs
     {
         public int MoneyChange = 0;
-        public int HullChange = 0;
         public int MaxHullChange = 0;
         public float FuelChange = 0f;
         public float MaxFuelChange = 0f;
@@ -272,8 +354,6 @@ namespace Miner.Management.Events
         public int DrillPermaDamage = 0;
         public int CargoPermaDamage = 0;
         public int BatteryPermaDamage = 0;
-        public readonly List<CargoTable.Element> AddCargoChange = new List<CargoTable.Element>();
-        public readonly List<CargoTable.Element> RemoveCargoChange = new List<CargoTable.Element>();
         public readonly List<ReferencePart> EquipmentChange = new List<ReferencePart>();
         public readonly List<UsableItemTable.Element> AddUsableItemsChange = new List<UsableItemTable.Element>();
         public readonly List<UsableItemTable.Element> RemoveUsableItemsChange = new List<UsableItemTable.Element>();

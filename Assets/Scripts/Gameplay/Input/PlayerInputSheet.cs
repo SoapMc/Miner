@@ -11,6 +11,10 @@ namespace Miner.Gameplay
         private float _horizontalMove = 0f;
         private float _verticalMove = 0f;
 
+        private bool _rightMoveKeyState = false;
+        private bool _leftMoveKeyState = false;
+        private bool _upMoveKeyState = false;
+        private bool _downMoveKeyState = false;
         private bool _inventory = false;
         private bool _next = false;
         private bool _previous = false;
@@ -22,6 +26,14 @@ namespace Miner.Gameplay
         public float HorizontalMove => _horizontalMove;
         public float VerticalMove => _verticalMove;
 
+        public event Action RightMoveKeyPressed;
+        public event Action RightMoveKeyUp;
+        public event Action LeftMoveKeyPressed;
+        public event Action LeftMoveKeyUp;
+        public event Action UpMoveKeyPressed;
+        public event Action UpMoveKeyUp;
+        public event Action DownMoveKeyPressed;
+        public event Action DownMoveKeyUp;
         public event Action InventoryViewKeyPressed;
         public event Action InventoryViewKeyUp;
         public event Action ConfirmKeyPressed;
@@ -34,13 +46,63 @@ namespace Miner.Gameplay
         public void Update()
         {
             _horizontalMove = Input.GetAxis("Horizontal");
+            if (_horizontalMove > 0.05f)
+            {
+                if (_rightMoveKeyState == false)
+                    RightMoveKeyPressed?.Invoke();
+                _rightMoveKeyState = true;
+            }
+            else
+            {
+                if (_rightMoveKeyState == true)
+                    RightMoveKeyUp?.Invoke();
+                _rightMoveKeyState = false;
+            }
+
+            if (_horizontalMove < -0.05f)
+            {
+                if (_leftMoveKeyState == false)
+                    LeftMoveKeyPressed?.Invoke();
+                _leftMoveKeyState = true;
+            }
+            else
+            {
+                if (_leftMoveKeyState == true)
+                    LeftMoveKeyUp?.Invoke();
+                _leftMoveKeyState = false;
+            }
+
             _verticalMove = Input.GetAxis("Vertical");
+            if (_verticalMove > 0.05f)
+            {
+                if (_upMoveKeyState == false)
+                    UpMoveKeyPressed?.Invoke();
+                _upMoveKeyState = true;
+            }
+            else
+            {
+                if (_upMoveKeyState == true)
+                    UpMoveKeyUp?.Invoke();
+                _upMoveKeyState = false;
+            }
+
+            if (_verticalMove < -0.05f)
+            {
+                if (_downMoveKeyState == false)
+                    DownMoveKeyPressed?.Invoke();
+                _downMoveKeyState = true;
+            }
+            else
+            {
+                if (_downMoveKeyState == true)
+                    DownMoveKeyUp?.Invoke();
+                _downMoveKeyState = false;
+            }
+
             if (Input.GetAxisRaw("Inventory") != 0)
             {
                 if (_inventory == false)
-                {
                     InventoryViewKeyPressed?.Invoke();
-                }
                 _inventory = true;
             }
             else
@@ -105,7 +167,15 @@ namespace Miner.Gameplay
         public void Reset()
         {
             if(_inventory == true)
-                InventoryViewKeyUp.Invoke();
+                InventoryViewKeyUp?.Invoke();
+            if (_downMoveKeyState == true)
+                DownMoveKeyUp?.Invoke();
+            if (_upMoveKeyState == true)
+                UpMoveKeyUp?.Invoke();
+            if (_leftMoveKeyState == true)
+                LeftMoveKeyUp?.Invoke();
+            if (_rightMoveKeyState == true)
+                RightMoveKeyUp?.Invoke();
 
             _horizontalMove = 0f;
             _verticalMove = 0f;

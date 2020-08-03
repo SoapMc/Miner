@@ -9,7 +9,7 @@ namespace Miner.Gameplay
     public class RepairEffect : UsableItemEffect
     {
         [Header("Events")]
-        [SerializeField] private GameEvent _updatePlayerData = null;
+        [SerializeField] private GameEvent _playerRepaired = null;
 
         [Header("Data")]
         [SerializeField] private int _repairValue = 25;
@@ -17,8 +17,7 @@ namespace Miner.Gameplay
         public override void Execute()
         {
             _soundOnUse.Play();
-            UpdatePlayerDataEA upd = new UpdatePlayerDataEA() { HullChange = _repairValue };
-            _updatePlayerData.Raise(upd);
+            _playerRepaired.Raise(new PlayerRepairedEA(_repairValue));
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Miner.FX
         private int _nextLayerNumber = 0;
         private float _topDepth = 0;
         private float _bottomDepth = 0;
+        private bool _backgroundEnabled = false;
 
         private void Awake()
         {
@@ -39,39 +40,42 @@ namespace Miner.FX
                 _alpha = 1f;
             }
             _backgroundRenderer.color = new Color(_backgroundRenderer.color.r, _backgroundRenderer.color.g, _backgroundRenderer.color.b, _alpha);
-            _topDepth = _bottomDepth = _layers.First().Depth;
         }
 
         private void Update()
         {
             _backgroundMaterial.SetFloat(_offsetXName, -_playerPosition.Value.x * 0.1f);
             _backgroundMaterial.SetFloat(_offsetYName, _playerPosition.Value.y * 0.1f);
-            Color c = Color.Lerp(_layers[_currentLayerNumber]._backgroundColor, _layers[_nextLayerNumber]._backgroundColor, Mathf.Clamp01(Mathf.Abs((_playerPosition.Value.y - _topDepth)/(_bottomDepth - _topDepth))));
+            Color c = Color.Lerp(_layers[_currentLayerNumber].BackgroundColor, _layers[_nextLayerNumber].BackgroundColor, Mathf.Clamp01((Mathf.Abs(_playerPosition.Value.y) - _topDepth) / (_bottomDepth - _topDepth)));
             _backgroundRenderer.color = new Color(c.r, c.g, c.b, _backgroundRenderer.color.a);
         }
 
-        public void OnEnableUnderground()
+        private void EnableUnderground()
         {
+            if (_backgroundEnabled == true) return;
+            _backgroundEnabled = true;
             if (_disablingBackground != null)
             {
                 StopCoroutine(_disablingBackground);
                 _disablingBackground = null;
             }
-            _enablingBackground = StartCoroutine(EnableUnderground());
+            _enablingBackground = StartCoroutine(EnableUndergroundBackground());
         }
 
-        public void OnDisableUnderground()
+        private void DisableUnderground()
         {
-            if(_enablingBackground != null)
+            if (_backgroundEnabled == false) return;
+            _backgroundEnabled = false;
+            if (_enablingBackground != null)
             {
                 StopCoroutine(_enablingBackground);
                 _enablingBackground = null;
             }
 
-            _disablingBackground = StartCoroutine(DisableUnderground());
+            _disablingBackground = StartCoroutine(DisableUndergroundBackground());
         }
 
-        private IEnumerator EnableUnderground()
+        private IEnumerator EnableUndergroundBackground()
         {
             if(_enablingBackground == null)
             {
@@ -86,7 +90,7 @@ namespace Miner.FX
             }
         }
 
-        private IEnumerator DisableUnderground()
+        private IEnumerator DisableUndergroundBackground()
         {
             if (_disablingBackground == null)
             {
@@ -101,17 +105,24 @@ namespace Miner.FX
             }
         }
 
-        public void OnTriggerTopLayer(EventArgs args)
+        public void OnPlayerCameToLayer(EventArgs args)
         {
-            if(args is LayerTriggerEA lt)
+            if(args is PlayerCameToLayerEA pctl)
             {
-                _currentLayerNumber = Mathf.Clamp(lt.LayerNumber - 1, 0, int.MaxValue);
-                if (_layers.Count > _currentLayerNumber + 1)
-                    _nextLayerNumber = _currentLayerNumber + 1;
-                else
-                    _nextLayerNumber = _currentLayerNumber;
+                _currentLayerNumber = Mathf.Clamp(pctl.LayerNumber, 0, _layers.Count - 1);
+                _nextLayerNumber = _currentLayerNumber + 1;
+                _nextLayerNumber = Mathf.Clamp(_nextLayerNumber, 0, _layers.Count - 1);
                 _topDepth = CalculateTopDepth(_currentLayerNumber);
                 _bottomDepth = _topDepth + _layers[_currentLayerNumber].Depth;
+
+                if(pctl.LayerNumber == 0)
+                {
+                    DisableUnderground();
+                }
+                else
+                {
+                    EnableUnderground();
+                }
             }
             else
             {
@@ -121,11 +132,10 @@ namespace Miner.FX
 
         private float CalculateTopDepth(int layerNumber)
         {
-            if (layerNumber - 1 < 0) return 0f;
             if (layerNumber >= _layers.Count) throw new ArgumentOutOfRangeException();
 
             float result = 0f;
-            for(int i = 0; i < layerNumber - 1; ++i)
+            for(int i = 0; i < layerNumber; ++i)
             {
                 result += _layers[i].Depth;
             }

@@ -17,8 +17,8 @@ namespace Miner.UI
         [SerializeField] private TextMeshProUGUI _amount = null;
         [SerializeField] private TextMeshProUGUI _price = null;
         [Header("Events")]
+        [SerializeField] private GameEvent _tryChangeResourcesInPlayerCargo = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
-
         private CargoTable.Element _cargoElement = null;
 
         public void Initialize(CargoTable.Element element)
@@ -30,13 +30,12 @@ namespace Miner.UI
         public void SellResource()
         {
             UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-            upd.RemoveCargoChange.Add(new CargoTable.Element() { Type = _cargoElement.Type, Amount = 1 });
             upd.MoneyChange = _cargoElement.Type.Value;
+            _tryChangeResourcesInPlayerCargo.Raise(new TryChangeResourcesInPlayerCargoEA() { ResourcesToRemove = new List<CargoTable.Element>() { new CargoTable.Element() { Type = _cargoElement.Type, Amount = 1 } } });
             _updatePlayerData.Raise(upd);
-
             if (_cargoElement.Amount == 0)
             {
-                SelectNextUI();
+                SelectNext();
                 Destroy(gameObject);
             }
             else
@@ -52,7 +51,7 @@ namespace Miner.UI
             _price.text = (_cargoElement.Amount * _cargoElement.Type.Value).ToString() + " $";
         }
 
-        private void SelectNextUI()
+        private void SelectNext()
         {
             Selectable s = GetComponent<Selectable>().FindSelectableOnDown();
             if (s != null)
