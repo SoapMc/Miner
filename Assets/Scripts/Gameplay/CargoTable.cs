@@ -12,6 +12,7 @@ namespace Miner.Gameplay
     {
         [Header("Events")]
         [SerializeField] private GameEvent _resourcesGathered = null;
+        [SerializeField] private GameEvent _resourcesRemoved = null;
         [SerializeField] private GameEvent _cargoFull = null;
 
         [Header("Resources")]
@@ -64,8 +65,17 @@ namespace Miner.Gameplay
                     return;
                 }
             }
-            if(acceptedResources.Count > 0)
+            if (acceptedResources.Count > 0)
+            {
                 _resourcesGathered.Raise(new ResourcesGatheredEA(addedResources));
+                for (int i = 0; i < addedResources.Count; ++i)
+                {
+                    for (int addedAmount = 0; addedAmount < addedResources[i].Amount; ++addedAmount)
+                    {
+                        addedResources[i].Type.OnResourceAddedToCargo();
+                    }
+                }
+            }
         }
 
         public void Clear()
@@ -89,8 +99,9 @@ namespace Miner.Gameplay
 
         }
 
-        public bool Remove(List<Element> items)
+        public void Remove(List<Element> items)
         {
+            List<Element> removedElements = new List<Element>();
             foreach (var resourceToRemove in items.ToList())
             {
                 if (resourceToRemove.Amount > 0)
@@ -101,19 +112,24 @@ namespace Miner.Gameplay
                         if (containedResourceType.Amount >= resourceToRemove.Amount)
                         {
                             int amount = resourceToRemove.Amount;
+                            removedElements.Add(new Element() { Type = containedResourceType.Type, Amount = amount });
                             containedResourceType.Amount -= resourceToRemove.Amount;
                             _mass.Value -= amount * resourceToRemove.Type.Mass;
                             if (containedResourceType.Amount == 0)
                                 _content.Remove(containedResourceType);
                         }
-                        else
-                            return false;
                     }
-                    else
-                        return false;
+                    
                 }
             }
-            return true;
+            _resourcesRemoved.Raise(new ResourcesRemovedEA(removedElements));
+            for (int i = 0; i < removedElements.Count; ++i)
+            {
+                for (int addedAmount = 0; addedAmount < removedElements[i].Amount; ++addedAmount)
+                {
+                    removedElements[i].Type.OnResourceRemovedFromCargo();
+                }
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

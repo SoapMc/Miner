@@ -10,46 +10,62 @@ namespace Miner.Gameplay
     [CreateAssetMenu(menuName = "Reference Part List")]
     public class ReferencePartList : ScriptableObject
     {
-        [SerializeField] private List<HullReferencePart> _hulls = new List<HullReferencePart>();
-        [SerializeField] private List<FuelTankReferencePart> _fuelTanks = new List<FuelTankReferencePart>();
-        [SerializeField] private List<EngineReferencePart> _engines = new List<EngineReferencePart>();
-        [SerializeField] private List<CargoReferencePart> _cargos = new List<CargoReferencePart>();
-        [SerializeField] private List<CoolingReferencePart> _coolings = new List<CoolingReferencePart>();
-        [SerializeField] private List<BatteryReferencePart> _batteries = new List<BatteryReferencePart>();
-        [SerializeField] private List<DrillReferencePart> _drills = new List<DrillReferencePart>();
+        [SerializeField] private List<ReferencePart> _hulls = new List<ReferencePart>();
+        [SerializeField] private List<ReferencePart> _fuelTanks = new List<ReferencePart>();
+        [SerializeField] private List<ReferencePart> _engines = new List<ReferencePart>();
+        [SerializeField] private List<ReferencePart> _cargos = new List<ReferencePart>();
+        [SerializeField] private List<ReferencePart> _coolings = new List<ReferencePart> ();
+        [SerializeField] private List<ReferencePart> _batteries = new List<ReferencePart>();
+        [SerializeField] private List<ReferencePart> _drills = new List<ReferencePart>();
 
-        public List<HullReferencePart> Hulls => _hulls;
-        public List<FuelTankReferencePart> FuelTanks => _fuelTanks;
-        public List<EngineReferencePart> Engines => _engines;
-        public List<CargoReferencePart> Cargos => _cargos;
-        public List<CoolingReferencePart> Coolings => _coolings;
-        public List<BatteryReferencePart> Batteries => _batteries;
-        public List<DrillReferencePart> Drills => _drills;
-
-        public ReferencePart GetPart(int id)
+        public ReferencePart GetReferencePart(int id)
         {
-            ReferencePart result = Hulls.FirstOrDefault(x => x.Id == id);
+            ReferencePart result = _hulls.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
-            result = FuelTanks.FirstOrDefault(x => x.Id == id);
+            result = _fuelTanks.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
-            result = Engines.FirstOrDefault(x => x.Id == id);
+            result = _engines.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
-            result = Cargos.FirstOrDefault(x => x.Id == id);
+            result = _cargos.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
-            result = Coolings.FirstOrDefault(x => x.Id == id);
+            result = _coolings.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
-            result = Batteries.FirstOrDefault(x => x.Id == id);
+            result = _batteries.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
-            result = Drills.FirstOrDefault(x => x.Id == id);
+            result = _drills.FirstOrDefault(x => x.Id == id);
             if (result != null)
                 return result;
             throw new PartNotFoundException("Part cannot be found (id: " + id.ToString() + ")");
         }
+
+        public List<ReferencePart> GetPartsOfType(EPartType type)
+        {
+            switch(type)
+            {
+                case EPartType.Battery:
+                    return _batteries;
+                case EPartType.Cargo:
+                    return _cargos;
+                case EPartType.Cooling:
+                    return _coolings;
+                case EPartType.Drill:
+                    return _drills;
+                case EPartType.Engine:
+                    return _engines;
+                case EPartType.FuelTank:
+                    return _fuelTanks;
+                case EPartType.Hull:
+                    return _hulls;
+                default:
+                    throw new ArgumentException("Requested part type is not present in ReferencePartList");
+            }
+        }
+
     }
 }

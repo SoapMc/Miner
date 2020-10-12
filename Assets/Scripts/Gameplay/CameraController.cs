@@ -11,30 +11,48 @@ namespace Miner.Gameplay
     {
         [SerializeField, Range(0.1f, 1f)] private float _rigidity = 2f;
         [SerializeField] private Transform _target = null;
+        [SerializeField] private WorldInfo _worldInfo = null;
+        [SerializeField] private Vector2IntReference _cameraGridPosition = null;
+        [SerializeField] private GameEvent _cameraTranslated = null;
         private Camera _camera = null;
         private Grid _worldGrid = null;
-        [SerializeField] private Vector2IntReference _verticalWorldBorders = null;
-        [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
         private float _topBorder = 0f;
         private float _bottomBorder = 0f;
         private float _leftBorder = 0f;
         private float _rightBorder = 0f;
         
-
-        public void OnWorldLoaded()
+        public void OnWorldUnloaded()
         {
-            _worldGrid = FindObjectOfType<Grid>();
-            _leftBorder = _horizontalWorldBorders.Value.x * _worldGrid.cellSize.x + _camera.orthographicSize * Screen.width/Screen.height;
-            _rightBorder = _horizontalWorldBorders.Value.y * _worldGrid.cellSize.x - _camera.orthographicSize * Screen.width / Screen.height;
-            _topBorder = _verticalWorldBorders.Value.x * _worldGrid.cellSize.y - _camera.orthographicSize;
-            _bottomBorder = _verticalWorldBorders.Value.y * _worldGrid.cellSize.y + _camera.orthographicSize;
+            _worldGrid = null;
+            enabled = false;
         }
 
-        public void OnMovePlayer(EventArgs args)
+        public void OnWorldLoaded(EventArgs args)
         {
-            if(args is MovePlayerEA mp)
+            if (args is WorldLoadedEA wl)
             {
-                transform.position = new Vector3(mp.Position.x, mp.Position.y, _camera.transform.position.z);
+                if(_worldGrid == null)
+                    _worldGrid = FindObjectOfType<Grid>();
+                _leftBorder = _worldInfo.HorizontalBorders.x * _worldGrid.cellSize.x + _camera.orthographicSize * Screen.width / Screen.height;
+                _rightBorder = _worldInfo.HorizontalBorders.y * _worldGrid.cellSize.x - _camera.orthographicSize * Screen.width / Screen.height;
+                _topBorder = _worldInfo.VerticalBorders.x * _worldGrid.cellSize.y - _camera.orthographicSize;
+                _bottomBorder = _worldInfo.VerticalBorders.y * _worldGrid.cellSize.y + _camera.orthographicSize;
+                SetAtPosition(wl.PlayerSpawnPoint.position);
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+            
+        }
+
+        public void OnTranslatePlayer(EventArgs args)
+        {
+            if(args is TranslatePlayerEA mp)
+            {
+                Vector2Int oldGridPos = _cameraGridPosition.Value;
+                SetAtPosition(mp.Position);
+                _cameraTranslated.Raise(new CameraTranslatedEA(oldGridPos, _cameraGridPosition.Value));
             }
             else
             {
@@ -47,7 +65,9 @@ namespace Miner.Gameplay
             if(args is PlayerLoadedEA pl)
             {
                 _target = pl.Player.transform;
-                transform.position = new Vector3(pl.Player.transform.position.x, pl.Player.transform.position.y, _camera.transform.position.z);
+                if (_worldGrid == null)
+                    _worldGrid = FindObjectOfType<Grid>();
+                SetAtPosition(pl.Player.transform.position);
                 enabled = true;
             }
             else
@@ -62,6 +82,14 @@ namespace Miner.Gameplay
             enabled = false;
         }
 
+        private void SetAtPosition(Vector2 pos)
+        {
+            float x = Mathf.Clamp(pos.x, _leftBorder, _rightBorder);
+            float y = Mathf.Clamp(pos.y, _bottomBorder, _topBorder);
+            transform.position = new Vector3(x, y, _camera.transform.position.z);
+            _cameraGridPosition.Value = (Vector2Int)_worldGrid.WorldToCell(transform.position);
+        }
+
         void Awake()
         {
             _camera = GetComponent<Camera>();
@@ -70,10 +98,8 @@ namespace Miner.Gameplay
 
         void FixedUpdate()
         {
-            Vector3 vec = Vector3.Lerp(transform.position, _target.position, _rigidity);
-            float x = Mathf.Clamp(vec.x, _leftBorder, _rightBorder);
-            float y = Mathf.Clamp(vec.y, _bottomBorder, _topBorder);
-            transform.position = new Vector3(x, y, _camera.transform.position.z);
+            Vector2 vec = Vector3.Lerp(transform.position, _target.position, _rigidity);
+            SetAtPosition(vec);
         }
     }
 

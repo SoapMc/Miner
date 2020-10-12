@@ -71,7 +71,10 @@ namespace Miner.UI
                 _descriptionBuilder.Append("\n" + specDesc[i]);
             }
             if (state == PartGridElement.State.Bought)
+            {
                 _descriptionBuilder.Append("\n\n<color=yellow>Owned!</color>");
+                _descriptionBuilder.Append("\n<size=14><color=yellow>Buy again to get brand new part - fully performant.</color></size>");
+            }
 
             _description.text = _descriptionBuilder.ToString();
         }

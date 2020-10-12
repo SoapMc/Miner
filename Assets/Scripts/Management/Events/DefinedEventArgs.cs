@@ -10,27 +10,6 @@ using Miner.Management.Exceptions;
 
 namespace Miner.Management.Events
 {
-
-    public class AllowDigEA : EventArgs
-    {
-        public readonly TileType Tile;
-        public readonly Vector2Int Place;
-        public readonly float Speed;
-        public readonly float Hardness;
-        public readonly Vector3 PlayerPosition;
-        public readonly EDigDirection Direction;
-
-        public AllowDigEA(TileType tile, Vector2Int place, float speed, float hardness, Vector3 playerPosition, EDigDirection direction)
-        {
-            Tile = tile;
-            Place = place;
-            Speed = speed;
-            Hardness = hardness;
-            PlayerPosition = playerPosition;
-            Direction = direction;
-        }
-    }
-
     public class CameraShakeEA : EventArgs
     {
         public readonly float Amplitude;
@@ -45,24 +24,50 @@ namespace Miner.Management.Events
         }
     }
 
-    public class ChooseUsableItemEA : EventArgs
+   public class CameraTranslatedEA : EventArgs
     {
-        public readonly UsableItem Item;
+        public readonly Vector2Int oldGridPosition;
+        public readonly Vector2Int newGridPosition;
 
-        public ChooseUsableItemEA(UsableItem item)
+        public CameraTranslatedEA(Vector2Int oldPos, Vector2Int newPos)
         {
-            Item = item;
+            oldGridPosition = oldPos;
+            newGridPosition = newPos;
         }
+    }
+
+    public class ChangeAlarmsEA : EventArgs
+    {
+        public AlarmDisplay.EAlarmType? AddedAlarm;
+        public AlarmDisplay.EAlarmImportance AddedAlarmImportance = AlarmDisplay.EAlarmImportance.Warning;
+        public AlarmDisplay.EAlarmType? RemovedAlarm;
     }
 
     public class CloseWindowEA : EventArgs
     {
-        public readonly GameObject ClosedWindow;
+        public readonly Window ClosedWindow;
 
-        public CloseWindowEA(GameObject closedWindow)
+        public CloseWindowEA(Window closedWindow)
         {
             ClosedWindow = closedWindow;
         }
+    }
+
+    public class CreateMessageEA : EventArgs
+    {
+        public readonly string Title;
+        public readonly string Message;
+        public readonly Message.EType Type;
+        public readonly float Time = 10f;
+        
+        public CreateMessageEA(string title, string message, Message.EType type = UI.Message.EType.Statement)
+        {
+            Title = title;
+            Message = message;
+            Type = type;
+        }
+
+        
     }
 
     public class CreateParticleEA : EventArgs
@@ -87,29 +92,62 @@ namespace Miner.Management.Events
 
     public class CreateWindowEA : EventArgs
     {
-        public readonly GameObject WindowPrefab;
+        public readonly Window WindowPrefab;
 
-        public CreateWindowEA(GameObject windowPrefab)
+        public CreateWindowEA(Window windowPrefab)
         {
             WindowPrefab = windowPrefab;
+        }
+    }
+
+    public class DescriptElementEA : EventArgs
+    {
+        public readonly IDescriptableElement DescriptableElement;
+        public readonly RectTransform RectTransform;
+
+        public DescriptElementEA(IDescriptableElement element, RectTransform rectTransform)
+        {
+            DescriptableElement = element;
+            RectTransform = rectTransform;
+        }
+    }
+
+    public class DescriptOfferEA : EventArgs
+    {
+        public readonly IDescriptableElement DescriptableElement;
+        public readonly RectTransform RectTransform;
+        public readonly EState State;
+
+        public DescriptOfferEA(IDescriptableElement element, RectTransform rectTransform, EState state)
+        {
+            DescriptableElement = element;
+            RectTransform = rectTransform;
+            State = state;
+        }
+
+        public enum EState
+        {
+            Available,
+            Unavailable,
+            Bought,
+            Locked
         }
     }
 
     public class DestroyTilesEA : EventArgs
     {
         public List<Vector2Int> Coordinates = null;
-        public ESource Source;
+        public int DestructionPower;
 
-        public DestroyTilesEA(List<Vector2Int> coordinates, ESource source = ESource.None)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="coordinates">Grid coordinates.</param>
+        /// <param name="destructionPower">Destruction power is tested against tile's hardiness. If this parameter has higher value, tile is successfully destroyed.</param>
+        public DestroyTilesEA(List<Vector2Int> coordinates, int destructionPower)
         {
             Coordinates = coordinates;
-            Source = source;
-        }
-
-        public enum ESource
-        {
-            None,
-            Explosion
+            DestructionPower = destructionPower;
         }
     }
 
@@ -137,17 +175,33 @@ namespace Miner.Management.Events
         }
     }
 
-    
-
-    public class MovePlayerEA : EventArgs
+    public class OverrideAmbientLightEA : EventArgs
     {
-        public readonly Vector2 Position;
+        public Color Color;
+        public bool Surface;
+        public bool Underground;
 
-        public MovePlayerEA(Vector2 position)
+        public OverrideAmbientLightEA(Color col, bool surface, bool underground)
         {
-            Position = position;
+            Color = col;
+            Surface = surface;
+            Underground = underground;
         }
     }
+
+
+    public class OverrideSkyEA : EventArgs
+    {
+        public GameObject Sky;
+
+        public OverrideSkyEA(GameObject sky)
+        {
+            Sky = sky;
+        }
+
+        public static OverrideSkyEA Default => new OverrideSkyEA(null);
+    }
+    
 
     public class OverrideTilesEA : EventArgs
     {
@@ -159,15 +213,7 @@ namespace Miner.Management.Events
         }
     }
 
-    public class PlayerCameToLayerEA : EventArgs
-    {
-        public readonly int LayerNumber;
-
-        public PlayerCameToLayerEA(int layerNumber)
-        {
-            LayerNumber = layerNumber;
-        }
-    }
+    
 
     public class PlayMusicEA : EventArgs
     {
@@ -195,57 +241,7 @@ namespace Miner.Management.Events
         }
     }
 
-    public class PlayerDamagedEA : EventArgs
-    {
-        public readonly int Damage;
-        public readonly DamageType Type;
-
-        public PlayerDamagedEA(int damage, DamageType type)
-        {
-            Damage = damage;
-            Type = type;
-        }
-    }
-
-    public class PlayerRepairedEA : EventArgs
-    {
-        public readonly int Repair;
-
-        public PlayerRepairedEA(int repair)
-        {
-            Repair = repair;
-        }
-    }
-
-    public class PlayerLoadedEA : EventArgs
-    {
-        public readonly GameObject Player;
-
-        public PlayerLoadedEA(GameObject player)
-        {
-            Player = player;
-        }
-    }
-
-    public class ResourcesGatheredEA : EventArgs
-    {
-        public readonly List<CargoTable.Element> Resources;
-
-        public ResourcesGatheredEA(List<CargoTable.Element> resources)
-        {
-            Resources = resources;
-        }
-    }
-
-    public class ResourcesLostEA : EventArgs
-    {
-        public readonly List<CargoTable.Element> Resources;
-
-        public ResourcesLostEA(List<CargoTable.Element> resources)
-        {
-            Resources = resources;
-        }
-    }
+    
 
     public class RestoreGameAfterPlayerDestroyedEA : EventArgs
     {
@@ -305,68 +301,20 @@ namespace Miner.Management.Events
         }
     }
 
-    public class TryChangeResourcesInPlayerCargoEA : EventArgs
-    {
-        public List<CargoTable.Element> ResourcesToAdd = new List<CargoTable.Element>();
-        public List<CargoTable.Element> ResourcesToRemove = new List<CargoTable.Element>();
-    }
-
-    public class TryDigEA : EventArgs
-    {
-        public readonly Vector2Int GridCoordinates;
-        public readonly float DrillSharpness;
-        public readonly Vector3 StartPosition;
-        public readonly EDigDirection Direction;
-
-        public TryDigEA(Vector2Int gridCoordinates, float drillSharpness, Vector3 startPosition, EDigDirection direction)
-        {
-            GridCoordinates = gridCoordinates;
-            DrillSharpness = drillSharpness;
-            StartPosition = startPosition;
-            Direction = direction;
-        }
-    }
-
-    public class UpdateCargoTableEA : EventArgs
-    {
-        public List<CargoTable.Element> AddedResources = new List<CargoTable.Element>();
-        public List<CargoTable.Element> RemovedResources = new List<CargoTable.Element>();
-    }
+    
 
     public class UpdateInfrastructureEA : EventArgs
     {
         public int FuelSupplyChange;
     }
 
-    /// <summary>
-    /// This class should be used for update only when there is no frequent changes in the stats.
-    /// </summary>
-    public class UpdatePlayerDataEA : EventArgs
+    public class WindowCreatedEA : EventArgs
     {
-        public int MoneyChange = 0;
-        public int MaxHullChange = 0;
-        public float FuelChange = 0f;
-        public float MaxFuelChange = 0f;
-        public int HullPermaDamage = 0;
-        public int FuelTankPermaDamage = 0;
-        public int EnginePermaDamage = 0;
-        public int CoolingPermaDamage = 0;
-        public int DrillPermaDamage = 0;
-        public int CargoPermaDamage = 0;
-        public int BatteryPermaDamage = 0;
-        public readonly List<ReferencePart> EquipmentChange = new List<ReferencePart>();
-        public readonly List<UsableItemTable.Element> AddUsableItemsChange = new List<UsableItemTable.Element>();
-        public readonly List<UsableItemTable.Element> RemoveUsableItemsChange = new List<UsableItemTable.Element>();
-        
-    }
+        public readonly Window CreatedWindow;
 
-    public class UseItemEA : EventArgs
-    {
-        public readonly UsableItem Item;
-
-        public UseItemEA(UsableItem item)
+        public WindowCreatedEA(Window createdWindow)
         {
-            Item = item;
+            CreatedWindow = createdWindow;
         }
     }
 

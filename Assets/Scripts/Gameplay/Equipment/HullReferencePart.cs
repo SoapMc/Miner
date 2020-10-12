@@ -25,13 +25,39 @@ namespace Miner.Gameplay
                                     "Resistance to hit: " + _resistanceToHit.ToString() };
         }
 
-        public override string[] GetPerformanceDescription()
+        public override string[] GetPerformanceDescription(float durability)
         {
-            return new string[5] {  "Total performance: " + ((int)(_durability * 100)).ToString() + " %",
-                                    "Max hull: " + _maxHull.ToString() + " (" + ((int)(_maxHull *_durability)).ToString() + ")",
-                                    "Resistance to hit: " + _resistanceToHit.ToString() + " (" + ((int)(_resistanceToHit *_durability)).ToString() + ")",
+            return new string[5] {  "Total performance: " + ((int)(durability * 100)).ToString() + " %",
+                                    "Max hull: " + _maxHull.ToString() + " (" + CalculateMaxHull(durability).ToString() + ")",
+                                    "Resistance to hit: " + _resistanceToHit.ToString() + " (" + CalculateResistanceToHit(durability).ToString() + ")",
                                     "Thermal insulation: " + _thermalInsulation.ToString(),
                                     "Damaged permenently when hit above " + ((int)(_maxHull * _permaDamageThreshold)).ToString() + " damage" };
+        }
+
+        public override void Equip(IEquipmentOwner playerStats, float durability)
+        {
+            playerStats.MaxHull += (int)(MaxHull * durability);
+            if (durability == 1f)   //brand new
+                playerStats.Hull = playerStats.MaxHull;
+            playerStats.ResistanceToHit += (int)(ResistanceToHit * durability);
+            playerStats.ThermalInsulation += ThermalInsulation;
+        }
+
+        public override void Unequip(IEquipmentOwner playerStats, float durability)
+        {
+            playerStats.MaxHull -= (int)(MaxHull * durability);
+            playerStats.ResistanceToHit -= (int)(ResistanceToHit * durability);
+            playerStats.ThermalInsulation -= ThermalInsulation;
+        }
+
+        private int CalculateMaxHull(float durability)
+        {
+            return Mathf.CeilToInt(_maxHull * durability);
+        }
+
+        private int CalculateResistanceToHit(float durability)
+        {
+            return (int)(_resistanceToHit * durability);
         }
     }
 }

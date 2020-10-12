@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Drill lv 2
   _sprite: {fileID: 947456644059542688, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 3
   _id: 301
   _cost: 2500
   _shortDescription: 

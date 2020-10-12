@@ -1,52 +1,100 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Miner.Management.Events;
+using Miner.Management.Exceptions;
+using System;
+using Random = UnityEngine.Random;
 
 namespace Miner.Gameplay
 {
     public class NaturalDisastersController : MonoBehaviour
     {
+        [SerializeField] protected GameEvent _disasterEnded = null;
         [SerializeField] private IntReference _timeOfDay = null;
         [SerializeField, Range(0f, 1f)] private float _probabilityOfDisaster = 0.05f;
         [SerializeField] private IntReference _playerLayer = null;
         [SerializeField] private GroundLayerList _layers = null;
 
-        private float _countdownToDisaster = 0f;
+        private float _countdownToOccasionalDisaster = 0f;
         private Coroutine _countdownCoroutine = null;
-        private bool _disasterInProggress = false;
+        private bool _occasionalDisasterInProggress = false;
+        private bool _isOccasionalDisasterAvailable = false;
+
+        private List<NaturalDisaster> _constantDisasters = new List<NaturalDisaster>();
+
         public void OnHourElapsed()
         {
+            if (_isOccasionalDisasterAvailable == false) return;
+
             if (Random.Range(0f, 1f) < _probabilityOfDisaster)
             {
                 if (_countdownCoroutine == null)
                 {
-                    _countdownToDisaster = Random.Range(0f, 5f);
-                    _countdownCoroutine = StartCoroutine(Countdown());
+                    _countdownToOccasionalDisaster = Random.Range(0f, 5f);
+                    _countdownCoroutine = StartCoroutine(CountdownToBeginning());
                 }
             }
         }
 
-        private IEnumerator Countdown()
+        public void OnPlayerCameToLayer(EventArgs args)
         {
-            while (_countdownToDisaster > 0f)
+            if(args is PlayerCameToLayerEA pctl)
             {
-                _countdownToDisaster -= Time.deltaTime;
+                for (int i = 0; i < _constantDisasters.Count; ++i)
+                {
+                    _constantDisasters[i].End();
+                }
+
+                int constantDisasterCounter = 0;
+                for (int i = 0; i < _layers[pctl.LayerNumber].NaturalDisasters.Count; ++i)
+                {
+                    if(_layers[pctl.LayerNumber].NaturalDisasters[i].HappeningType == NaturalDisaster.EHappeningType.Constant)
+                    {
+                        NaturalDisaster nd = _layers[pctl.LayerNumber].NaturalDisasters[i];
+                        nd.Execute();
+                        _constantDisasters.Add(nd);
+                        constantDisasterCounter++;
+                    }
+                }
+
+                if (constantDisasterCounter == _layers[pctl.LayerNumber].NaturalDisasters.Count)
+                    _isOccasionalDisasterAvailable = false;
+                else
+                    _isOccasionalDisasterAvailable = true;
+            }
+            else
+            {
+                Management.GameManager.Instance.Log.Write(GetType() + " : " + new InvalidEventArgsException().Message);
+            }
+        }
+
+        private IEnumerator CountdownToBeginning()
+        {
+            while (_countdownToOccasionalDisaster > 0f)
+            {
+                _countdownToOccasionalDisaster -= Time.deltaTime;
                 yield return null;
             }
 
-            if (_layers[_playerLayer.Value].NaturalDisasters.Count > 0 && _disasterInProggress == false)
+            if (_layers[_playerLayer.Value].NaturalDisasters.Count > 0 && _occasionalDisasterInProggress == false)
             {
-                _disasterInProggress = true;
+                _occasionalDisasterInProggress = true;
                 int disasterIndex = Random.Range(0, _layers[_playerLayer.Value].NaturalDisasters.Count);
-                _layers[_playerLayer.Value].NaturalDisasters[disasterIndex].Execute();
+                NaturalDisaster nd = _layers[_playerLayer.Value].NaturalDisasters[disasterIndex];
+                nd.Execute();
+                _countdownCoroutine = StartCoroutine(CountdownToEnd(nd));
             }
-            _countdownToDisaster = 0f;
-            _countdownCoroutine = null;
+            _countdownToOccasionalDisaster = 0f;
         }
 
-        public void OnNaturalDisasterEnded()
+        private IEnumerator CountdownToEnd(NaturalDisaster disaster)
         {
-            _disasterInProggress = false;
+            yield return new WaitForSeconds(disaster.Time);
+            disaster.End();
+            _disasterEnded.Raise();
+            _occasionalDisasterInProggress = false;
+            _countdownCoroutine = null;
         }
 
         private void OnDestroy()

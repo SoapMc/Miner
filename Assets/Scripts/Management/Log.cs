@@ -17,7 +17,7 @@ namespace Miner.Management
 
         public void Write(string log)
         {
-            _writer.Write("[" + DateTime.Now.ToString() + "] " + log + "\n\n");
+            _writer.Write("[" + DateTime.Now.ToString() + "] " + log + "\n");
         }
 
         public void Dispose()

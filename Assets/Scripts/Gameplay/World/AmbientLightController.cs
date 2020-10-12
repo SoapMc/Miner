@@ -21,8 +21,9 @@ namespace Miner.Gameplay
         private float _topDepth = 0;
         private float _bottomDepth = 0;
         private Coroutine _changeLightCoroutine = null;
+        private OverridingAmbientLight _overridingLight = null;
 
-        private IEnumerator ChangeLightFluentlyToSurface(Color startColor, Color endColor)
+        private IEnumerator ChangeLightFluentlyToSurface(Color startColor)
         {
             float lerpCoeff = 0f;
             while(lerpCoeff < 1f)
@@ -35,7 +36,7 @@ namespace Miner.Gameplay
             _changeLightCoroutine = null;
         }
 
-        private IEnumerator ChangeLightFluentlyToUnderground(Color startColor, Color endColor)
+        private IEnumerator ChangeLightFluentlyToUnderground(Color startColor)
         {
             float lerpCoeff = 0f;
             while (lerpCoeff < 1f)
@@ -45,6 +46,18 @@ namespace Miner.Gameplay
                 yield return null;
             }
             _playerPosition.ValueChanged += OnPlayerPositionChanged;
+            _changeLightCoroutine = null;
+        }
+
+        private IEnumerator ChangeLightFluently(Color startColor, Color endColor)
+        {
+            float lerpCoeff = 0f;
+            while (lerpCoeff < 1f)
+            {
+                lerpCoeff += Time.unscaledDeltaTime;
+                RenderSettings.ambientLight = Color.Lerp(startColor, endColor, lerpCoeff);
+                yield return null;
+            }
             _changeLightCoroutine = null;
         }
 
@@ -95,28 +108,72 @@ namespace Miner.Gameplay
                 _topDepth = CalculateTopDepth(_currentLayerNumber);
                 _bottomDepth = _topDepth + _layers[_currentLayerNumber].Depth;
 
-                if (pctl.LayerNumber > 0)
+                if (_layers[pctl.LayerNumber].AreaType == GroundLayer.EAreaType.Underground)
                 {
+                    if(_overridingLight != null)
+                    {
+                        if (_overridingLight.OverrideUnderground)
+                        {
+                            _timeOfDay.ValueChanged -= MinuteElapsed;
+                            if (_changeLightCoroutine != null)
+                                StopCoroutine(_changeLightCoroutine);
+                            _changeLightCoroutine = StartCoroutine(ChangeLightFluently(RenderSettings.ambientLight, _overridingLight.Color));
+                            return;
+                        }
+                    }
+
                     if (_enabledSurfaceLighting == true)
                     {
                         _timeOfDay.ValueChanged -= MinuteElapsed;
                         if (_changeLightCoroutine != null)
                             StopCoroutine(_changeLightCoroutine);
-                        _changeLightCoroutine = StartCoroutine(ChangeLightFluentlyToUnderground(RenderSettings.ambientLight, _layers[pctl.LayerNumber].AmbientLightColor));
+                        _changeLightCoroutine = StartCoroutine(ChangeLightFluentlyToUnderground(RenderSettings.ambientLight));
                     }
                     _enabledSurfaceLighting = false;
                 }
-                else
+                else if(_layers[pctl.LayerNumber].AreaType == GroundLayer.EAreaType.Surface) //got to the surface
                 {
+                    if(_overridingLight != null)
+                    {
+                        if (_overridingLight.OverrideSurface)
+                        {
+                            _playerPosition.ValueChanged -= OnPlayerPositionChanged;
+                            if (_changeLightCoroutine != null)
+                                StopCoroutine(_changeLightCoroutine);
+                            _changeLightCoroutine = StartCoroutine(ChangeLightFluently(RenderSettings.ambientLight, _overridingLight.Color));
+                            return;
+                        }
+                    }
+
                     if (_enabledSurfaceLighting == false)
                     {
                         _playerPosition.ValueChanged -= OnPlayerPositionChanged;
                         if (_changeLightCoroutine != null)
                             StopCoroutine(_changeLightCoroutine);
-                        _changeLightCoroutine = StartCoroutine(ChangeLightFluentlyToSurface(RenderSettings.ambientLight, CalculateAmbientLightColorOnSurface(_timeOfDay.Value)));
+                        _changeLightCoroutine = StartCoroutine(ChangeLightFluentlyToSurface(RenderSettings.ambientLight));
                     }
                     _enabledSurfaceLighting = true;
                 }
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
+
+        public void OnOverrideAmbientLight(EventArgs args)
+        {
+            if(args is OverrideAmbientLightEA oal)
+            {
+                if (oal.Surface == true || oal.Underground == true)
+                {
+                    _overridingLight = new OverridingAmbientLight() { Color = oal.Color, OverrideSurface = oal.Surface, OverrideUnderground = oal.Underground };
+                }
+                else
+                {
+                    _overridingLight = null;
+                }
+                OnPlayerCameToLayer(new PlayerCameToLayerEA(_currentLayerNumber));
             }
             else
             {
@@ -150,6 +207,13 @@ namespace Miner.Gameplay
                 StopCoroutine(_changeLightCoroutine);
                 _changeLightCoroutine = null;
             }
+        }
+
+        private class OverridingAmbientLight
+        {
+            public Color Color;
+            public bool OverrideSurface;
+            public bool OverrideUnderground;
         }
     }
 }

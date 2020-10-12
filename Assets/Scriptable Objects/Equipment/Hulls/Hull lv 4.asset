@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Hull lv 4
   _sprite: {fileID: -3311347935980118092, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 6
   _id: 603
   _cost: 25000
   _shortDescription: 

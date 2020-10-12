@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Miner.Gameplay
 {
-    [CreateAssetMenu(menuName = "Predefined World Object")]
+    [CreateAssetMenu(menuName = "World/Predefined World Object")]
     public class PredefinedWorldObject : ScriptableObject
     {
         [SerializeField] private GameObject _prefab = null;

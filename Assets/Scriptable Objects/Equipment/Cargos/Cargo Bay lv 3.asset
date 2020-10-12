@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Cargo Bay lv 3
   _sprite: {fileID: -5354425298642934142, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 1
   _id: 102
   _cost: 6000
   _shortDescription: 

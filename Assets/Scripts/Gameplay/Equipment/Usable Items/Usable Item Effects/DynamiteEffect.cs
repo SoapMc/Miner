@@ -9,7 +9,6 @@ namespace Miner.Gameplay
     public class DynamiteEffect : UsableItemEffect
     {
         [Header("Events")]
-        [SerializeField] private GameEvent _cameraShake = null;
         [SerializeField] private GameEvent _destroyTiles = null;
         [SerializeField] private GameEvent _createParticle = null;
 
@@ -18,13 +17,10 @@ namespace Miner.Gameplay
         [SerializeField] private Vector2Reference _playerPosition = null;
         [SerializeField] private ParticleSystem _explosionEffect = null;
         [SerializeField] private ParticleSystem _groundExplosionParticles = null;
-
-        [Header("Camera Shake")]
-        [SerializeField, Range(0f, 1f)] private float _cameraShakeAmplitude = 0.5f;
+        [SerializeField, Range(0, 100)] private int _destructionPower = 70;
 
         public override void Execute()
         {
-            _cameraShake.Raise(new CameraShakeEA(_cameraShakeAmplitude));
             _createParticle.Raise(new CreateParticleEA(_explosionEffect, _playerPosition));
 
             List<Vector2Int> destroyedTiles = new List<Vector2Int>(9);
@@ -37,7 +33,7 @@ namespace Miner.Gameplay
                 }
             }
 
-            _destroyTiles.Raise(new DestroyTilesEA(destroyedTiles, DestroyTilesEA.ESource.Explosion));
+            _destroyTiles.Raise(new DestroyTilesEA(destroyedTiles, _destructionPower));
             if(_soundOnUse != null)
                 _soundOnUse.Play();
         }

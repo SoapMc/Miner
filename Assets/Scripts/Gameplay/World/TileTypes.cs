@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Miner.Gameplay
 {
-    [CreateAssetMenu(menuName = "Tile Types")]
+    [CreateAssetMenu(menuName = "World/Tile Types")]
     public class TileTypes : ScriptableObject, ICollection<TileType>
     {
         [SerializeField] private List<TileType> _content = new List<TileType>();

@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Drill lv 5
   _sprite: {fileID: -1433595848297821553, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 3
   _id: 304
   _cost: 50000
   _shortDescription: 

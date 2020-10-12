@@ -2,29 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace Miner.Gameplay
 {
     [CreateAssetMenu(menuName = "Equipment Table")]
     public class EquipmentTable : ScriptableObject
     {
-        public HullReferencePart Hull { get; set; }
-        public FuelTankReferencePart FuelTank { get; set; }
-        public BatteryReferencePart Battery { get; set; }
-        public CargoReferencePart Cargo { get; set; }
-        public EngineReferencePart Engine { get; set; }
-        public CoolingReferencePart Cooling { get; set; }
-        public DrillReferencePart Drill { get; set; }
+        private IEquipmentOwner _owner = null;
+        private Dictionary<EPartType, Part> _equipment = new Dictionary<EPartType, Part>();
+
+        private void OnEnable()
+        {
+            Clear();
+        }
 
         public void Clear()
         {
-            Hull = null;
-            FuelTank = null;
-            Battery = null;
-            Cargo = null;
-            Engine = null;
-            Cooling = null;
-            Drill = null;
+            foreach (EPartType partType in Enum.GetValues(typeof(EPartType)))
+            {
+                _equipment[partType] = null;
+            }
+        }
+
+        public Part GetEquippedPart(EPartType partType)
+        {
+            return _equipment[partType];
+        }
+
+        public void SetEquippedPart(Part part)
+        {
+            _equipment[part.Type] = part;
         }
     }
 }

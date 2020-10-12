@@ -15,7 +15,9 @@ MonoBehaviour:
   _name: Cooling lv 7
   _sprite: {fileID: -5027839843163407530, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 2
   _id: 206
   _cost: 180000
   _shortDescription: 
   _effectiveCooling: 400
+  _powerUsage: 1.8

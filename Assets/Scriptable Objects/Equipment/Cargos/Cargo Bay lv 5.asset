@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Cargo Bay lv 5
   _sprite: {fileID: 1209158129750807361, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 1
   _id: 104
   _cost: 50000
   _shortDescription: 

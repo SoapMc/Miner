@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Fuel Tank lv 3
   _sprite: {fileID: 2636099315891649933, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 5
   _id: 502
   _cost: 6000
   _shortDescription: 

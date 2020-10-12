@@ -8,15 +8,17 @@ namespace Miner.UI
 {
     public class PlayerTemperaturesDisplay : MonoBehaviour
     {
-        [SerializeField] private Image _sliderFill = null;
-        [SerializeField] private Slider _heatFlowSlider = null;
+        [SerializeField] private Image _fill = null;
         [SerializeField] private FloatReference _playerInternalTemperature = null;
         [SerializeField] private FloatReference _playerExternalTemperature = null;
-        [SerializeField] private TextMeshProUGUI _TempText = null;
+        [SerializeField] private TextMeshProUGUI _brightText = null;
+        [SerializeField] private TextMeshProUGUI _blackText = null;
         [SerializeField] private FloatReference _heatFlow = null;
         [SerializeField] private Color _heating = Color.red;
         [SerializeField] private Color _cooling = Color.blue;
         [SerializeField] private float _heatScale = 1f;
+
+        private Bar _bar = null;
         private int _internalTemp;
         private int _externalTemp;
 
@@ -26,22 +28,27 @@ namespace Miner.UI
             {
                 _internalTemp = (int)_playerInternalTemperature.Value;
                 _externalTemp = (int)_playerExternalTemperature.Value;
-                _heatFlowSlider.value = Mathf.Abs(_heatFlow.Value / _heatScale);
-                _TempText.text = _internalTemp.ToString() + " / " + _externalTemp.ToString() + " C deg";
-                
+                _bar.Value = Mathf.Abs(_heatFlow.Value / _heatScale);
+                _brightText.text = _internalTemp.ToString() + " / " + _externalTemp.ToString() + " deg";
+                _blackText.text = _brightText.text;
 
                 if(_heatFlow.Value >= 0f)
                 {
-                    _sliderFill.color = _heating;
-                    _TempText.color = _heating;
+                    _fill.color = _heating;
+                    _brightText.color = _heating;
                 }
                 else
                 {
-                    _sliderFill.color = _cooling;
-                    _TempText.color = _cooling;
+                    _fill.color = _cooling;
+                    _brightText.color = _cooling;
                 }
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
             }
+        }
+
+        private void Awake()
+        {
+            _bar = GetComponent<Bar>();
         }
 
         private void OnEnable()

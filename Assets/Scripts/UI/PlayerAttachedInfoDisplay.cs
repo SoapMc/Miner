@@ -6,6 +6,7 @@ using System.Text;
 using System;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
+using Miner.FX;
 
 namespace Miner.UI
 {
@@ -14,23 +15,26 @@ namespace Miner.UI
         [Range(0.5f, 5f), SerializeField] private float _timeOfDisplayingFullText = 2f;
         [Range(5f, 100f), SerializeField] private float _rateOfAppearing = 10;
         [Range(5f, 100f), SerializeField] private float _rateOfDisappearing = 50;
-
+        [SerializeField] private SoundEffect _textAppearingSound = null;
+        private AudioSource _audioSource = null;
         private TextMeshProUGUI _text = null;
         const int MAX_LENGTH = 48;
         private StringBuilder _sb = new StringBuilder(MAX_LENGTH);
         private string _wholeText = string.Empty;
+        private TextAppearingEffect _textAppearingEffect = null;
         private Coroutine _coroutine = null;
 
         private IEnumerator TriggerAppearing()
         {
+            _textAppearingSound.Play(_audioSource);
             while(_sb.Length < _wholeText.Length)
             {
                 _sb.Append(_wholeText[_sb.Length]);
                 _text.text = _sb.ToString();
-                yield return new WaitForSeconds(1 / _rateOfAppearing);
+                yield return new WaitForSecondsRealtime(1 / _rateOfAppearing);
             }
             _wholeText = string.Empty;
-
+            _audioSource.Stop();
             yield return new WaitForSeconds(_timeOfDisplayingFullText);
 
             _coroutine = StartCoroutine(TriggerDisappearing());
@@ -42,15 +46,15 @@ namespace Miner.UI
             {
                 _sb.Remove(_sb.Length - 1, 1);
                 _text.text = _sb.ToString();
-                yield return new WaitForSeconds(1 / _rateOfDisappearing);
+                yield return new WaitForSecondsRealtime(1 / _rateOfDisappearing);
             }
-
             if (_wholeText != string.Empty)
             {
                 _coroutine = StartCoroutine(TriggerAppearing());
             }
             else
                 _coroutine = null;
+
         }
 
         public void OnResourceGathered(EventArgs args)
@@ -144,6 +148,7 @@ namespace Miner.UI
 
         private void Awake()
         {
+            _audioSource = GetComponent<AudioSource>();
             _text = GetComponent<TextMeshProUGUI>();
             _text.text = string.Empty;
         }

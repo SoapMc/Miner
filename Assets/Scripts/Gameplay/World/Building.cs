@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Miner.Management.Events;
+using Miner.UI;
 
 namespace Miner.Gameplay
 {
     public class Building : MonoBehaviour
     {
-        [SerializeField] private GameObject _windowPrefab = null;
+        [SerializeField] private Window _windowPrefab = null;
         [Header("Events")]
         [SerializeField] private GameEvent _createWindow = null;
 

@@ -9,23 +9,27 @@ using Miner.Management.Exceptions;
 using UnityEngine.Tilemaps;
 using System.Linq;
 using Miner.FX;
+using System.Collections;
 
 namespace Miner.Management
 {
     [System.Serializable]
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : MonoBehaviour, IEquipmentOwner
     {
         [Header("Events")]
         [SerializeField] private GameEvent _playerLoaded = null;
         [SerializeField] private GameEvent _playerDestroyed = null;
         [SerializeField] private GameEvent _updatePlayerData = null;
-        [SerializeField] private GameEvent _playerDead = null;
+        [SerializeField] private GameEvent _playerDied = null;
         [SerializeField] private GameEvent _chooseUsableItem = null;
         [SerializeField] private GameEvent _updateInfrastructureData = null;
         [SerializeField] private GameEvent _cargoFull = null;
         [SerializeField] private GameEvent _useItem = null;
         [SerializeField] private GameEvent _resourcesLost = null;
         [SerializeField] private GameEvent _cameraShake = null;
+        [SerializeField] private GameEvent _respawnPlayer = null;
+        [SerializeField] private GameEvent _playerRespawned = null;
+        [SerializeField] private GameEvent _playerRadiationChanged = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _layer = null;
@@ -51,6 +55,13 @@ namespace Miner.Management
         [SerializeField] private TileTypes _tileTypes = null;
         [SerializeField] private GameObject _playerPrefab = null;
         [SerializeField] private SoundEffect _hitSound = null;
+        [SerializeField] private FloatReference _power = null;
+        [SerializeField] private FloatReference _powerUsage = null;
+        [SerializeField] private FloatReference _maxPower = null;
+        [SerializeField] private IntReference _radiation = null;
+        [SerializeField] private IntReference _radiationTolerance = null;
+        [SerializeField] private Vector2IntReference _playerGridPosition = null;
+        [SerializeField] private IntReference _playerMaxAchievedDepth = null;
 
         [Header("Initial resources")]
         [SerializeField] private int _initialMoney = 0;
@@ -67,14 +78,25 @@ namespace Miner.Management
         private float _cameraShakeAmplitude = 0.2f;
 
         public int Money => _money;
-        public int MaxHull => _maxHull;
-        public int Hull => _hull;
-        public float MaxFuel => _maxFuel;
-        public float Fuel => _fuel;
         public CargoTable Cargo => _cargo;
         public EquipmentTable Equipment => _equipment;
+        public float Power { get => _power; set => _power.Value = value; }
+        public int MaxHull { get => _maxHull; set => _maxHull.Value = value; }
+        public int Hull { get => _hull; set => _hull.Value = value; }
+        public float MaxFuel { get => _maxFuel; set => _maxFuel.Value = value; }
+        public float Fuel { get => _fuel; set => _fuel.Value = value; }
+        public float EffectiveCooling { get => _effectiveCooling; set => _effectiveCooling.Value = value; }
+        public int EnginePower { get => _enginePower; set => _enginePower.Value = value; }
+        public float FuelUsage { get => _fuelUsage; set => _fuelUsage.Value = value; }
+        public float DrillSharpness { get => _drillSharpness; set => _drillSharpness.Value = value; }
+        public int CargoMaxMass { get => _cargoMaxMass; set => _cargoMaxMass.Value = value; }
+        public int ResistanceToHit { get => _resistanceToHit; set => _resistanceToHit.Value = value; }
+        public int ThermalInsulation { get => _thermalInsulation; set => _thermalInsulation.Value = value; }
+        public float ChanceForLoseResource { get => _chanceForLoseResource; set => _chanceForLoseResource.Value = value; }
+        public float PowerUsage { get => _powerUsage; set => _powerUsage.Value = value; }
+        public float MaxPower { get => _maxPower; set => _maxPower.Value = value; }
+        public int RadiationTolerance { get => _radiationTolerance; set => _radiationTolerance.Value = value; }
 
-        
         public void ResetCharacter()
         {
             if (_player != null)
@@ -82,67 +104,46 @@ namespace Miner.Management
             _player = Instantiate(_playerPrefab);
             _equipment.Clear();
             _money.Value = _initialMoney;
-            Equip(_initialHull);
-            Equip(_initialEngine);
-            Equip(_initialFuelTank);
+            _maxHull.Value = 0;
+            _hull.Value = 0;
+            _maxFuel.Value = 0f;
+            _effectiveCooling.Value = 0f;
+            _enginePower.Value = 0;
+            _fuelUsage.Value = 0f;
+            _drillSharpness.Value = 0f;
+            _cargoMaxMass.Value = 0;
+            _resistanceToHit.Value = 0;
+            _thermalInsulation.Value = 0;
+            _chanceForLoseResource.Value = 0f;
+            _powerUsage.Value = 0f;
+            _power.Value = 0f;
+            _maxPower.Value = 0f;
+            _radiation.Value = 0;
+            _radiationTolerance.Value = 0;
+            Equip(ReferencePart.CreatePart(_initialHull));
+            Equip(ReferencePart.CreatePart(_initialEngine));
+            Equip(ReferencePart.CreatePart(_initialFuelTank));
             _fuel.Value = _maxFuel;
-            Equip(_initialDrill);
-            Equip(_initialCooling);
-            Equip(_initialCargo);
-            Equip(_initialBattery);
+            Equip(ReferencePart.CreatePart(_initialDrill));
+            Equip(ReferencePart.CreatePart(_initialCooling));
+            Equip(ReferencePart.CreatePart(_initialCargo));
+            
+            Equip(ReferencePart.CreatePart(_initialBattery));
             _cargo.Clear();
             _usableItems.Clear();
+            _playerGridPosition.ValueChanged += OnPlayerGridPostionChanged;
 
             _playerLoaded.Raise(new PlayerLoadedEA(_player.gameObject));
         }
 
-        private void Equip(ReferencePart part, float durability = 1f)
+        private void Equip(Part part)
         {
             if (part == null) return;
-            part.Durability = Mathf.Clamp(durability, 0.1f, 1f);
-            switch(part)
-            {
-                case HullReferencePart hull:
-                    _equipment.Hull = hull;
-                    _maxHull.Value = (int)(hull.MaxHull * part.Durability);
-                    if(durability == 1f)
-                        _hull.Value = _maxHull.Value;
-                    _resistanceToHit.Value = (int)(hull.ResistanceToHit * part.Durability);
-                    _thermalInsulation.Value = hull.ThermalInsulation;
-                    break;
-                case EngineReferencePart engine:
-                    _equipment.Engine = engine;
-                    _enginePower.Value = (int)(engine.Power * part.Durability * 1000);
-                    _fuelUsage.Value = engine.FuelUsage;
-                    break;
-                case FuelTankReferencePart fuelTank:
-                    _equipment.FuelTank = fuelTank;
-                    _maxFuel.Value = fuelTank.Volume;
-                    if(_fuel > _maxFuel)
-                    {
-                        _fuel.Value = _maxFuel;
-                    }
-                    break;
-                case DrillReferencePart drill:
-                    _equipment.Drill = drill;
-                    _drillSharpness.Value = drill.Sharpness;
-                    break;
-                case CargoReferencePart cargo:
-                    _equipment.Cargo = cargo;
-                    _cargoMaxMass.Value = cargo.MaxMass;
-                    _chanceForLoseResource.Value = cargo.ChanceForLoseResource();
-                    break;
-                case BatteryReferencePart battery:
-                    _equipment.Battery = battery;
-                    _availableCells.Value = battery.AvailableCells;
-                    break;
-                case CoolingReferencePart cooling:
-                    _equipment.Cooling = cooling;
-                    _effectiveCooling.Value = cooling.EffectiveCooling;
-                    break;
-                default:
-                    break;
-            }
+            Part previousPart = _equipment.GetEquippedPart(part.Type);
+            if (previousPart != null)
+                previousPart.Unequip();
+            _equipment.SetEquippedPart(part);
+            part.Equip(this);
         }
         
         public PlayerData RetrieveSerializableData()
@@ -150,46 +151,19 @@ namespace Miner.Management
             PlayerData pd = new PlayerData()
             {
                 Money = _money,
-                MaxHull = _maxHull,
                 Hull = _hull,
-                MaxFuel = _maxFuel,
-                Fuel = _fuel
+                Fuel = _fuel,
+                Power = _power,
+                MaxAchievedDepth = _playerMaxAchievedDepth
             };
 
-            if(_equipment.Hull != null)
+            foreach(EPartType partType in Enum.GetValues(typeof(EPartType)))
             {
-                pd.HullPartId = _equipment.Hull.Id;
-                pd.HullDurability = _equipment.Hull.Durability;
-            }
-            if (_equipment.FuelTank != null)
-            {
-                pd.FuelTankPartId = _equipment.FuelTank.Id;
-                pd.FuelTankDurability = _equipment.FuelTank.Durability;
-            }
-            if (_equipment.Engine != null)
-            {
-                pd.EnginePartId = _equipment.Engine.Id;
-                pd.EngineDurability = _equipment.Engine.Durability;
-            }
-            if (_equipment.Drill != null)
-            {
-                pd.DrillPartId = _equipment.Drill.Id;
-                pd.DrillDurability = _equipment.Drill.Durability;
-            }
-            if (_equipment.Cooling != null)
-            {
-                pd.CoolingPartId = _equipment.Cooling.Id;
-                pd.CoolingDurability = _equipment.Cooling.Durability;
-            }
-            if (_equipment.Cargo != null)
-            {
-                pd.CargoPartId = _equipment.Cargo.Id;
-                pd.CargoDurability = _equipment.Cargo.Durability;
-            }
-            if (_equipment.Battery != null)
-            {
-                pd.BatteryPartId = _equipment.Battery.Id;
-                pd.BatteryDurability = _equipment.Battery.Durability;
+                Part part = _equipment.GetEquippedPart(partType);
+                if(part != null)
+                {
+                    pd.Equipment.Add(new PlayerData.EquipmentElementSaveData() { Type = partType, Id = part.Id, Durability = part.Durability });
+                }
             }
 
             foreach(var usableItem in _usableItems)
@@ -205,25 +179,23 @@ namespace Miner.Management
 
         public void Load(PlayerData data)
         {
-            if (data.Money < 0 || data.MaxHull <= 0 || data.MaxFuel <= 0)
+            if (data.Money < 0 || data.Hull <= 0 || data.Fuel <= 0 || data.Power <= 0)
             {
                 Debug.LogException(new InvalidSaveStateException());
                 throw new InvalidSaveStateException();
             }
 
             ResetCharacter();
+            foreach (var equipmentElement in data.Equipment)
+            {
+                Equip(_partList.GetReferencePart(equipmentElement.Id).CreatePart(equipmentElement.Durability));
+            }
+
             _money.Value = data.Money;
-            _maxHull.Value = data.MaxHull;
             _hull.Value = data.Hull;
-            _maxFuel.Value = data.MaxFuel;
             _fuel.Value = data.Fuel;
-            if(data.HullPartId != -1) Equip(_partList.GetPart(data.HullPartId), data.HullDurability);
-            if (data.FuelTankPartId != -1) Equip(_partList.GetPart(data.FuelTankPartId), data.FuelTankDurability);
-            if (data.EnginePartId != -1) Equip(_partList.GetPart(data.EnginePartId), data.EngineDurability);
-            if (data.DrillPartId != -1) Equip(_partList.GetPart(data.DrillPartId), data.DrillDurability);
-            if (data.CoolingPartId != -1) Equip(_partList.GetPart(data.CoolingPartId), data.CoolingDurability);
-            if (data.CargoPartId != -1) Equip(_partList.GetPart(data.CargoPartId), data.CargoDurability);
-            if (data.BatteryPartId != -1) Equip(_partList.GetPart(data.BatteryPartId), data.BatteryDurability);
+            _power.Value = data.Power;
+            _playerMaxAchievedDepth.Value = data.MaxAchievedDepth;
 
             foreach(var usableItem in data.UsableItems)
             {
@@ -239,24 +211,37 @@ namespace Miner.Management
 
         public void Unload()
         {
+            _playerGridPosition.ValueChanged -= OnPlayerGridPostionChanged;
             _playerDestroyed.Raise();
             if (_player != null)
                 Destroy(_player.gameObject);
         }
 
-        private void DealPermaDamage(ReferencePart part, int amount)
+        #region COROUTINES
+
+        private IEnumerator RestorePlayerAfterSeconds(float seconds)
         {
-            if (amount > 0)
-            {
-                if (part != null)
-                {
-                    part.Durability -= amount / 100f;
-                    Equip(part, part.Durability);
-                }
-            }
+            yield return new WaitForSeconds(seconds);
+            _respawnPlayer.Raise();
+            _playerRespawned.Raise();
         }
 
+        #endregion
+
         #region EVENT RESPONSES
+
+        public void OnChangePlayerRadiation(EventArgs args)
+        {
+            if(args is ChangePlayerRadiationEA cpr)
+            {
+                _radiation.Value += cpr.RadiationChange;
+                _playerRadiationChanged.Raise(new PlayerRadiationChangedEA(_radiation.Value));
+            }
+            else
+            {
+                throw new InvalidEventArgsException();
+            }
+        }
 
         public void OnUpdatePlayerData(EventArgs args)
         {
@@ -287,14 +272,6 @@ namespace Miner.Management
                 {
                     _usableItems.Remove(removeUsableItem);
                 }
-
-                DealPermaDamage(_equipment.Hull, upd.HullPermaDamage);
-                DealPermaDamage(_equipment.FuelTank, upd.FuelTankPermaDamage);
-                DealPermaDamage(_equipment.Engine, upd.EnginePermaDamage);
-                DealPermaDamage(_equipment.Drill, upd.DrillPermaDamage);
-                DealPermaDamage(_equipment.Cooling, upd.CoolingPermaDamage);
-                DealPermaDamage(_equipment.Cargo, upd.CargoPermaDamage);
-                DealPermaDamage(_equipment.Battery, upd.BatteryPermaDamage);
             }
             else
             {
@@ -376,6 +353,8 @@ namespace Miner.Management
             {
                 bool changeUsableItemIndex = false;
                 UsableItem item = _usableItems[_chosenUsableItemIndex].Item;
+                if (item.UsedPower > _power) return; //not enough power
+                _power.Value -= item.UsedPower;
                 if (_usableItems[_chosenUsableItemIndex].Amount == 1)   //last item used
                     changeUsableItemIndex = true;
                 item.Execute();
@@ -405,7 +384,7 @@ namespace Miner.Management
 
         public void OnPlayerDamaged(EventArgs args)
         {
-            if(args is PlayerDamagedEA pd)
+            if(args is DamagePlayerEA pd)
             {
                 if (pd.Damage > 0)
                 {
@@ -414,17 +393,16 @@ namespace Miner.Management
                     _cameraShake.Raise(new CameraShakeEA(_cameraShakeAmplitude));
                     _hitSound.Play();
 
+                    foreach(var perma in pd.PermaDamage)
+                    {
+                        Part part = _equipment.GetEquippedPart(perma.Key);
+                        if(part != null)
+                            part.Durability -= perma.Value / 100f;
+                    }
+
                     if (_hull.Value <= 0)
                     {
-                        _playerDead.Raise();
-
-                        DealPermaDamage(_equipment.Hull, Random.Range(0, 5));
-                        DealPermaDamage(_equipment.FuelTank, Random.Range(0, 5));
-                        DealPermaDamage(_equipment.Engine, Random.Range(0, 5));
-                        DealPermaDamage(_equipment.Drill, Random.Range(0, 5));
-                        DealPermaDamage(_equipment.Cooling, Random.Range(0, 5));
-                        DealPermaDamage(_equipment.Cargo, Random.Range(0, 5));
-                        DealPermaDamage(_equipment.Battery, Random.Range(0, 5));
+                        OnKillPlayer();
                     }
                 }
             }
@@ -448,6 +426,26 @@ namespace Miner.Management
             {
                 throw new InvalidEventArgsException();
             }
+        }
+
+        public void OnKillPlayer()
+        {
+            foreach (EPartType partType in Enum.GetValues(typeof(EPartType)))
+            {
+                Part part = _equipment.GetEquippedPart(partType);
+                if (part != null)
+                    part.Durability -= Random.Range(1, 10)/100f;
+            }
+
+            _playerDied.Raise();
+            StartCoroutine(RestorePlayerAfterSeconds(5f));
+        }
+
+        public void OnPlayerGridPostionChanged(Vector2Int old, Vector2Int newVal)
+        {
+            int depth = (int)Mathf.Abs(newVal.y * GameRules.Instance.RealDimensionOfTile);  //in meters
+            if (depth > _playerMaxAchievedDepth.Value)
+                _playerMaxAchievedDepth.Value = depth;
         }
         #endregion
 

@@ -1,30 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Miner.Gameplay;
-using Miner.Management.Events;
+﻿using UnityEngine;
 
 namespace Miner.UI
 {
-    public class WorkshopWindow : MonoBehaviour
+    public class WorkshopWindow : Window
     {
-        [Header("Input")]
-        [SerializeField] private PlayerInputSheet _input = null;
+        [SerializeField] private PartListGrid _partListGrid = null;
 
-        [Header("Events")]
-        [SerializeField] private GameEvent _closeWindow = null;
-
-        private void CloseWindow()
+        protected override void OnAppearingFinished()
         {
-            Time.timeScale = 1f;
-            _closeWindow.Raise(new CloseWindowEA(gameObject));
-            _input.CancelKeyPressed -= CloseWindow;
+            
         }
 
         private void Start()
         {
-            Time.timeScale = 0f;
-            _input.CancelKeyPressed += CloseWindow;
+            _partListGrid.Load();
+            _firstSelectedObject = _partListGrid.GetFirstSelectedObject();
+            SelectFirstObject();
         }
     }
 }

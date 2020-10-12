@@ -54,7 +54,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf7d2ce1b8b3e1744a462e0444169dca, type: 2}
   - {fileID: 11400000, guid: a4669a7aee6319a4ebbe027d68410b5b, type: 2}
   - {fileID: 11400000, guid: 5febe3905b414e14385fa83035621c97, type: 2}
-  _batteries: []
+  _batteries:
+  - {fileID: 11400000, guid: 6852ee2c5c995ef4a974a7ec094cf20a, type: 2}
+  - {fileID: 11400000, guid: 44681fcfd54eae0429aa835cfb7e20c6, type: 2}
+  - {fileID: 11400000, guid: 258ec440fb32de94d96f699ff82ea585, type: 2}
+  - {fileID: 11400000, guid: 81442682e7afbf246b0b83fa01739e0a, type: 2}
+  - {fileID: 11400000, guid: c59a3360419f1b540915b400bc530621, type: 2}
+  - {fileID: 11400000, guid: 4437705c0a693b145beebb4014827cbf, type: 2}
+  - {fileID: 11400000, guid: 1dee4a355d8a9ae4eb58fd0d3419cd5a, type: 2}
+  - {fileID: 11400000, guid: 6448d38491289a24f8bfe2eb37dcf4ce, type: 2}
   _drills:
   - {fileID: 11400000, guid: ff9dc1d6a8f49af41bb677fd0cec7227, type: 2}
   - {fileID: 11400000, guid: e243906901d8e7b4890521a372ed1ad6, type: 2}

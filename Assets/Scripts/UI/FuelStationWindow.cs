@@ -6,24 +6,22 @@ using Miner.Gameplay;
 using Miner.Management.Events;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Miner.FX;
 
 namespace Miner.UI
 {
-    public class FuelStationWindow : MonoBehaviour
+    public class FuelStationWindow : Window
     {
         [SerializeField] private FloatReference _fuelSupply = null;
         [SerializeField] private FloatReference _playerFuel = null;
         [SerializeField] private FloatReference _playerMaxFuel = null;
         [SerializeField] private IntReference _playerMoney = null;
-        [SerializeField] private PlayerInputSheet _input = null;
         [SerializeField] private TextMeshProUGUI _price = null;
         [SerializeField] private TextMeshProUGUI _fuelSupplyText = null;
         [SerializeField] private TextMeshProUGUI _fullRefillCostText = null;
-        [SerializeField] private Selectable _firstSelectedObject = null;
-
+        
         [Header("Events")]
         [SerializeField] private GameEvent _updatePlayerData = null;
-        [SerializeField] private GameEvent _closeWindow = null;
 
         private int _fuelPrice;
         private int _fullRefillCost;
@@ -126,13 +124,6 @@ namespace Miner.UI
             _fullRefillCostText.text = _fullRefillCost.ToString() + " $";
         }
 
-        public void CloseWindow()
-        {
-            _closeWindow.Raise(new CloseWindowEA(gameObject));
-            Time.timeScale = 1f;
-            _input.CancelKeyPressed -= CloseWindow;
-        }
-
         private void CalculateFuelPrice()
         {
             _fuelPrice = 10 - (int)_fuelSupply / 1000;
@@ -146,11 +137,7 @@ namespace Miner.UI
 
         private void Start()
         {
-            Time.timeScale = 0f;
             RefreshUI();
-            EventSystem.current.SetSelectedGameObject(_firstSelectedObject.gameObject);
-            _firstSelectedObject.OnSelect(null);
-            _input.CancelKeyPressed += CloseWindow;
         }
     }
 }

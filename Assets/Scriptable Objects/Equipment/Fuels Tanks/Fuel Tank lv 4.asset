@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Fuel Tank lv 4
   _sprite: {fileID: -5387971213818490782, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 5
   _id: 503
   _cost: 16000
   _shortDescription: 

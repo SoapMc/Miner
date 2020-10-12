@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ecbf6975610e1b4095b7484cedc48a2, type: 3}
+  m_Name: 7_Copper
+  m_EditorClassIdentifier: 
+  _name: Copper
+  _id: 7
+  _icon: {fileID: 1426625157473891814, guid: 26c031fa22d39f943a7297fda14c6f22, type: 3}
+  _tiles:
+  - {fileID: 11400000, guid: c643076bb2a37834fb05c5b95e74ede4, type: 2}
+  _hardiness: 1
+  _value: 80
+  _isFuel: 0
+  _isCollectible: 1
+  _isDestroyable: 1
+  _mass: 120

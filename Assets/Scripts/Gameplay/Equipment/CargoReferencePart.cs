@@ -9,24 +9,55 @@ namespace Miner.Gameplay
     public class CargoReferencePart : ReferencePart
     {
         [SerializeField] private int _maxMass = 0;
+        [SerializeField] private int _radiationTolerance = 0;
 
         public int MaxMass => _maxMass;
+        public int RadiationTolerance => _radiationTolerance;
 
-        public float ChanceForLoseResource()
+
+        public float ChanceForLoseResource(float durability)
         {
-            return 1f - Durability;
+            return 1f - durability;
         }
 
         public override string[] GetSpecificDescription()
         {
-            return new string[1] { "Capacity: " + _maxMass.ToString() + " kg" };
+            return new string[2] { "Capacity: " + _maxMass.ToString() + " kg",
+                                   "Radiation Tolerance: " + GetRadiationToleranceText(RadiationTolerance) };
         }
 
-        public override string[] GetPerformanceDescription()
+        public override string[] GetPerformanceDescription(float durability)
         {
-            return new string[2] {  "Capacity: " + _maxMass.ToString() + " kg",
-                                    "Chance for lose resource when gathered: " + ((int)(ChanceForLoseResource() * 100)).ToString() + " %",
+            return new string[3] {  "Capacity: " + _maxMass.ToString() + " kg",
+                                    "Chance for lose resource when gathered: " + ((int)(ChanceForLoseResource(durability) * 100)).ToString() + " %",
+                                    "Radiation Tolerance: " + GetRadiationToleranceText((int)(RadiationTolerance * durability))
                                  };
+        }
+
+        public override void Equip(IEquipmentOwner playerStats, float durability)
+        {
+            playerStats.CargoMaxMass += MaxMass;
+            playerStats.ChanceForLoseResource += ChanceForLoseResource(durability);
+        }
+
+        public override void Unequip(IEquipmentOwner playerStats, float durability)
+        {
+            playerStats.CargoMaxMass -= MaxMass;
+            playerStats.ChanceForLoseResource -= ChanceForLoseResource(durability);
+        }
+
+        private string GetRadiationToleranceText(int radiationTolerance)
+        {
+            if (radiationTolerance < 1)
+                return "None";
+            else if (radiationTolerance >= 1 && radiationTolerance < 3)
+                return "Low";
+            else if (radiationTolerance >= 3 && radiationTolerance < 6)
+                return "Moderate";
+            else if (radiationTolerance >= 6 && radiationTolerance < 8)
+                return "High";
+            else
+                return "Very High";
         }
     }
 }

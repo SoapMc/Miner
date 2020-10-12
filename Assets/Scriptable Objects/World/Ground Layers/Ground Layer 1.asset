@@ -14,21 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playMusic: {fileID: 11400000, guid: 0742c78ce3196e045bae63de8e7ca9e9, type: 2}
   LayerNumber: 1
-  Depth: 40
-  ProbabilityOfEmptySpaces: 0.04
-  BackgroundColor: {r: 0.3018868, g: 0.1751513, b: 0.1751513, a: 1}
+  AreaType: 0
+  Depth: 10
+  ProbabilityOfEmptySpaces: 0.01
+  BackgroundColor: {r: 0.41568628, g: 0.29803923, b: 0.29803923, a: 1}
   AmbientLightColor: {r: 1, g: 1, b: 1, a: 1}
   PredefinedWorldObjects: []
-  NaturalDisasters: []
+  NaturalDisasters:
+  - {fileID: 11400000, guid: ff589b54afca70e47b86e6ee34d3665d, type: 2}
   Music:
-  - {fileID: 8300000, guid: 8786509bce399d541acb0d7b2245c93f, type: 3}
+  - {fileID: 8300000, guid: 48eaff017f144ae4a8698d07039259f1, type: 3}
   DefaultTile: {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:
-  - Type: {fileID: 11400000, guid: 73351b9eb828430479fa8a86d045af1e, type: 2}
+  - Type: {fileID: 11400000, guid: a7b09043ee34bbd46b261319aa468893, type: 2}
     Probability: 0.01
-  - Type: {fileID: 11400000, guid: 531d791ba0e1b0f48bd635ce4f55af79, type: 2}
-    Probability: 0.007
-  - Type: {fileID: 11400000, guid: 041e0635004cc414a8166515b1153455, type: 2}
+  - Type: {fileID: 11400000, guid: 946e853a943f8564e96b99d5bd275951, type: 2}
     Probability: 0.01
-  - Type: {fileID: 11400000, guid: 29df14e24b424d940b22363671604565, type: 2}
-    Probability: 0.005
+  - Type: {fileID: 11400000, guid: b25fd88d10af07249b991bb5b07b9f45, type: 2}
+    Probability: 0.01
+  - Type: {fileID: 11400000, guid: 4e8cde322eb14354d904d84b324dbbef, type: 2}
+    Probability: 0.01
+  - Type: {fileID: 11400000, guid: 1ca95085541c41742af69da68bf749bd, type: 2}
+    Probability: 0.01

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1638e405703514d4999ba6215f62a5cf, type: 3}
+  m_Name: Basic Battery
+  m_EditorClassIdentifier: 
+  _name: Battery lv 1
+  _sprite: {fileID: -3772189510138672571, guid: b9dc27e656e818248911db90ba7d9f4e,
+    type: 3}
+  _type: 0
+  _id: 0
+  _cost: 1000
+  _shortDescription: 
+  _maxPower: 25
+  _thermalVulnerability: 100

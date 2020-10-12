@@ -15,10 +15,13 @@ MonoBehaviour:
   _name: Engine lv 3
   _sprite: {fileID: -5306597980550175598, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 4
   _id: 402
   _cost: 6000
   _shortDescription: 
   _power: 190
   _fuelUsage: 0.16
-  _thermalVulnerability: 130
+  _powerCharging: 0.8
+  _additionalFuelUsageWhenCharging: 0.04
+  _maximumOperatingTemeprature: 100
   _permaDamageLoadThreshold: 0

@@ -10,8 +10,8 @@ namespace Miner.Gameplay
     {
         [SerializeField] private GameEvent _playerCameToLayer = null;
         [SerializeField] private IntReference _playerLayer = null;
+        [SerializeField] private int _layerNumber;
         [SerializeField] private bool _initializedInEditor = false;
-        private int _layerNumber;
 
         public void Initialize(int layerNumber, int minimumLayerDepth, int depth, int width)
         {

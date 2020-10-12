@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Player Cargo
   m_EditorClassIdentifier: 
   _resourcesGathered: {fileID: 11400000, guid: e1cd710addd142c4faec3a28d51bd885, type: 2}
+  _resourcesRemoved: {fileID: 11400000, guid: 918c2ab8e71ab7c46946ac8dc6be247a, type: 2}
   _cargoFull: {fileID: 11400000, guid: d3d469507f229ff478978359d07357c8, type: 2}
   _maxMass: {fileID: 11400000, guid: 94584331a48a4e34da985ce0e622e8b1, type: 2}
   _mass: {fileID: 11400000, guid: 1008af18477897143b5ad40eb3fef20c, type: 2}

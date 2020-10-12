@@ -47,7 +47,7 @@ namespace Miner.Gameplay
             _createParticle.Raise(new CreateParticleEA(_teleportEffect, _playerSpawnPoint.Value));
             yield return new WaitForSeconds(_delay);
             _tryChangeResourcesInPlayerCargo.Raise(new TryChangeResourcesInPlayerCargoEA() { ResourcesToRemove = _playerCargo.Get() });
-            _movePlayer.Raise(new MovePlayerEA(_playerSpawnPoint.Value));
+            _movePlayer.Raise(new TranslatePlayerEA(_playerSpawnPoint.Value));
             Destroy(obj);
         }
     }

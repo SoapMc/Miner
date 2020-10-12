@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 131797ec17559a04d9c5ef0fe681c096, type: 3}
+  m_Name: Burning Sky
+  m_EditorClassIdentifier: 
+  _disasterEvent: {fileID: 11400000, guid: ebfd71d341cc9ee45af5bc5c0299531b, type: 2}
+  _timeRange:
+    minValue: 30.234043
+    maxValue: 80
+  _burningSkyPrefab: {fileID: 5352556722729004948, guid: 434aac25055588d45a58d0dbca1e82b4,
+    type: 3}
+  _surfaceAmbientColor: {r: 0.254717, g: 0.090939276, b: 0.027634395, a: 1}
+  _overrideSky: {fileID: 11400000, guid: c0e944f53b347c645810c34f52724126, type: 2}
+  _overrideAmbientLight: {fileID: 11400000, guid: 7f96d9cba81990a47aeb4c4fe6a2ae06,
+    type: 2}

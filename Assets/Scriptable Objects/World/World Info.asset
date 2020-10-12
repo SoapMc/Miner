@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca591b69705d884db7ccb5b6023b2fe, type: 3}
+  m_Name: World Info
+  m_EditorClassIdentifier: 
+  _verticalBorders: {x: 20, y: -180}
+  _horizontalBorders: {x: 0, y: 80}
+  _loadableGridHorizontalRange: {x: 0, y: 0}
+  _loadableGridVerticalRange: {x: 0, y: 0}

@@ -11,6 +11,7 @@ namespace Miner.Gameplay
         [SerializeField] private Sprite _sprite = null;
         [SerializeField] private int _id = 0;
         [SerializeField] private int _cost = 0;
+        [SerializeField] private float _usedPower = 0;
         [SerializeField, TextArea] private string _shortDescription = string.Empty;
         [SerializeField] private List<UsableItemEffect> _effects = new List<UsableItemEffect>();
         
@@ -18,6 +19,7 @@ namespace Miner.Gameplay
         public Sprite Sprite => _sprite;
         public int Id => _id;
         public int Cost => _cost;
+        public float UsedPower => _usedPower;
         public string ShortDescription
         {
             get

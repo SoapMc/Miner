@@ -11,56 +11,116 @@ namespace Miner.Gameplay
         [SerializeField] private TilemapController _tilemapController = null;
         [SerializeField] private TileType _tileEdges = null;
         [SerializeField] private UndergroundTrigger _undergroundTrigger = null;
-        [SerializeField] private GroundLayerController _surfaceTilemap = null;
-        [SerializeField] private GroundLayerController _groundLayerPrefab = null;
-        [SerializeField] private Vector2IntReference _horizontalWorldBorders = null;
-        [SerializeField] private Vector2IntReference _vecticalWorldBorders = null;
+        [SerializeField] private Tilemap _surfaceTilemap = null;
+        [SerializeField] private Tilemap _undergroundTilemap = null;
+        [SerializeField] private LayerBorders _layerBordersPrefab = null;
         [SerializeField] private GroundLayerList _layers = null;
         [SerializeField] private int _ceilHeight = 20;
+        [SerializeField] private WorldInfo _worldInfo = null;
+        [SerializeField] private Grid _grid = null;
+        [SerializeField] private TileTypes _tileTypes = null;
+        private TileIdentifier _tileIdentifier = null;
 
         public void GenerateWorld(WorldController worldController, int seed = -1)
         {
             if (seed != -1)
                 Random.InitState(seed);
 
-            int minimumDepthForCurrentLayer = -1;
+            _tileIdentifier = new TileIdentifier(_tileTypes);
+            int minimumDepthForCurrentLayer = -_layers[0].Depth;
             int maximumDepthForCurrentLayer = -_layers[0].Depth;
             TilemapCollider2D surfaceCollider = _surfaceTilemap.GetComponent<TilemapCollider2D>();
             int worldWidth = Mathf.RoundToInt(surfaceCollider.bounds.size.x);
-            _horizontalWorldBorders.Value = new Vector2Int(Mathf.RoundToInt(surfaceCollider.transform.position.x), worldWidth);
+            _worldInfo.HorizontalBorders = new Vector2Int(Mathf.RoundToInt(surfaceCollider.transform.position.x), Mathf.RoundToInt(surfaceCollider.transform.position.x) + worldWidth);
             int totalDepth = -_layers.Sum(x => x.Depth) - _layers[0].Depth;
-            _vecticalWorldBorders.Value = new Vector2Int(_ceilHeight, totalDepth);
-
-            _surfaceTilemap.Initialize(_layers[0], 0, worldWidth, 0);
+            _worldInfo.VerticalBorders = new Vector2Int(_ceilHeight, totalDepth);
+            _worldInfo.LoadableGridHorizontalRange = _worldInfo.HorizontalBorders;
+            _worldInfo.LoadableGridVerticalRange = new Vector2(totalDepth + 1, -1);
+            TilemapData tilemapData = new TilemapData(worldWidth, Mathf.Abs(totalDepth), maximumDepthForCurrentLayer);
             Camera mainCamera = Camera.main;
 
-            Tilemap surface = _surfaceTilemap.Tilemap;
-            for (int x = _horizontalWorldBorders.Value.x; x < _horizontalWorldBorders.Value.y; ++x)
+            for (int x = _worldInfo.HorizontalBorders.x; x < _worldInfo.HorizontalBorders.y; ++x)
             {
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(x, _ceilHeight, 0), _tileEdges.ClasifiedTiles[13]);
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(x, totalDepth - 1, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.SetTile(new Vector3Int(x, _ceilHeight, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.SetTile(new Vector3Int(x, totalDepth + 1, 0), _tileEdges.ClasifiedTiles[13]);
             }
 
             for (int y = _ceilHeight; y > totalDepth; --y)
             {
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.x - 1, y, 0), _tileEdges.ClasifiedTiles[13]);
-                _surfaceTilemap.Tilemap.SetTile(new Vector3Int(_horizontalWorldBorders.Value.y, y, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.SetTile(new Vector3Int(_worldInfo.HorizontalBorders.x - 1, y, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.SetTile(new Vector3Int(_worldInfo.HorizontalBorders.y, y, 0), _tileEdges.ClasifiedTiles[13]);
             }
             _tilemapController.AddTilemap(_surfaceTilemap, -_layers[0].Depth);
-            GenerateLayer(worldController, _layers[0], _surfaceTilemap, _horizontalWorldBorders.Value.x, _horizontalWorldBorders.Value.y, -2, -_layers[0].Depth);
+            _tilemapController.AddTilemap(_undergroundTilemap, totalDepth);
+            GenerateSurface(tilemapData, _worldInfo.HorizontalBorders.x, _worldInfo.HorizontalBorders.y, minimumDepthForCurrentLayer, minimumDepthForCurrentLayer - _layers[0].Depth);
+            maximumDepthForCurrentLayer -= _layers[0].Depth;
 
-            for (int i = 1; i < _layers.Count; ++i)
+            for (int i = 1; i < _layers.Count; ++i) //all layers except surface layer (so the loop iterates from 1)
             {
                 minimumDepthForCurrentLayer = maximumDepthForCurrentLayer;  //minimum depth is maximum depth from previous layer
                 maximumDepthForCurrentLayer -= _layers[i].Depth;
-                GroundLayerController groundLayer = Instantiate(_groundLayerPrefab, worldController.Grid.transform);
-                groundLayer.Initialize(_layers[i], minimumDepthForCurrentLayer, worldWidth, mainCamera.orthographicSize);
-                _tilemapController.AddTilemap(groundLayer, maximumDepthForCurrentLayer);
-                GenerateLayer(worldController, _layers[i], groundLayer, _horizontalWorldBorders.Value.x, _horizontalWorldBorders.Value.y, minimumDepthForCurrentLayer, maximumDepthForCurrentLayer);
+                LayerBorders borders = Instantiate(_layerBordersPrefab, _grid.transform);
+                borders.Initialize(_layers[i].LayerNumber, minimumDepthForCurrentLayer, _layers[i].Depth, worldWidth);
+                GenerateLayer(tilemapData, _layers[i], _worldInfo.HorizontalBorders.x, _worldInfo.HorizontalBorders.y, minimumDepthForCurrentLayer, maximumDepthForCurrentLayer);
+            }
+            
+            worldController.Initialize(tilemapData);
+        }
+
+        public void LoadWorld()
+        {
+            _tileIdentifier = new TileIdentifier(_tileTypes);
+            int minimumDepthForCurrentLayer = -_layers[0].Depth;
+            int maximumDepthForCurrentLayer = -_layers[0].Depth;
+            TilemapCollider2D surfaceCollider = _surfaceTilemap.GetComponent<TilemapCollider2D>();
+            int worldWidth = Mathf.RoundToInt(surfaceCollider.bounds.size.x);
+            _worldInfo.HorizontalBorders = new Vector2Int(Mathf.RoundToInt(surfaceCollider.transform.position.x), Mathf.RoundToInt(surfaceCollider.transform.position.x) + worldWidth);
+            int totalDepth = -_layers.Sum(x => x.Depth) - _layers[0].Depth;
+            _worldInfo.VerticalBorders = new Vector2Int(_ceilHeight, totalDepth);
+            _worldInfo.LoadableGridHorizontalRange = _worldInfo.HorizontalBorders;
+            _worldInfo.LoadableGridVerticalRange = new Vector2(totalDepth + 1, -1);
+            Camera mainCamera = Camera.main;
+
+            for (int x = _worldInfo.HorizontalBorders.x; x < _worldInfo.HorizontalBorders.y; ++x)
+            {
+                _surfaceTilemap.SetTile(new Vector3Int(x, _ceilHeight, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.SetTile(new Vector3Int(x, totalDepth + 1, 0), _tileEdges.ClasifiedTiles[13]);
+            }
+
+            for (int y = _ceilHeight; y > totalDepth; --y)
+            {
+                _surfaceTilemap.SetTile(new Vector3Int(_worldInfo.HorizontalBorders.x - 1, y, 0), _tileEdges.ClasifiedTiles[13]);
+                _surfaceTilemap.SetTile(new Vector3Int(_worldInfo.HorizontalBorders.y, y, 0), _tileEdges.ClasifiedTiles[13]);
+            }
+
+            _tilemapController.AddTilemap(_surfaceTilemap, -_layers[0].Depth);
+            _tilemapController.AddTilemap(_undergroundTilemap, totalDepth);
+            maximumDepthForCurrentLayer -= _layers[0].Depth;
+
+            for (int i = 1; i < _layers.Count; ++i) //all layers except surface layer (so the loop iterates from 1)
+            {
+                minimumDepthForCurrentLayer = maximumDepthForCurrentLayer;  //minimum depth is maximum depth from previous layer
+                maximumDepthForCurrentLayer -= _layers[i].Depth;
+                LayerBorders borders = Instantiate(_layerBordersPrefab, _grid.transform);
+                borders.Initialize(_layers[i].LayerNumber, minimumDepthForCurrentLayer, _layers[i].Depth, worldWidth);
             }
         }
 
-        private void GenerateLayer(WorldController worldController, GroundLayer groundLayer, GroundLayerController groundLayerController, int leftBorder, int rightBorder, int minimumDepth, int maximumDepth)
+        private void GenerateSurface(TilemapData tilemapData, int leftBorder, int rightBorder, int minimumDepth, int maximumDepth)
+        {
+            for (int x = leftBorder; x < rightBorder; ++x)
+            {
+                for (int y = minimumDepth; y > maximumDepth; --y)
+                {
+                    if (_surfaceTilemap.GetTile(new Vector3Int(x, y, 0)) is Tile tile)
+                    {
+                        tilemapData.SetTileId(x, y, _tileIdentifier.Identify(tile.sprite).Id);
+                    }
+                }
+            }
+        }
+
+        private void GenerateLayer(TilemapData tilemapData, GroundLayer groundLayer, int leftBorder, int rightBorder, int minimumDepth, int maximumDepth)
         {
             List<float> resourceProbabilities = groundLayer.GetResourceProbabilitiesForGeneration();
             bool tileSet;
@@ -77,7 +137,7 @@ namespace Miner.Gameplay
                     {
                         if (prob <= resourceProbabilities[j])
                         {
-                            groundLayerController.Tilemap.SetTile(new Vector3Int(x, y, 0), groundLayer.Resources[j].Type.ClasifiedTiles[0]);
+                            tilemapData.SetTileId(x, y, groundLayer.Resources[j].Type.Id);
                             tileSet = true;
                             break;
                         }
@@ -85,7 +145,7 @@ namespace Miner.Gameplay
 
                     if (!tileSet)
                     {
-                        groundLayerController.Tilemap.SetTile(new Vector3Int(x, y, 0), groundLayer.DefaultTile.ClasifiedTiles[0]);
+                        tilemapData.SetTileId(x, y, groundLayer.DefaultTile.Id);
                     }
 
                 }
@@ -99,7 +159,7 @@ namespace Miner.Gameplay
                     prob = Random.Range(0f, 1f);
                     if (prob <= groundLayer.ProbabilityOfEmptySpaces)
                     {
-                        worldController.DestroyTile(new Vector2Int(x, y));
+                        tilemapData.SetTileId(x, y, -1);
                     }
                 }
             }

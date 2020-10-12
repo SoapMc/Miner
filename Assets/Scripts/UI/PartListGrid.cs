@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.UI;
 using Miner.Management.Events;
 using Miner.FX;
+using System;
 
 namespace Miner.UI
 {
@@ -43,7 +44,7 @@ namespace Miner.UI
             _currentViewMoving = null;
         }
 
-        private List<PartGridElement> LoadParts(List<ReferencePart> parts, int row, ReferencePart equippedPart)
+        private List<PartGridElement> LoadParts(List<ReferencePart> parts, int row, Part equippedPart)
         {
             Vector2 elementSize = _partGridElementPrefab.GetComponent<RectTransform>().sizeDelta;
             List<PartGridElement> pgeList = new List<PartGridElement>(parts.Count);
@@ -82,24 +83,42 @@ namespace Miner.UI
 
             if (element.ReferencePart.Cost <= _playerMoney.Value)
             {
+                foreach(var elem in _partGridElements[element.Row])
+                {
+                    if(elem.CurrentState == PartGridElement.State.Bought)
+                    {
+                        if (_playerMoney >= elem.ReferencePart.Cost)
+                        {
+                            elem.Refresh(PartGridElement.State.Available);
+                        }
+                        else
+                        {
+                            elem.Refresh(PartGridElement.State.Unavailable);
+                        }
+                    }
+                }
+
                 element.Refresh(PartGridElement.State.Bought);
                 UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-                upd.EquipmentChange.Add(element.ReferencePart);
+                upd.EquipmentChange.Add(element.ReferencePart.CreatePart(1f));
                 upd.MoneyChange = -element.ReferencePart.Cost;
                 _updatePlayerData.Raise(upd);
                 _buyPart.Play();
-                
-                foreach (var elem in _partGridElements[element.Row])
-                {
-                    if (elem == element) continue;
 
-                    if (_playerMoney >= elem.ReferencePart.Cost)
+                for (int row = 0; row < _partGridElements.Count; ++row)
+                {
+                    foreach (var elem in _partGridElements[row])
                     {
-                        elem.Refresh(PartGridElement.State.Available);
-                    }
-                    else
-                    {
-                        elem.Refresh(PartGridElement.State.Unavailable);
+                        if (elem.CurrentState == PartGridElement.State.Bought) continue;
+
+                        if (_playerMoney >= elem.ReferencePart.Cost)
+                        {
+                            elem.Refresh(PartGridElement.State.Available);
+                        }
+                        else
+                        {
+                            elem.Refresh(PartGridElement.State.Unavailable);
+                        }
                     }
                 }
                 
@@ -112,36 +131,23 @@ namespace Miner.UI
             _showPartDescription.Raise(new ShowPartDescriptionEA(element.ReferencePart, element.CurrentState));
         }
 
-        private void Awake()
+        public void Load()
         {
-            _partGridElements.Add(LoadParts(_partList.Hulls.OfType<ReferencePart>().ToList(), 0, _playerEquipment.Hull));
-            _partGridElements.Add(LoadParts(_partList.FuelTanks.OfType<ReferencePart>().ToList(), 1, _playerEquipment.FuelTank));
-            _partGridElements.Add(LoadParts(_partList.Engines.OfType<ReferencePart>().ToList(), 2, _playerEquipment.Engine));
-            _partGridElements.Add(LoadParts(_partList.Drills.OfType<ReferencePart>().ToList(), 3, _playerEquipment.Drill));
-            _partGridElements.Add(LoadParts(_partList.Coolings.OfType<ReferencePart>().ToList(), 4, _playerEquipment.Cooling));
-            _partGridElements.Add(LoadParts(_partList.Cargos.OfType<ReferencePart>().ToList(), 5, _playerEquipment.Cargo));
-            _partGridElements.Add(LoadParts(_partList.Batteries.OfType<ReferencePart>().ToList(), 6, _playerEquipment.Battery));
+            int row = 0;
+            foreach (EPartType partType in Enum.GetValues(typeof(EPartType)))
+            {
+                _partGridElements.Add(LoadParts(_partList.GetPartsOfType(partType), row, _playerEquipment.GetEquippedPart(partType)));
+                row++;
+            }
         }
 
-        private void Start()
+        public Selectable GetFirstSelectedObject()
         {
             if (transform.childCount > 0)
             {
-                EventSystem.current.SetSelectedGameObject(null);
-                if (transform.GetChild(0).gameObject.TryGetComponent(out Selectable s))
-                {
-                    EventSystem.current.SetSelectedGameObject(s.gameObject);
-                    s.OnSelect(null);
-                }
-                else
-                {
-                    Debug.LogWarning("Children have to have Selectable component");
-                }
+                return transform.GetChild(0).GetComponent<Selectable>();   
             }
-            else
-            {
-                Debug.LogWarning("The element has to have at least one child!");
-            }
+            return null;
         }
     }
 }

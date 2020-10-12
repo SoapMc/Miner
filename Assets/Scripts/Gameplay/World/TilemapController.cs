@@ -12,49 +12,182 @@ namespace Miner.Gameplay
 {
     public class TilemapController : MonoBehaviour
     {
-        private List<Tuple<int, GroundLayerController>> _tilemaps = new List<Tuple<int, GroundLayerController>>();
+        [SerializeField] private TilemapLoader _tilemapLoader = null;
+        [SerializeField] private TileType _emptyTile = null;
+        private List<Tuple<int, Tilemap>> _tilemaps = new List<Tuple<int, Tilemap>>();
+        private TilemapData _data = null;
+        private TileIdentifier _tileIdentifier = null;
 
-        public void AddTilemap(GroundLayerController tilemap, int maximumLayerDepth)
+        public void Initialize(TilemapData data, TileIdentifier identifier)
         {
-            _tilemaps.Add(new Tuple<int, GroundLayerController>(maximumLayerDepth, tilemap));
+            _data = data;
+            _tileIdentifier = identifier;
+            _tilemapLoader.Initialize(this);
+        }
+
+        public TilemapData RetrieveSerializableData()
+        {
+            return _data;
+        }
+
+        public void Load(TilemapData tilemapData)
+        {
+            _data = tilemapData;
+        }
+
+        public void AddTilemap(Tilemap tilemap, int maximumLayerDepth)
+        {
+            _tilemaps.Add(new Tuple<int, Tilemap>(maximumLayerDepth, tilemap));
         }
 
         public Tile GetTile(Vector2Int pos)
         {
-            return _tilemaps.FirstOrDefault(x => x.Item1 < pos.y)?.Item2.Tilemap.GetTile<Tile>((Vector3Int)pos);
+            return _tilemaps.FirstOrDefault(x => x.Item1 <= pos.y)?.Item2.GetTile<Tile>((Vector3Int)pos);
         }
 
         public void SetTile(Vector2Int pos, Tile tile)
         {
-            _tilemaps.First(x => x.Item1 < pos.y).Item2.Tilemap.SetTile((Vector3Int)pos, tile);
+            _tilemaps.First(x => x.Item1 <= pos.y).Item2.SetTile((Vector3Int)pos, tile);
         }
 
-        public void OnTriggerUpperLayer(EventArgs args)
+        public void SetTile(Vector2Int pos, int tileId)
         {
-            if(args is LayerTriggerEA lt)
+            _data.SetTileId(pos, tileId);
+            if (_tilemapLoader.IsTileLoaded(pos))
             {
-                int triggeredLayer = lt.LayerNumber - 1;
-                if (triggeredLayer > 0 && triggeredLayer < _tilemaps.Count && _tilemaps[triggeredLayer].Item2.gameObject.activeSelf != lt.LayerActivation)
-                    _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
+                Tile tile;
+                if (tileId != -1)
+                {
+                    TileType tt = _tileIdentifier.Identify(tileId);
+                    if (tt != null)
+                        tile = _tileIdentifier.Identify(tileId).ClasifiedTiles.FirstOrDefault();
+                    else
+                        tile = null;
+                }
+                else
+                {
+                    tile = GetTileEdge(pos);
+                    if (_data.GetTileId(pos + Vector2Int.up) == -1)
+                        SetEdge(pos + Vector2Int.up);
+                    if (_data.GetTileId(pos + Vector2Int.right) == -1)
+                        SetEdge(pos + Vector2Int.right);
+                    if (_data.GetTileId(pos + Vector2Int.down) == -1)
+                        SetEdge(pos + Vector2Int.down);
+                    if (_data.GetTileId(pos + Vector2Int.left) == -1)
+                        SetEdge(pos + Vector2Int.left);
+                }
+                _tilemaps.First(x => x.Item1 <= pos.y).Item2.SetTile((Vector3Int)pos, tile);
+            }
+        }
+
+        private void SetEdge(Vector2Int pos)
+        {
+            _tilemaps.First(x => x.Item1 <= pos.y).Item2.SetTile((Vector3Int)pos, GetTileEdge(pos));
+        }
+
+        public void LoadTile(Vector2Int pos)
+        {
+            int tileId = _data.GetTileId(pos);
+
+            Tile tile;
+            if (tileId != -1)
+            {
+                TileType tt = _tileIdentifier.Identify(tileId);
+                if (tt != null)
+                    tile = _tileIdentifier.Identify(tileId).ClasifiedTiles.FirstOrDefault();
+                else
+                    tile = null;
             }
             else
             {
-                throw new InvalidEventArgsException();
+                tile = GetTileEdge(pos);
             }
+            _tilemaps.First(x => x.Item1 <= pos.y).Item2.SetTile((Vector3Int)pos, tile);
         }
 
-        public void OnTriggerBottomLayer(EventArgs args)
+        public void UnloadTile(Vector2Int pos)
         {
-            if (args is LayerTriggerEA lt)
+            _tilemaps.First(x => x.Item1 <= pos.y).Item2.SetTile((Vector3Int)pos, null);
+        }
+
+        private Tile GetTileEdge(Vector2Int pos)
+        {
+            bool up = IsNotCollidableTile(pos + Vector2Int.up);
+            bool down = IsNotCollidableTile(pos + Vector2Int.down);
+            bool left = IsNotCollidableTile(pos + Vector2Int.left);
+            bool right = IsNotCollidableTile(pos + Vector2Int.right);
+
+            if (up && down && left && right)
             {
-                int triggeredLayer = lt.LayerNumber + 1;
-                if (triggeredLayer > 0 && triggeredLayer < _tilemaps.Count && _tilemaps[triggeredLayer].Item2.gameObject.activeSelf != lt.LayerActivation)
-                        _tilemaps[triggeredLayer].Item2.gameObject.SetActive(lt.LayerActivation);
+                return null;
+            }
+            else if (up && down && right)
+            {
+                return _emptyTile.ClasifiedTiles[10];
+            }
+            else if (up && down && left)
+            {
+                return _emptyTile.ClasifiedTiles[12]; ;
+            }
+            else if (down && left && right)
+            {
+                return _emptyTile.ClasifiedTiles[11]; ;
+            }
+            else if (up && left && right)
+            {
+                return _emptyTile.ClasifiedTiles[9];
+            }
+            else if (down && left)
+            {
+                return _emptyTile.ClasifiedTiles[8];
+            }
+            else if (down && right)
+            {
+                return _emptyTile.ClasifiedTiles[7];
+            }
+            else if (up && right)
+            {
+                return _emptyTile.ClasifiedTiles[6];
+            }
+            else if (up && left)
+            {
+                return _emptyTile.ClasifiedTiles[5];
+            }
+            else if (up && down)
+            {
+                return _emptyTile.ClasifiedTiles[14];
+            }
+            else if (right && left)
+            {
+                return _emptyTile.ClasifiedTiles[15];
+            }
+            else if (up)
+            {
+                return _emptyTile.ClasifiedTiles[4];
+            }
+            else if (right)
+            {
+                return _emptyTile.ClasifiedTiles[3];
+            }
+            else if (down)
+            {
+                return _emptyTile.ClasifiedTiles[2];
+            }
+            else if (left)
+            {
+                return _emptyTile.ClasifiedTiles[1];
             }
             else
             {
-                throw new InvalidEventArgsException();
+                return _emptyTile.ClasifiedTiles[0];
             }
+        }
+
+        private bool IsNotCollidableTile(Vector2Int gridPos)
+        {
+            if (_data.GetTileId(gridPos) == -1)
+                return true;
+            return false;
         }
     }
 }

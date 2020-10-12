@@ -15,7 +15,9 @@ MonoBehaviour:
   _name: Cooling lv 1
   _sprite: {fileID: -4236151349343574195, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 2
   _id: 200
   _cost: 800
   _shortDescription: Ensures stable temperatures only in swallow drillings.
   _effectiveCooling: 10
+  _powerUsage: 0.2

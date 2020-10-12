@@ -8,23 +8,33 @@ namespace Miner.Gameplay
     {
         [SerializeField] protected string _name;
         [SerializeField] protected Sprite _sprite;
+        [SerializeField] protected EPartType _type;
         [SerializeField] protected int _id;
         [SerializeField] protected int _cost;
         [SerializeField, TextArea] protected string _shortDescription;
-        [System.NonSerialized] protected float _durability = 1f;
 
         public string Name => _name;
         public Sprite Sprite => _sprite;
+        public EPartType Type => _type;
         public int Id => _id;
         public int Cost => _cost;
         public string ShortDescription => _shortDescription;
-        public float Durability
-        {
-            get => _durability;
-            set => _durability = Mathf.Clamp(value, 0f, 1f);
-        }
 
         public virtual string[] GetSpecificDescription() { return new string[0]; }
-        public virtual string[] GetPerformanceDescription() { return new string[0]; }
+        public virtual string[] GetPerformanceDescription(float durability) { return new string[0]; }
+        public abstract void Equip(IEquipmentOwner playerStats, float durability);
+        public abstract void Unequip(IEquipmentOwner playerStats, float durability);
+
+        public Part CreatePart(float durability = 1f)
+        {
+            return new Part(this, durability);
+        }
+
+        public static Part CreatePart(ReferencePart referencePart, float durability = 1f)
+        {
+            if (referencePart != null)
+                return referencePart.CreatePart(durability);
+            return null;
+        }
     }
 }

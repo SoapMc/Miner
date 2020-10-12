@@ -9,19 +9,19 @@ namespace Miner.Gameplay
     [RequireComponent(typeof(Tilemap))]
     public class GroundLayerController : MonoBehaviour
     {
-        [SerializeField] private LayerTrigger _topLayerTrigger = null;
-        [SerializeField] private LayerTrigger _bottomLayerTrigger = null;
+        //[SerializeField] private LayerTrigger _topLayerTrigger = null;
+        //[SerializeField] private LayerTrigger _bottomLayerTrigger = null;
         [SerializeField] private LayerBorders _layerBorders = null;
-        [SerializeField] private Tilemap _tilemap = null;
+        //[SerializeField] private Tilemap _tilemap = null;
 
         [Tooltip("Manipulate with this value when triggering of any layer is visible on main camera.")]
         [SerializeField] private int _triggerOffset = 2;
-        public Tilemap Tilemap => _tilemap;
+        //public Tilemap Tilemap => _tilemap;
 
         public void Initialize(GroundLayer layer, int minimumLayerDepth, int worldWidth, float cameraSize)
         {
             _layerBorders.Initialize(layer.LayerNumber, minimumLayerDepth, layer.Depth, worldWidth);
-            if (_topLayerTrigger != null)
+            /*if (_topLayerTrigger != null)
             {
                 _topLayerTrigger.Initialize(layer.LayerNumber, worldWidth);
                 _topLayerTrigger.transform.Translate(new Vector3(0, minimumLayerDepth - cameraSize - _triggerOffset, 0));
@@ -30,7 +30,7 @@ namespace Miner.Gameplay
             {
                 _bottomLayerTrigger.Initialize(layer.LayerNumber, worldWidth);
                 _bottomLayerTrigger.transform.Translate(new Vector3(0, minimumLayerDepth - layer.Depth + cameraSize + _triggerOffset, 0));
-            }
+            }*/
         }
     }
 }

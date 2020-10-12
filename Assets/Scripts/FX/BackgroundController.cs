@@ -115,11 +115,11 @@ namespace Miner.FX
                 _topDepth = CalculateTopDepth(_currentLayerNumber);
                 _bottomDepth = _topDepth + _layers[_currentLayerNumber].Depth;
 
-                if(pctl.LayerNumber == 0)
+                if(_layers[pctl.LayerNumber].AreaType == GroundLayer.EAreaType.Surface)
                 {
                     DisableUnderground();
                 }
-                else
+                else if (_layers[pctl.LayerNumber].AreaType == GroundLayer.EAreaType.Underground)
                 {
                     EnableUnderground();
                 }

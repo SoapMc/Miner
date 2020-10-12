@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Engine lv 1
   _sprite: {fileID: 8782277557340573025, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 4
   _id: 400
   _cost: 0
   _shortDescription: 
   _power: 100
   _fuelUsage: 0.09
-  _thermalVulnerability: 100
+  _powerCharging: 0.4
+  _additionalFuelUsageWhenCharging: 0.02
+  _maximumOperatingTemeprature: 100
   _permaDamageLoadThreshold: 0

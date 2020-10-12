@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Miner.Gameplay
 {
-    [CreateAssetMenu(menuName = "Ground Layer List")]
+    [CreateAssetMenu(menuName = "World/Ground Layer List")]
     public class GroundLayerList : ScriptableObject, ICollection<GroundLayer>
     {
         [SerializeField] private List<GroundLayer> _layers = new List<GroundLayer>();
@@ -55,7 +56,20 @@ namespace Miner.Gameplay
         /// <returns></returns>
         public GroundLayer this[int index]
         {
-            get => _layers[index];
+            get
+            {
+                try
+                {
+                    return _layers[index];
+                }
+                catch(IndexOutOfRangeException e)
+                {
+                    Management.GameManager.Instance.Log.Write(GetType() + " : " + e.Message);
+                    if(_layers.Count > 0)
+                        return _layers[0];
+                    return null;
+                }
+            }
         }
     }
 }

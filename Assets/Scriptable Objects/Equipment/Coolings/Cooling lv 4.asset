@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Cooling lv 4
   _sprite: {fileID: -963993219578297537, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 2
   _id: 203
   _cost: 12000
   _shortDescription: 
   _effectiveCooling: 90
+  _powerUsage: 0.9

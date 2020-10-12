@@ -11,7 +11,7 @@ namespace Miner.UI
 
         private void Start()
         {
-            _lastSelected = new GameObject();
+            _lastSelected = new GameObject("Refocus");
         }
 
         void Update()

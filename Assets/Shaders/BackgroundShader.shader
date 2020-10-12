@@ -1,4 +1,4 @@
-﻿Shader "Unlit/BackgroundShader"
+﻿Shader "Miner/BackgroundShader"
 {
     Properties
     {

@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Engine lv 8
   _sprite: {fileID: 3134064079502224622, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 4
   _id: 407
   _cost: 500000
   _shortDescription: 
   _power: 360
   _fuelUsage: 0.45
-  _thermalVulnerability: 250
+  _powerCharging: 0
+  _additionalFuelUsageWhenCharging: 0.1
+  _maximumOperatingTemeprature: 100
   _permaDamageLoadThreshold: 0

@@ -5,7 +5,7 @@ using Miner.Management.Exceptions;
 
 namespace Miner.Gameplay
 {
-    [CreateAssetMenu(menuName = "Day Table")]
+    [CreateAssetMenu(menuName = "World/Day Table")]
     public class DayTable : ScriptableObject
     {
         [SerializeField, MinMaxIntRange(0, 800)] private RangedInt _morning = new RangedInt(240, 480);

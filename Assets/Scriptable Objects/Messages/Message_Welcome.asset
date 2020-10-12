@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2eab468b42f0294690c084993bfbc3d, type: 3}
+  m_Name: Message_Welcome
+  m_EditorClassIdentifier: 
+  _createMessage: {fileID: 11400000, guid: 300308c02af997a40869f30b089bd0c5, type: 2}
+  _title: Welcome to Miner
+  _message: Welcome to Miner. Hope you will enjoy your time here. Good luck!
+  _type: 1
+  _delayFromActivation: 2

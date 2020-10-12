@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Engine lv 7
   _sprite: {fileID: 5521285753929265471, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 4
   _id: 406
   _cost: 200000
   _shortDescription: 
   _power: 320
   _fuelUsage: 0.35
-  _thermalVulnerability: 210
+  _powerCharging: 0
+  _additionalFuelUsageWhenCharging: 0.09
+  _maximumOperatingTemeprature: 100
   _permaDamageLoadThreshold: 0

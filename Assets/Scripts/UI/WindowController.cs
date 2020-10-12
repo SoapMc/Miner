@@ -14,10 +14,14 @@ namespace Miner.UI
     {
         [SerializeField] private GameEvent _enablePlayerController = null;
         [SerializeField] private GameEvent _disablePlayerController = null;
-        [SerializeField] private GameObject _mainMenuWindow = null;
+        [SerializeField] private GameEvent _windowCreated = null;
+        [SerializeField] private GameEvent _windowClosed = null;
+        [SerializeField] private GameObject _windowCreatorAndDestroyer = null;
+        [SerializeField] private Window _mainMenuWindow = null;
         [SerializeField] private SoundEffect _openWindowSFX = null;
         [SerializeField] private PlayerInputSheet _input = null;
-        private List<Tuple<string, GameObject>> _openedWindows = new List<Tuple<string, GameObject>>();
+        private List<Tuple<string, Window>> _openedWindows = new List<Tuple<string, Window>>();
+
 
         public void OnCreateWindow(EventArgs args)
         {
@@ -25,13 +29,18 @@ namespace Miner.UI
             {
                 if (_openedWindows.FirstOrDefault(x => x.Item1 == cw.WindowPrefab.name) == null)
                 {
-                    GameObject newWindow = Instantiate(cw.WindowPrefab, transform);
-                    _openedWindows.Add(new Tuple<string, GameObject>(cw.WindowPrefab.name, newWindow));
+                    _openedWindows.All(x => x.Item2.Interactable = false);
+                    Window newWindow = Instantiate(cw.WindowPrefab, transform);
+                    _openedWindows.Add(new Tuple<string, Window>(cw.WindowPrefab.name, newWindow));
                     _openWindowSFX.Play();
+                    _windowCreated.Raise(new WindowCreatedEA(newWindow));
                 }
 
                 if (_openedWindows.Count > 0)
+                {
                     _disablePlayerController.Raise();
+                    Time.timeScale = 0f;
+                }
             }
             else
             {
@@ -46,17 +55,26 @@ namespace Miner.UI
                 try
                 {
                     _openedWindows.Remove(_openedWindows.Find(x => x.Item2 == cw.ClosedWindow));
-                    Destroy(cw.ClosedWindow);
+                    Destroy(cw.ClosedWindow.gameObject);
+                    _windowClosed.Raise();
+                    if (_openedWindows.Count > 0)
+                    {
+                        _openedWindows.Last().Item2.Interactable = true;
+                        _openedWindows.Last().Item2.SelectFirstObject();
+                    }
                 }
                 catch(ArgumentNullException ex)
                 {
                     Debug.LogException(ex);
                     if(cw.ClosedWindow != null)
-                        DestroyImmediate(cw.ClosedWindow);
+                        DestroyImmediate(cw.ClosedWindow.gameObject);
                 }
 
                 if (_openedWindows.Count == 0)
+                {
                     _enablePlayerController.Raise();
+                    Time.timeScale = 1f;
+                }
 
                 GameManager.Instance.SaveToFile();
             }
@@ -68,6 +86,10 @@ namespace Miner.UI
 
         public void OnCancelKeyHold()
         {
+            for(int i = _openedWindows.Count - 1; i >= 0; --i)
+            {
+                OnCloseWindow(new CloseWindowEA(_openedWindows[i].Item2));
+            }
             OnCreateWindow(new CreateWindowEA(_mainMenuWindow));
         }
 

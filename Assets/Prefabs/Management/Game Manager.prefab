@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2030706286480636676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3869712848589088806}
+  - component: {fileID: 8818237435731541340}
+  m_Layer: 0
+  m_Name: Message Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3869712848589088806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030706286480636676}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 986830098581515297}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8818237435731541340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030706286480636676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 287002e75ecd37f4db905724166447b8, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 8cd7ee8834cd7254ca5cb56f28c165e4, type: 2}
+        m_MethodName: ShowWithDelay
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8818237435731541340}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.MonoBehaviour, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5125488872518959256
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,7 +177,7 @@ MonoBehaviour:
   _playerLoaded: {fileID: 11400000, guid: 783bb41620024924693a847a42270371, type: 2}
   _playerDestroyed: {fileID: 11400000, guid: 85b0de0052cda534f83aa019d8e93852, type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
-  _playerDead: {fileID: 11400000, guid: 94a4262cd54f06742b09b9bebffdc9e2, type: 2}
+  _playerDied: {fileID: 11400000, guid: 94a4262cd54f06742b09b9bebffdc9e2, type: 2}
   _chooseUsableItem: {fileID: 11400000, guid: 4a692077c9d8f2642a963a1755c65025, type: 2}
   _updateInfrastructureData: {fileID: 11400000, guid: 3263737974f642943b373f837e8515a3,
     type: 2}
@@ -127,6 +185,10 @@ MonoBehaviour:
   _useItem: {fileID: 11400000, guid: 23ff78ba550d12944ad54ed979d81fde, type: 2}
   _resourcesLost: {fileID: 11400000, guid: bed941bed71cac64fabb18fe2217e82f, type: 2}
   _cameraShake: {fileID: 11400000, guid: fd1056168fef23840829a706515d337a, type: 2}
+  _respawnPlayer: {fileID: 11400000, guid: 5d355295ad65ef041a90085d282ddd2e, type: 2}
+  _playerRespawned: {fileID: 11400000, guid: 0dda28ab21d2d794b9e7ce8e05ec511b, type: 2}
+  _playerRadiationChanged: {fileID: 11400000, guid: 6e4d63978071881429f8905ba9f1f345,
+    type: 2}
   _layer: {fileID: 11400000, guid: 0ef393cc6699ad3499bbdc1c9d7d7a2a, type: 2}
   _money: {fileID: 11400000, guid: 250a2515075538a4f8613f2fa06508de, type: 2}
   _maxHull: {fileID: 11400000, guid: be7f45b775b767e439d2b13c6fb44053, type: 2}
@@ -152,14 +214,24 @@ MonoBehaviour:
   _playerPrefab: {fileID: 6839613901156741212, guid: 708b19afad221d54abe98bbd575a83b7,
     type: 3}
   _hitSound: {fileID: 11400000, guid: 8ab5590dde622bc44bb2fcbe5242817e, type: 2}
+  _power: {fileID: 11400000, guid: ebbdf23a418e6a9439d18261b22f0976, type: 2}
+  _powerUsage: {fileID: 11400000, guid: 2a64c24431e55ed4bab05d1c9c49fb20, type: 2}
+  _maxPower: {fileID: 11400000, guid: 59b49c0becba4e94cae190cf46e5f944, type: 2}
+  _radiation: {fileID: 11400000, guid: 57997f42424f29745a05e4339c49c5dd, type: 2}
+  _radiationTolerance: {fileID: 11400000, guid: f19f4f65280141d47a386111957c28bb,
+    type: 2}
+  _playerGridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d,
+    type: 2}
+  _playerMaxAchievedDepth: {fileID: 11400000, guid: 74d598338d171d74fb9e3b6e69a28744,
+    type: 2}
   _initialMoney: 1000000
-  _initialHull: {fileID: 11400000, guid: 08012d68ee9096044bba99a274644f3c, type: 2}
-  _initialBattery: {fileID: 0}
+  _initialHull: {fileID: 11400000, guid: 77c121761a412c54f80d50675087c037, type: 2}
+  _initialBattery: {fileID: 11400000, guid: 6852ee2c5c995ef4a974a7ec094cf20a, type: 2}
   _initialEngine: {fileID: 11400000, guid: 01bdfc110f23be847b8b9aa6ea5dfe5b, type: 2}
   _initialDrill: {fileID: 11400000, guid: d076d90bd27cec548944355cff6170c7, type: 2}
-  _initialCooling: {fileID: 0}
+  _initialCooling: {fileID: 11400000, guid: 422798abdce481a4a86cb2dfc081f2d2, type: 2}
   _initialCargo: {fileID: 11400000, guid: 669cb4f6d26cff941b092c4b6d81608a, type: 2}
-  _initialFuelTank: {fileID: 11400000, guid: 23936b00c430c714ca57206ef614d99e, type: 2}
+  _initialFuelTank: {fileID: 11400000, guid: 57a794278b5f1b9418a952a6410a29e2, type: 2}
 --- !u!1 &6710916022475055310
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +556,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 3869712848589088806}
   m_Father: {fileID: 9114216242872642098}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -500,6 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba5313e16a2d00499ea444773a4fd14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeOfDay: {fileID: 11400000, guid: e9ea844b6f181da40a7286db117eee88, type: 2}
+  _elapsedDays: {fileID: 11400000, guid: 9db49c99329fdd542b0125c2530d7e1c, type: 2}
   _worldPrefab: {fileID: 1924531171169651875, guid: 96b609c2304dad54d92a4e910d515ddd,
     type: 3}
 --- !u!1 &7923539297496518058
@@ -520,6 +595,8 @@ GameObject:
   - component: {fileID: 3119390869102439061}
   - component: {fileID: 8996025339756356544}
   - component: {fileID: 6069053105920914848}
+  - component: {fileID: 5444190671523975667}
+  - component: {fileID: 9152404133694034669}
   m_Layer: 0
   m_Name: Event Listeners
   m_TagString: Untagged
@@ -775,6 +852,60 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4284794202764284487}
         m_MethodName: OnPlayerRepaired
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5444190671523975667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7923539297496518058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 1890cd64ad9d23549a98466446af6919, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4284794202764284487}
+        m_MethodName: OnKillPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &9152404133694034669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7923539297496518058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _event: {fileID: 11400000, guid: 9d884807d1d48ae469f813869ebcba96, type: 2}
+  _response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4284794202764284487}
+        m_MethodName: OnChangePlayerRadiation
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

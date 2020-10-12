@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Hull lv 2
   _sprite: {fileID: 6658516375458014310, guid: b9dc27e656e818248911db90ba7d9f4e, type: 3}
+  _type: 6
   _id: 601
   _cost: 1000
   _shortDescription: 

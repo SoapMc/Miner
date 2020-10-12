@@ -6,12 +6,13 @@ using Miner.Management.Events;
 
 namespace Miner.Gameplay
 {
-    [CreateAssetMenu(menuName = "Ground Layer")]
+    [CreateAssetMenu(menuName = "World/Ground Layer")]
     public class GroundLayer : ScriptableObject
     {
         [SerializeField] private GameEvent _playMusic = null;
         public int LayerNumber = 0;
-        public int Depth = 0;   //always positive value <- in this case y axis points downwards
+        public EAreaType AreaType = default;
+        public int Depth = 0;   //always positive value
         [Range(0f, 1f)] public float ProbabilityOfEmptySpaces = 0.01f;
         public Color BackgroundColor = Color.white;
         public Color AmbientLightColor = Color.black;
@@ -48,6 +49,12 @@ namespace Miner.Gameplay
         {
             public TileType Type;
             [Range(0f, 1f)] public float Probability;
+        }
+
+        public enum EAreaType
+        {
+            Surface,
+            Underground
         }
     }
 }

@@ -15,6 +15,7 @@ MonoBehaviour:
   _name: Basic Drill
   _sprite: {fileID: -4675556494037076702, guid: b9dc27e656e818248911db90ba7d9f4e,
     type: 3}
+  _type: 3
   _id: 300
   _cost: 0
   _shortDescription: 

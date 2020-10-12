@@ -32,6 +32,7 @@ namespace Miner.UI
         
         public override void OnSelect(BaseEventData eventData)
         {
+            if (interactable == false) return;
             base.OnSelect(eventData);
             _parent.MoveViewRequest(transform.localPosition);
             _parent.ShowDescription(this);
@@ -39,7 +40,7 @@ namespace Miner.UI
 
         public void Buy()
         {
-            if (_state == State.Available)
+            if (_state == State.Available || _state == State.Bought)
                 _parent.BuyPart(this);
             
         }
