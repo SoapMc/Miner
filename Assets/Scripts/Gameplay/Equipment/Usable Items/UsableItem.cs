@@ -25,8 +25,7 @@ namespace Miner.Gameplay
             get
             {
                 string result = _shortDescription + " \n";
-                for (int i = 0; i < _effects.Count; ++i)
-                    result += (_effects[i].Description() + " \n");
+                result += "Power cost: " + _usedPower.ToString("0.0");
                 return result;
             }
         }

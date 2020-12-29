@@ -9,8 +9,6 @@ namespace Miner.Gameplay
     {
         [SerializeField] protected SoundEffect _soundOnUse = null;
 
-        virtual public string Description() { return string.Empty; }
-
         public abstract void Execute();
     }
 }

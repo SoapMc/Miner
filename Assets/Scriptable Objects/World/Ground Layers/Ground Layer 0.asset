@@ -17,12 +17,16 @@ MonoBehaviour:
   AreaType: 0
   Depth: 1
   ProbabilityOfEmptySpaces: 0
-  BackgroundColor: {r: 0.41509432, g: 0.2995728, b: 0.2995728, a: 1}
-  AmbientLightColor: {r: 1, g: 1, b: 1, a: 1}
+  AmbientLight: {fileID: 11400000, guid: b55ae0338523014438442cc6d4c47fb2, type: 2}
+  BackgroundColorSet:
+    TopColor: {r: 0, g: 0, b: 0, a: 1}
+    BottomColor: {r: 0, g: 0, b: 0, a: 1}
   PredefinedWorldObjects: []
   NaturalDisasters:
   - {fileID: 11400000, guid: ff589b54afca70e47b86e6ee34d3665d, type: 2}
   Music:
   - {fileID: 8300000, guid: 48eaff017f144ae4a8698d07039259f1, type: 3}
   DefaultTile: {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
-  Resources: []
+  Resources:
+  - Type: {fileID: 11400000, guid: 73351b9eb828430479fa8a86d045af1e, type: 2}
+    Probability: 0.01

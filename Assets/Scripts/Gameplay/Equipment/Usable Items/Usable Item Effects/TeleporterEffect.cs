@@ -19,7 +19,6 @@ namespace Miner.Gameplay
         [SerializeField] private Vector2Reference _playerSpawnPoint = null;
         [SerializeField] private ParticleSystem _teleportEffect = null;
         [SerializeField] private Vector2Reference _playerPosition = null;
-        [SerializeField] private CargoTable _playerCargo = null;
 
         [Header("Utility")]
         [SerializeField, Range(0f, 1f)] private float _delay = 0.3f;
@@ -33,11 +32,6 @@ namespace Miner.Gameplay
             handler.StartCoroutine(Teleport(handler.gameObject));
             _enablePlayerController.Raise();
 
-        }
-
-        public override string Description()
-        {
-            return "The Miner returns to the base in a blink from any place.";
         }
 
         private IEnumerator Teleport(GameObject obj)

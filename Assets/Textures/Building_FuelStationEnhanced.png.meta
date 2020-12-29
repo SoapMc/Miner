@@ -1,0 +1,583 @@
+fileFormatVersion: 2
+guid: 91d5b1043706f854f82b55fa63a5ab00
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8985285181038402973
+    second: Building_FuelStationEnhanced_0
+  - first:
+      213: 1604757568001215833
+    second: Building_FuelStationEnhanced_1
+  - first:
+      213: 6149621901467395110
+    second: Building_FuelStationEnhanced_2
+  - first:
+      213: 7410820912845185329
+    second: Building_FuelStationEnhanced_3
+  - first:
+      213: 3119952739895167349
+    second: Building_FuelStationEnhanced_4
+  - first:
+      213: 617263541280677927
+    second: Building_FuelStationEnhanced_5
+  - first:
+      213: -7288073331251518481
+    second: Building_FuelStationEnhanced_6
+  - first:
+      213: 997292375302312910
+    second: Building_FuelStationEnhanced_7
+  - first:
+      213: -5069246358959576142
+    second: Building_FuelStationEnhanced_8
+  - first:
+      213: 4481697690152427245
+    second: Building_FuelStationEnhanced_9
+  - first:
+      213: 1230947239085344521
+    second: Building_FuelStationEnhanced_10
+  - first:
+      213: -2060393886129259175
+    second: Building_FuelStationEnhanced_11
+  - first:
+      213: -8911119796418506085
+    second: Building_FuelStationEnhanced_12
+  - first:
+      213: 3695683523569495559
+    second: Building_FuelStationEnhanced_13
+  - first:
+      213: 4654762948855766569
+    second: Building_FuelStationEnhanced_14
+  - first:
+      213: 8030690416622860496
+    second: Building_FuelStationEnhanced_15
+  - first:
+      213: -2592113756748351194
+    second: Building_FuelStationEnhanced_16
+  - first:
+      213: -9040039716023492251
+    second: Building_FuelStationEnhanced_17
+  - first:
+      213: 6143261324811952313
+    second: Building_FuelStationEnhanced_18
+  - first:
+      213: 9155262218888476415
+    second: Building_FuelStationEnhanced_19
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 248
+        width: 81
+        height: 263
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 183b7f4ae03861540a209ddd3d686d6f
+      internalID: 8985285181038402973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_1
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 248
+        width: 113
+        height: 264
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6fa2218ba6b40d4f94459d77ac1de1e
+      internalID: 1604757568001215833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_2
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 502
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 082c14cc484aefc4ebbfcdf330c529fb
+      internalID: 6149621901467395110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_3
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 407
+        width: 55
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72fb7efc4a8c0fe4bbc8232dc7bb3adc
+      internalID: 7410820912845185329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_4
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 397
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de36d860996070843b5e39dc87d5eb58
+      internalID: 3119952739895167349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_5
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 248
+        width: 30
+        height: 252
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6fb29400672b9a4284abbb683c68dfe
+      internalID: 617263541280677927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_6
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 248
+        width: 40
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59052733238bfb24e875ef2c68351629
+      internalID: -7288073331251518481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_7
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 297
+        width: 40
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 744729a05d03fda42b34f03d39e95fce
+      internalID: 997292375302312910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_8
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 248
+        width: 3
+        height: 153
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c39a70af874e4d4ca7d5a28d084d17a
+      internalID: -5069246358959576142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_9
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 275
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2ffab02f81acc3479fb8e188f9ac3b7
+      internalID: 4481697690152427245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_10
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 248
+        width: 21
+        height: 26
+      alignment: 9
+      pivot: {x: 0.5, y: 0.18}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08ab1c2e82d556946aa39c67afd02657
+      internalID: 1230947239085344521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 193
+        width: 135
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78485540d87d22c4a9d6cf11d108743c
+      internalID: -2060393886129259175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_12
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 0
+        width: 510
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b06970941bfb0c41a8292ee825add83
+      internalID: -8911119796418506085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_13
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 303
+        width: 27
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 766622d0e6875a449847c83602a26ee7
+      internalID: 3695683523569495559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_14
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 421
+        width: 3
+        height: 91
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abdf05af59d233042b8497be67418ea6
+      internalID: 4654762948855766569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_15
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 303
+        width: 27
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30e95c5c60b89d042bbf3a5c05112cb6
+      internalID: 8030690416622860496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_16
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 248
+        width: 44
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d635227c7ae7a14eae4636be9a0cfc6
+      internalID: -2592113756748351194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_17
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 248
+        width: 41
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14c1718558778694f9af59460bd0650a
+      internalID: -9040039716023492251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_18
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 302
+        width: 24
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c549a5dfd601fc84a9bcb7ec76bc667a
+      internalID: 6143261324811952313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_FuelStationEnhanced_19
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 502
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58f880f027c0a834eb97f0d90fbc5250
+      internalID: 9155262218888476415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

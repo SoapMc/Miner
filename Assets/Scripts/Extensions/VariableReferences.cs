@@ -9,7 +9,7 @@ public class VariableReference<T> : ScriptableObject, ISerializationCallbackRece
     [System.NonSerialized] private T _runtimeValue;
 
     public delegate void ValueChange(T oldValue, T newValue);
-    public ValueChange ValueChanged = delegate { };
+    public event ValueChange ValueChanged = delegate { };
 
     public T Value
     {
@@ -33,6 +33,11 @@ public class VariableReference<T> : ScriptableObject, ISerializationCallbackRece
     void ISerializationCallbackReceiver.OnBeforeSerialize()
     {
 
+    }
+
+    public void SetValueWithoutNotification(T value)
+    {
+        _runtimeValue = value;
     }
 
     public static implicit operator T(VariableReference<T> variableRef) => variableRef.Value;

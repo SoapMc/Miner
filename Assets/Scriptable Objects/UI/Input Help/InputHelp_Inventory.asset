@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59732cc4b24e3f84ab4a78e8571f2698, type: 3}
+  m_Name: InputHelp_Inventory
+  m_EditorClassIdentifier: 
+  _showInputHelp: {fileID: 11400000, guid: 9aef4ae209e5738489095cf82d6e0b3f, type: 2}
+  _hideInputHelp: {fileID: 11400000, guid: 7c2445bc52cee804c997b31ec7048a41, type: 2}
+  _elements:
+  - InputType: 0
+    CommandName: Navigate
+  - InputType: 1
+    CommandName: Close

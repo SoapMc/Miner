@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cb6dcf5765850544bb488cf515d85e8, type: 3}
   m_Name: Player Usable Items
   m_EditorClassIdentifier: 
+  _UsableItemsChanged: {fileID: 11400000, guid: c08a1d45078effb4eabaedb72c4df761,
+    type: 2}

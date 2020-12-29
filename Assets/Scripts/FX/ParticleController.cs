@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
+using Miner.Management;
 
 namespace Miner.FX
 {
@@ -42,7 +43,7 @@ namespace Miner.FX
             }
             else
             {
-                throw new InvalidEventArgsException();
+                Log.Instance.WriteException(new InvalidEventArgsException());
             }
         }
 
@@ -65,10 +66,14 @@ namespace Miner.FX
             if (args is WorldLoadedEA wl)
             {
                 _worldGrid = wl.WorldGrid;
+                ParticleSystem.EmissionModule emission = _groundParticles.emission;
+                emission.enabled = false;
+                emission = _groundDust.emission;
+                emission.enabled = false;
             }
             else
             {
-                throw new InvalidEventArgsException();
+                Log.Instance.WriteException(new InvalidEventArgsException());
             }
         }
 
@@ -83,7 +88,7 @@ namespace Miner.FX
             }
             else
             {
-                throw new InvalidEventArgsException();
+                Log.Instance.WriteException(new InvalidEventArgsException());
             }
         }
         #endregion

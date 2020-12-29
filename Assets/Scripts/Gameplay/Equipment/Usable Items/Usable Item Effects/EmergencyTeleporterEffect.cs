@@ -36,11 +36,6 @@ namespace Miner.Gameplay
 
         }
 
-        public override string Description()
-        {
-            return "Emergency teleporter works only for the Miner - all cargo will be lost.";
-        }
-
         private IEnumerator Teleport(GameObject obj)
         {
             _createParticle.Raise(new CreateParticleEA(_teleportEffect, _playerPosition.Value));

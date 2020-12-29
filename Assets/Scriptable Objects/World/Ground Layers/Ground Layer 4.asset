@@ -15,13 +15,16 @@ MonoBehaviour:
   _playMusic: {fileID: 11400000, guid: 0742c78ce3196e045bae63de8e7ca9e9, type: 2}
   LayerNumber: 4
   AreaType: 1
-  Depth: 40
+  Depth: 80
   ProbabilityOfEmptySpaces: 0.015
-  BackgroundColor: {r: 0.29689807, g: 0.3490566, b: 0.26508543, a: 1}
-  AmbientLightColor: {r: 0, g: 0, b: 0, a: 1}
+  AmbientLight: {fileID: 11400000, guid: fb6bb0979b132d54eb8b64e98cd61f63, type: 2}
+  BackgroundColorSet:
+    TopColor: {r: 0.103773594, g: 0.09055714, b: 0.09055714, a: 1}
+    BottomColor: {r: 0.15641688, g: 0.1792453, b: 0.16124609, a: 1}
   PredefinedWorldObjects: []
   NaturalDisasters: []
-  Music: []
+  Music:
+  - {fileID: 8300000, guid: 8786509bce399d541acb0d7b2245c93f, type: 3}
   DefaultTile: {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
   Resources:
   - Type: {fileID: 11400000, guid: 73351b9eb828430479fa8a86d045af1e, type: 2}
@@ -36,3 +39,5 @@ MonoBehaviour:
     Probability: 0.007
   - Type: {fileID: 11400000, guid: 29df14e24b424d940b22363671604565, type: 2}
     Probability: 0.01
+  - Type: {fileID: 11400000, guid: 0d9c09ec3b8b15341bde3793e965b415, type: 2}
+    Probability: 0.0002

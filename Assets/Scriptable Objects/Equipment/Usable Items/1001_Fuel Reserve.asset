@@ -17,6 +17,7 @@ MonoBehaviour:
     type: 3}
   _id: 1001
   _cost: 4000
+  _usedPower: 10
   _shortDescription: Provides certain amount of fuel in underground work.
   _effects:
   - {fileID: 11400000, guid: 54ee275515798f74b9daa4bbae532f1f, type: 2}

@@ -27,7 +27,8 @@ namespace Miner.Gameplay
 
         private IEnumerator CheckStatus()
         {
-            while(true)
+            yield return new WaitForSeconds(1f);
+            while (true)
             {
                 if(_playerFuel.Value <= _lowFuelSignalizationLevel * _playerMaxFuel.Value)
                 {

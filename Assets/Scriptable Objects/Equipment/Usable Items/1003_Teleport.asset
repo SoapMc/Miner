@@ -16,6 +16,7 @@ MonoBehaviour:
   _sprite: {fileID: 173761282350276360, guid: 24b9441a05447fd49a914053ed5cffba, type: 3}
   _id: 1003
   _cost: 15000
+  _usedPower: 60
   _shortDescription: The Miner returns to the base in a blink from any place.
   _effects:
   - {fileID: 11400000, guid: 6ca7b72159259ed489800e4f6554b643, type: 2}

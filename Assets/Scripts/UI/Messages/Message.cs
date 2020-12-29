@@ -12,11 +12,17 @@ namespace Miner.UI
         [SerializeField] protected string _title = string.Empty;
         [SerializeField, TextArea] protected string _message = string.Empty;
         [SerializeField] protected EType _type = default;
-        [SerializeField, Range(0f, 10f)] private float _delayFromActivation = 0f;
+        [SerializeField, Range(0f, 10f)] protected float _delayFromActivation = 0f;
+        [System.NonSerialized] protected string _runtimeMessage;
+
+        public void OverrideMessage(string newMessage)
+        {
+            _runtimeMessage = newMessage;
+        }
 
         public void Show()
         {
-            _createMessage.Raise(new CreateMessageEA(_title, _message, _type));
+            _createMessage.Raise(new CreateMessageEA(_title, _runtimeMessage, _type));
             OnShow();
         }
 
@@ -32,6 +38,11 @@ namespace Miner.UI
         }
 
         protected virtual void OnShow() { }
+
+        private void OnEnable()
+        {
+            _runtimeMessage = _message;
+        }
 
         public enum EType
         {

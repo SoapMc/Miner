@@ -16,6 +16,7 @@ MonoBehaviour:
   _sprite: {fileID: 3896430804343246420, guid: 24b9441a05447fd49a914053ed5cffba, type: 3}
   _id: 1004
   _cost: 2500
+  _usedPower: 30
   _shortDescription: Restores 25 hull points immediately.
   _effects:
   - {fileID: 11400000, guid: eaaee28e7291b9f458bec9846c71a93d, type: 2}

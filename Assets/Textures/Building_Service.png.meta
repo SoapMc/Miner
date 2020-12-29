@@ -1,7 +1,34 @@
 fileFormatVersion: 2
 guid: c7dee339e899d4942838bc60c5056c10
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 2055210426514975130
+    second: Building_Service_0
+  - first:
+      213: 5851988450989792341
+    second: Building_Service_1
+  - first:
+      213: -6028320552380224943
+    second: Building_Service_2
+  - first:
+      213: 2983464910712028081
+    second: Building_Service_3
+  - first:
+      213: -8421680490586968190
+    second: Building_Service_4
+  - first:
+      213: 698904788760191743
+    second: Building_Service_5
+  - first:
+      213: -450940011737068905
+    second: Building_Service_6
+  - first:
+      213: -4554076461703035541
+    second: Building_Service_7
+  - first:
+      213: 4306094401511149448
+    second: Building_Service_8
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,14 +67,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -84,7 +111,196 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Building_Service_0
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 247
+        width: 113
+        height: 264
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ad303dda2e6213459fb230681eb5153
+      internalID: 2055210426514975130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_1
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 62
+        width: 324
+        height: 448
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3e004db10773004ea4fb58fc62ba0c0
+      internalID: 5851988450989792341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_2
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 498
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 032caa5deb0e34b41ab998701d081ac7
+      internalID: -6028320552380224943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_3
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 498
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7f8765ed84f6424891d9e6677d334a9
+      internalID: 2983464910712028081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_4
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 288
+        width: 296
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30cb9e541fe88324f93c20c3ecb66b7f
+      internalID: -8421680490586968190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_5
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 244
+        width: 30
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2175a0872859f1a4fafdc008e9a555ec
+      internalID: 698904788760191743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_6
+      rect:
+        serializedVersion: 2
+        x: 962
+        y: 256
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d927d8aec074c8a4e8de9dfadfe2d083
+      internalID: -450940011737068905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_7
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 151
+        width: 24
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2379de743e19c4d4bad37b6305638a6c
+      internalID: -4554076461703035541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Service_8
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 94
+        width: 296
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e72c8f025ded3ed4cbbcb37ac36e1f4a
+      internalID: 4306094401511149448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

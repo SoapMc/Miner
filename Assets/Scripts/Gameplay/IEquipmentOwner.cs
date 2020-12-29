@@ -16,6 +16,7 @@ namespace Miner.Gameplay
         int Hull { get; set; }
         int ResistanceToHit { get; set; }
         int ThermalInsulation { get; set; }
+        float HullPermaDamageThreshold { get; set; }
 
         //fuel tank
         float MaxFuel { get; set; }

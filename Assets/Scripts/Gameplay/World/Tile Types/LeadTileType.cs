@@ -8,17 +8,17 @@ namespace Miner.Gameplay
     [CreateAssetMenu(menuName = "World/Tile Types/Lead Tile Type")]
     public class LeadTileType : TileType
     {
-        [SerializeField] private GameEvent _changePlayerRadiation = null;
+        [SerializeField] private IntReference _playerRadiation = null;
         [SerializeField] private int _radiationChange = -1;
 
         public override void OnResourceAddedToCargo()
         {
-            _changePlayerRadiation.Raise(new ChangePlayerRadiationEA(_radiationChange));
+            _playerRadiation.Value += _radiationChange;
         }
 
         public override void OnResourceRemovedFromCargo()
         {
-            _changePlayerRadiation.Raise(new ChangePlayerRadiationEA(-_radiationChange));
+            _playerRadiation.Value -= _radiationChange;
         }
     }
 }

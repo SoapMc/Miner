@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Miner.Management.Events;
+using Miner.FX;
 
 namespace Miner.Gameplay
 {
@@ -14,8 +15,8 @@ namespace Miner.Gameplay
         public EAreaType AreaType = default;
         public int Depth = 0;   //always positive value
         [Range(0f, 1f)] public float ProbabilityOfEmptySpaces = 0.01f;
-        public Color BackgroundColor = Color.white;
-        public Color AmbientLightColor = Color.black;
+        public AmbientLight AmbientLight = null;
+        public BackgroundColorSet BackgroundColorSet;
         public List<PredefinedWorldObject> PredefinedWorldObjects = new List<PredefinedWorldObject>();
         public List<NaturalDisaster> NaturalDisasters = new List<NaturalDisaster>();
         public List<AudioClip> Music = new List<AudioClip>();

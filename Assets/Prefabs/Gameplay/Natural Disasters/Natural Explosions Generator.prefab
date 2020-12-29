@@ -44,10 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111a0c366098b5146a821819bf6c6b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chanceForExplosion: 0.2
+  _chanceForExplosion: 0.01
   _explosionPrefab: {fileID: 1875663711075389147, guid: 37e32349f765a9749b65f361f7687a89,
     type: 3}
   _playerPosition: {fileID: 11400000, guid: 31cfa17e85919e34689240c545469bc5, type: 2}
+  _damagePlayer: {fileID: 11400000, guid: e42d264b110eeb240aeaeb3451ad059b, type: 2}
+  _destroyTiles: {fileID: 11400000, guid: 617417c6c84ea8a458f0b8fa6ee22c69, type: 2}
+  _playerGridPosition: {fileID: 11400000, guid: d9cd30ca09dae0748ac0f4808641f37d,
+    type: 2}
+  _damageType: {fileID: 11400000, guid: 0e553e946ea62e44eb3ad89dd0dafcf6, type: 2}
 --- !u!114 &7268128307162882416
 MonoBehaviour:
   m_ObjectHideFlags: 0

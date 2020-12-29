@@ -13,7 +13,6 @@ namespace Miner.Gameplay
     public class WorldController : MonoBehaviour
     {
         [SerializeField] private TileTypes _tiles = null;
-        [SerializeField] private TileType _tileEdges = null;
         [SerializeField] private Grid _grid = null;
         [SerializeField] private Transform _playerSpawnPoint = null;
         [SerializeField] private TilemapController _tilemapController = null;
@@ -21,10 +20,7 @@ namespace Miner.Gameplay
 
         [Header("Events")]
         [SerializeField] private GameEvent _worldLoaded = null;
-        [SerializeField] private GameEvent _worldUnloaded = null;
         [SerializeField] private GameEvent _leadToDigPlace = null;
-        [SerializeField] private GameEvent _updatePlayerData = null;
-        [SerializeField] private GameEvent _restoreGameAfterPlayerDestroyed = null;
         [SerializeField] private GameEvent _tryAddResourcesToPlayerCargo = null;
 
         
@@ -33,15 +29,18 @@ namespace Miner.Gameplay
         private TileType _dugTile = null;
 
         public Grid Grid => _grid;
+        public Transform PlayerSpawnPoint => _playerSpawnPoint;
 
         public void Initialize(TilemapData data)
         {
             _tilemapController.Initialize(data, _tileIdentifier);
         }
 
-        public TilemapData RetrieveSerializableData()
+        public WorldControllerData RetrieveSerializableData()
         {
-            return _tilemapController.RetrieveSerializableData();
+            WorldControllerData result = new WorldControllerData();
+            result.Tilemap = _tilemapController.RetrieveSerializableData();
+            return result;
         }
 
         public void OnDigRequest(EventArgs args)
@@ -165,9 +164,10 @@ namespace Miner.Gameplay
             StopAllCoroutines();
         }
 
-        private void OnDestroy()
+        [System.Serializable]
+        public class WorldControllerData
         {
-            _worldUnloaded.Raise();
+            [NonSerialized] public TilemapData Tilemap = new TilemapData();
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Miner.Gameplay
     {
         [SerializeField] private TilemapController _tilemapController = null;
         [SerializeField] private TileType _tileEdges = null;
-        [SerializeField] private UndergroundTrigger _undergroundTrigger = null;
         [SerializeField] private Tilemap _surfaceTilemap = null;
         [SerializeField] private Tilemap _undergroundTilemap = null;
+        [SerializeField] private LayerBorders _surfaceLayerBorders = null;
         [SerializeField] private LayerBorders _layerBordersPrefab = null;
         [SerializeField] private GroundLayerList _layers = null;
         [SerializeField] private int _ceilHeight = 20;
@@ -55,12 +55,13 @@ namespace Miner.Gameplay
             GenerateSurface(tilemapData, _worldInfo.HorizontalBorders.x, _worldInfo.HorizontalBorders.y, minimumDepthForCurrentLayer, minimumDepthForCurrentLayer - _layers[0].Depth);
             maximumDepthForCurrentLayer -= _layers[0].Depth;
 
+            _surfaceLayerBorders.Initialize(_layers[0]);
             for (int i = 1; i < _layers.Count; ++i) //all layers except surface layer (so the loop iterates from 1)
             {
                 minimumDepthForCurrentLayer = maximumDepthForCurrentLayer;  //minimum depth is maximum depth from previous layer
                 maximumDepthForCurrentLayer -= _layers[i].Depth;
                 LayerBorders borders = Instantiate(_layerBordersPrefab, _grid.transform);
-                borders.Initialize(_layers[i].LayerNumber, minimumDepthForCurrentLayer, _layers[i].Depth, worldWidth);
+                borders.Initialize(_layers[i], minimumDepthForCurrentLayer, worldWidth);
                 GenerateLayer(tilemapData, _layers[i], _worldInfo.HorizontalBorders.x, _worldInfo.HorizontalBorders.y, minimumDepthForCurrentLayer, maximumDepthForCurrentLayer);
             }
             
@@ -97,12 +98,13 @@ namespace Miner.Gameplay
             _tilemapController.AddTilemap(_undergroundTilemap, totalDepth);
             maximumDepthForCurrentLayer -= _layers[0].Depth;
 
+            _surfaceLayerBorders.Initialize(_layers[0]);
             for (int i = 1; i < _layers.Count; ++i) //all layers except surface layer (so the loop iterates from 1)
             {
                 minimumDepthForCurrentLayer = maximumDepthForCurrentLayer;  //minimum depth is maximum depth from previous layer
                 maximumDepthForCurrentLayer -= _layers[i].Depth;
                 LayerBorders borders = Instantiate(_layerBordersPrefab, _grid.transform);
-                borders.Initialize(_layers[i].LayerNumber, minimumDepthForCurrentLayer, _layers[i].Depth, worldWidth);
+                borders.Initialize(_layers[i], minimumDepthForCurrentLayer, worldWidth);
             }
         }
 

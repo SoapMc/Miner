@@ -10,15 +10,14 @@ namespace Miner.Gameplay
 {
     public class WorldMusicController : MonoBehaviour
     {
-        [SerializeField] private GroundLayerList _layers = null;
         [SerializeField] private GameEvent _playMusic = null;
 
         public void OnPlayerCameToLayer(EventArgs args)
         {
             if(args is PlayerCameToLayerEA pctl)
             {
-                if(_layers[pctl.LayerNumber].Music.Count > 0)
-                    _playMusic.Raise(new PlayMusicEA(_layers[pctl.LayerNumber].Music.First()));
+                if(pctl.GroundLayer.Music.Count > 0)
+                    _playMusic.Raise(new PlayMusicEA(pctl.GroundLayer.Music.First()));
             }
             else
             {

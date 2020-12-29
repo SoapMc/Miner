@@ -19,5 +19,5 @@ MonoBehaviour:
   _id: 200
   _cost: 800
   _shortDescription: Ensures stable temperatures only in swallow drillings.
-  _effectiveCooling: 10
-  _powerUsage: 0.2
+  _configurableModules:
+  - {fileID: 11400000, guid: a1327c946afbe324d85ab7a583ea4b70, type: 2}

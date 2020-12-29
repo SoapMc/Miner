@@ -14,8 +14,7 @@ namespace Miner.UI
     public class PartListGrid : MonoBehaviour
     {
         [SerializeField] private GameEvent _updatePlayerData = null;
-        [SerializeField] private GameEvent _showPartDescription = null;
-
+        [SerializeField] private GameEvent _changeEquipment = null;
         [SerializeField] private IntReference _playerMoney = null;
         [SerializeField] private EquipmentTable _playerEquipment = null;
         [SerializeField] private PartGridElement _partGridElementPrefab = null;
@@ -57,18 +56,18 @@ namespace Miner.UI
 
                 if (_playerMoney >= parts[i].Cost)
                 {
-                    pge.Refresh(PartGridElement.State.Available);
+                    pge.Refresh(EOfferState.Available);
                 }
                 else
                 {
-                    pge.Refresh(PartGridElement.State.Unavailable);
+                    pge.Refresh(EOfferState.Unavailable);
                 }
 
                 if (equippedPart != null)
                 {
                     if (equippedPart.Id == parts[i].Id)
                     {
-                        pge.Refresh(PartGridElement.State.Bought);
+                        pge.Refresh(EOfferState.Bought);
                     }
                 }
 
@@ -85,50 +84,43 @@ namespace Miner.UI
             {
                 foreach(var elem in _partGridElements[element.Row])
                 {
-                    if(elem.CurrentState == PartGridElement.State.Bought)
+                    if(elem.CurrentState == EOfferState.Bought)
                     {
                         if (_playerMoney >= elem.ReferencePart.Cost)
                         {
-                            elem.Refresh(PartGridElement.State.Available);
+                            elem.Refresh(EOfferState.Available);
                         }
                         else
                         {
-                            elem.Refresh(PartGridElement.State.Unavailable);
+                            elem.Refresh(EOfferState.Unavailable);
                         }
                     }
                 }
 
-                element.Refresh(PartGridElement.State.Bought);
-                UpdatePlayerDataEA upd = new UpdatePlayerDataEA();
-                upd.EquipmentChange.Add(element.ReferencePart.CreatePart(1f));
-                upd.MoneyChange = -element.ReferencePart.Cost;
-                _updatePlayerData.Raise(upd);
+                element.Refresh(EOfferState.Bought);
+                _updatePlayerData.Raise(new UpdatePlayerDataEA() { MoneyChange = -element.ReferencePart.Cost });
+                _changeEquipment.Raise(new ChangeEquipmentEA() { PartsToEquip = new List<Part>() { element.ReferencePart.CreatePart(1f) } });
                 _buyPart.Play();
 
                 for (int row = 0; row < _partGridElements.Count; ++row)
                 {
                     foreach (var elem in _partGridElements[row])
                     {
-                        if (elem.CurrentState == PartGridElement.State.Bought) continue;
+                        if (elem.CurrentState == EOfferState.Bought) continue;
 
                         if (_playerMoney >= elem.ReferencePart.Cost)
                         {
-                            elem.Refresh(PartGridElement.State.Available);
+                            elem.Refresh(EOfferState.Available);
                         }
                         else
                         {
-                            elem.Refresh(PartGridElement.State.Unavailable);
+                            elem.Refresh(EOfferState.Unavailable);
                         }
                     }
                 }
                 
             }
 
-        }
-
-        public void ShowDescription(PartGridElement element)
-        {
-            _showPartDescription.Raise(new ShowPartDescriptionEA(element.ReferencePart, element.CurrentState));
         }
 
         public void Load()

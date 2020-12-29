@@ -9,6 +9,7 @@ namespace Miner.Gameplay
     {
         [SerializeField] private DayTable _dayTable = null;
         [SerializeField] private GameEvent _hourElapsed = null;
+        [SerializeField] private GameEvent _minuteElapsed = null;
         [SerializeField] private GameEvent _dayElapsed = null;
         [SerializeField] private GameEvent _dayBegan = null;
         [SerializeField] private GameEvent _nightBegan = null;
@@ -24,6 +25,7 @@ namespace Miner.Gameplay
             {
                 _timeOfDay.Value++;
                 _second -= 1f;
+                _minuteElapsed.Raise();
                 if (_timeOfDay % 60 == 0)
                 {
                     _hourElapsed.Raise();
@@ -45,7 +47,7 @@ namespace Miner.Gameplay
             }
         }
 
-        public void Start()
+        public void OnNewWorldCreated()
         {
             _timeOfDay.Value = 0;
             if (!_dayTable.Day.IsInRange(_timeOfDay))
@@ -54,6 +56,21 @@ namespace Miner.Gameplay
             }
             else
                 _dayBegan.Raise();
+        }
+
+        public void OnWorldLoaded()
+        {
+            if (!_dayTable.Day.IsInRange(_timeOfDay))
+            {
+                _nightBegan.Raise();
+            }
+            else
+                _dayBegan.Raise();
+        }
+
+        public void OnWorldReset()
+        {
+            _timeOfDay.Value = 0;
         }
     }
 }

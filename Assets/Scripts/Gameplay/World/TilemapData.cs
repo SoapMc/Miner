@@ -55,7 +55,7 @@ namespace Miner.Gameplay
             }
             catch(IndexOutOfRangeException e)
             {
-                Management.GameManager.Instance.Log.Write(GetType().ToString() + " : " + e.Message + " [x: " + gridPosition.x + " /y:" + (-gridPosition.y + _minimumDepth) + "]");
+                Log.Instance.Write(GetType().ToString() + " : " + e.Message + " [x: " + gridPosition.x + " /y:" + (-gridPosition.y + _minimumDepth) + "]");
                 return -1;
             }
         }
@@ -115,7 +115,7 @@ namespace Miner.Gameplay
             }
             catch(Exception e)
             {
-                Management.GameManager.Instance.Log.Write(GetType() + " : " + e.Message);
+                Log.Instance.Write(GetType() + " : " + e.Message);
             }
         }
     }

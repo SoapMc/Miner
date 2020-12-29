@@ -130,6 +130,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _descriptOffer: {fileID: 11400000, guid: 3ada1aa1ded8a5c4e91071b87f21339d, type: 2}
+  _hideDescription: {fileID: 11400000, guid: 20df594ab6a507244aadce67ac6210ff, type: 2}
 --- !u!114 &1938892812820128576
 MonoBehaviour:
   m_ObjectHideFlags: 0

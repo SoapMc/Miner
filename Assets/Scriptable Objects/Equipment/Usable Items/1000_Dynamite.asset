@@ -17,6 +17,7 @@ MonoBehaviour:
     type: 3}
   _id: 1000
   _cost: 1500
+  _usedPower: 15
   _shortDescription: Creates a small explosion with a radius of 1 tile.
   _effects:
   - {fileID: 11400000, guid: ef630587aafa06c498bdffd5817657ce, type: 2}

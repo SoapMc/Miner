@@ -18,5 +18,5 @@ MonoBehaviour:
   _id: 207
   _cost: 400000
   _shortDescription: 
-  _effectiveCooling: 600
-  _powerUsage: 2
+  _configurableModules:
+  - {fileID: 11400000, guid: cc0d8c60b7865944ba1e1224f5438346, type: 2}

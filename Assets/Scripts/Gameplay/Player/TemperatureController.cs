@@ -18,6 +18,89 @@ namespace Miner.Gameplay
         [SerializeField] private EquipmentTable _equipment = null;
         private Dictionary<EPartType, OverheatedPart> _overheatedParts = new Dictionary<EPartType, OverheatedPart>();
         private float _updateTime = 1f;
+        private Coroutine _checkStatusCoroutine = null;
+
+        #region EVENT RESPONSES
+        public void OnPlayerRespawned()
+        {
+            StartCoroutine(WaitOneFrameAndSetInternalTemperature());
+        }
+
+        public void OnPlayerInstantiated()
+        {
+            StartCoroutine(WaitOneFrameAndSetInternalTemperature());
+        }
+        #endregion
+
+        #region COROUTINES
+
+        private IEnumerator WaitOneFrameAndSetInternalTemperature()
+        {
+            yield return null;
+            _internalTemperature.Value = _externalTemperature;
+        }
+
+        private IEnumerator CheckStatus()
+        {
+            yield return new WaitForSeconds(_updateTime);
+            while (true)
+            {
+                foreach(EPartType partType in Enum.GetValues(typeof(EPartType)))
+                {
+                    Part part = _equipment.GetEquippedPart(partType);
+                    if(part != null)
+                    {
+                        IOverheatable oh = part.AsOverheatable();
+                        if (oh != null)
+                        {
+                            if (_internalTemperature.Value > oh.MaximumOperatingTemperature)
+                            {
+                                if (!_overheatedParts.ContainsKey(partType))
+                                {
+                                    _overheatedParts.Add(partType, new OverheatedPart(oh, 0f));
+                                    _changeAlarms.Raise(new ChangeAlarmsEA() { AddedAlarm = UI.AlarmDisplay.EAlarmType.TemperatureHigh });
+                                }
+                            }
+                            else
+                            {
+                                if (_overheatedParts.ContainsKey(partType))
+                                    _overheatedParts.Remove(partType);
+
+                                if (_overheatedParts.Count == 0)
+                                    _changeAlarms.Raise(new ChangeAlarmsEA() { RemovedAlarm = UI.AlarmDisplay.EAlarmType.TemperatureHigh });
+                            }
+                        }
+                    }
+                    
+                }
+
+                foreach(var elem in _overheatedParts)
+                {
+                    elem.Value.TimeOfOverheating += _updateTime;
+                    if(elem.Value.TimeOfOverheating >= elem.Value.Overheatable.ToleranceTime)
+                    {
+                        DamagePlayerEA dp = new DamagePlayerEA();
+                        dp.DealPermaDamage(new Tuple<EPartType, float>(elem.Key, 0.01f));
+                        _damagePlayer.Raise(dp);
+                        elem.Value.TimeOfOverheating = 0f;
+                    }
+                }
+
+                yield return new WaitForSeconds(_updateTime);
+            }
+        }
+        #endregion
+
+        #region UNITY CALLBACKS
+        private void Start()
+        {
+            _internalTemperature.Value = _externalTemperature;
+        }
+
+        private void OnEnable()
+        {
+            _checkStatusCoroutine = StartCoroutine(CheckStatus());
+        }
 
         private void Update()
         {
@@ -27,54 +110,15 @@ namespace Miner.Gameplay
             _internalTemperature.Value += _heatFlow.Value;
         }
 
-        private IEnumerator CheckStatus()
+        private void OnDisable()
         {
-            while (true)
-            {
-                foreach(EPartType partType in Enum.GetValues(typeof(EPartType)))
-                {
-                    if(_equipment.GetEquippedPart(partType) is IOverheatable oh)
-                    {
-                        if (_internalTemperature.Value > oh.MaximumOperatingTemperature)
-                        {
-                            if (!_overheatedParts.ContainsKey(partType))
-                            {
-                                _overheatedParts.Add(partType, new OverheatedPart(oh, 0f));
-                                _changeAlarms.Raise(new ChangeAlarmsEA() { AddedAlarm = UI.AlarmDisplay.EAlarmType.TemperatureHigh });
-                            }
-                        }
-                        else
-                        {
-                            if (_overheatedParts.ContainsKey(partType))
-                                _overheatedParts.Remove(partType);
-
-                            if (_overheatedParts.Count == 0)
-                                _changeAlarms.Raise(new ChangeAlarmsEA() { RemovedAlarm = UI.AlarmDisplay.EAlarmType.TemperatureHigh });
-                        }
-                    }
-                }
-
-                foreach(var elem in _overheatedParts)
-                {
-                    elem.Value.TimeOfOverheating += _updateTime;
-                    if(elem.Value.TimeOfOverheating >= elem.Value.Overheatable.ToleranceTime)
-                    {
-                        DamagePlayerEA dp = new DamagePlayerEA();
-                        dp.DealPermaDamage(new Tuple<EPartType, int>(elem.Key, 1));
-                        _damagePlayer.Raise(dp);
-                        elem.Value.TimeOfOverheating = 0f;
-                    }
-                }
-
-                yield return new WaitForSeconds(_updateTime);
-            }
+            _heatFlow.Value = 0;
+            if (_checkStatusCoroutine != null)
+                StopCoroutine(_checkStatusCoroutine);
         }
+        #endregion
 
-        private void Start()
-        {
-            StartCoroutine(CheckStatus());
-        }
-
+        #region ADDITIONAL TYPES
         private class OverheatedPart
         {
             public float TimeOfOverheating;
@@ -86,5 +130,6 @@ namespace Miner.Gameplay
                 Overheatable = overheatable;
             }
         }
+        #endregion
     }
 }

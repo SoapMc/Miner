@@ -14,6 +14,7 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _resourcesGathered = null;
         [SerializeField] private GameEvent _resourcesRemoved = null;
         [SerializeField] private GameEvent _cargoFull = null;
+        [SerializeField] private GameEvent _showBriefInfo = null;
 
         [Header("Resources")]
         [SerializeField] private IntReference _maxMass = null;
@@ -47,7 +48,7 @@ namespace Miner.Gameplay
                 if (amount > 0)
                 {
                     Element containedResourceType = _content.FirstOrDefault(x => item.Type == x.Type);
-                    if(containedResourceType != null)
+                    if (containedResourceType != null)
                     {
                         containedResourceType.Amount += amount;
                         _mass.Value += amount * item.Type.Mass;
@@ -62,6 +63,7 @@ namespace Miner.Gameplay
                 else
                 {
                     _cargoFull.Raise();
+                    _showBriefInfo.Raise(new ShowBriefInfoEA("Cargo is full!", ShowBriefInfoEA.EType.Warning));
                     return;
                 }
             }
@@ -102,7 +104,8 @@ namespace Miner.Gameplay
         public void Remove(List<Element> items)
         {
             List<Element> removedElements = new List<Element>();
-            foreach (var resourceToRemove in items.ToList())
+            List<Element> resourcesToRemove = items.ToList();
+            foreach (var resourceToRemove in resourcesToRemove)
             {
                 if (resourceToRemove.Amount > 0)
                 {
@@ -119,7 +122,7 @@ namespace Miner.Gameplay
                                 _content.Remove(containedResourceType);
                         }
                     }
-                    
+
                 }
             }
             _resourcesRemoved.Raise(new ResourcesRemovedEA(removedElements));
@@ -138,6 +141,21 @@ namespace Miner.Gameplay
         }
 
         public List<Element> Get() => _content;
+
+        public Element this[int index]
+        {
+            get
+            {
+                try
+                {
+                    return _content[index];
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
 
         public class Element
         {

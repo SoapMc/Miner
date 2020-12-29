@@ -7,7 +7,7 @@ namespace Miner.Management.Events
     [CreateAssetMenu(menuName = "Game Event")]
     public class GameEvent : ScriptableObject
     {
-        private List<GameEventListener> _listeners = new List<GameEventListener>();
+        private List<IGameEventListener> _listeners = new List<IGameEventListener>();
 
         public void Raise()
         {
@@ -21,7 +21,7 @@ namespace Miner.Management.Events
                 _listeners[i].OnEventRaised(args);
         }
 
-        public void RegisterEvent(GameEventListener listener)
+        public void RegisterEvent(IGameEventListener listener)
         {
             if (!_listeners.Contains(listener))
                 _listeners.Add(listener);
@@ -29,7 +29,7 @@ namespace Miner.Management.Events
                 Debug.LogWarning("The listener has been already registered!");
         }
 
-        public void UnregisterEvent(GameEventListener listener)
+        public void UnregisterEvent(IGameEventListener listener)
         {
             if (_listeners.Contains(listener))
                 _listeners.Remove(listener);

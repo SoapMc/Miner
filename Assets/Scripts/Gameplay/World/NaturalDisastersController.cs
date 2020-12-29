@@ -5,13 +5,13 @@ using Miner.Management.Events;
 using Miner.Management.Exceptions;
 using System;
 using Random = UnityEngine.Random;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
     public class NaturalDisastersController : MonoBehaviour
     {
         [SerializeField] protected GameEvent _disasterEnded = null;
-        [SerializeField] private IntReference _timeOfDay = null;
         [SerializeField, Range(0f, 1f)] private float _probabilityOfDisaster = 0.05f;
         [SerializeField] private IntReference _playerLayer = null;
         [SerializeField] private GroundLayerList _layers = null;
@@ -47,25 +47,25 @@ namespace Miner.Gameplay
                 }
 
                 int constantDisasterCounter = 0;
-                for (int i = 0; i < _layers[pctl.LayerNumber].NaturalDisasters.Count; ++i)
+                for (int i = 0; i < pctl.GroundLayer.NaturalDisasters.Count; ++i)
                 {
-                    if(_layers[pctl.LayerNumber].NaturalDisasters[i].HappeningType == NaturalDisaster.EHappeningType.Constant)
+                    if(pctl.GroundLayer.NaturalDisasters[i].HappeningType == NaturalDisaster.EHappeningType.Constant)
                     {
-                        NaturalDisaster nd = _layers[pctl.LayerNumber].NaturalDisasters[i];
+                        NaturalDisaster nd = pctl.GroundLayer.NaturalDisasters[i];
                         nd.Execute();
                         _constantDisasters.Add(nd);
                         constantDisasterCounter++;
                     }
                 }
 
-                if (constantDisasterCounter == _layers[pctl.LayerNumber].NaturalDisasters.Count)
+                if (constantDisasterCounter == pctl.GroundLayer.NaturalDisasters.Count)
                     _isOccasionalDisasterAvailable = false;
                 else
                     _isOccasionalDisasterAvailable = true;
             }
             else
             {
-                Management.GameManager.Instance.Log.Write(GetType() + " : " + new InvalidEventArgsException().Message);
+                Log.Instance.Write(GetType() + " : " + new InvalidEventArgsException().Message);
             }
         }
 
@@ -100,8 +100,16 @@ namespace Miner.Gameplay
         private void OnDestroy()
         {
             if (_countdownCoroutine != null)
+            {
                 StopCoroutine(_countdownCoroutine);
-            _countdownCoroutine = null;
+                _countdownCoroutine = null;
+            }
+
+            foreach(var disaster in _constantDisasters)
+            {
+                disaster.End();
+            }
+            _constantDisasters.Clear();
         }
     }
 }

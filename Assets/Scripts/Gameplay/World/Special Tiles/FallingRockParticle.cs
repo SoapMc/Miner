@@ -33,7 +33,10 @@ namespace Miner.Gameplay
                 {
                     Rigidbody2D rb = GetComponent<Rigidbody2D>();
                     int damage = Mathf.Clamp(_damage * (int) Mathf.Clamp(Mathf.Sqrt(rb.velocity.sqrMagnitude / 10f), 1f, 5f), 1, int.MaxValue);
-                    _playerDamaged.Raise(new DamagePlayerEA(damage, _damageType));
+                    DamagePlayerEA dp = new DamagePlayerEA(damage, _damageType);
+                    EPartType[] partTypes = (EPartType[]) System.Enum.GetValues(typeof(EPartType));
+                    dp.PermaDamage.Add(partTypes[Random.Range(0, partTypes.Length)], 0.01f);
+                    _playerDamaged.Raise(dp);
                     Destroy(gameObject);
                 }
             }

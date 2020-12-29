@@ -16,6 +16,7 @@ MonoBehaviour:
   _sprite: {fileID: 1821654955742796763, guid: 24b9441a05447fd49a914053ed5cffba, type: 3}
   _id: 1002
   _cost: 2500
+  _usedPower: 40
   _shortDescription: In case of emergency takes the Miner to the surface.
   _effects:
   - {fileID: 11400000, guid: 4527929df4a6b7c4f921e20cf50cef12, type: 2}

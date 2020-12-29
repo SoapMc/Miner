@@ -16,9 +16,13 @@ namespace Miner.Gameplay
         [SerializeField] private FloatReference _playerExternalTemperature = null;
         [SerializeField, Range(0.02f, 1f)] private float _temperatureGradient = 0.25f;  //per tile
         [SerializeField] private LayerMask _groundLayer = default;
-        private float _offset = 0f;
         private Collider2D[] _temperatureSources = new Collider2D[16];
         private static float _temperatureSourcesRange = 10f;
+
+        public void OnPlayerInstantiated()
+        {
+            Update();
+        }
 
         private float CalculateTemperatureOffset()
         {

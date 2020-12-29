@@ -4,6 +4,8 @@ using UnityEngine;
 using Miner.Management.Events;
 using System;
 using Miner.Management.Exceptions;
+using Miner.Management;
+using System.Linq;
 
 namespace Miner.Gameplay
 {
@@ -12,13 +14,16 @@ namespace Miner.Gameplay
         [SerializeField] private GameEvent _signalizeLowPower = null;
         [SerializeField] private GameEvent _turnOffLowPowerSignalization = null;
         [SerializeField] private GameEvent _changeAlarms = null;
+        [SerializeField] private GameEvent _changePowerFlowFactors = null;
+
         [SerializeField] private FloatReference _playerPower = null;
         [SerializeField] private FloatReference _playerMaxPower = null;
         [SerializeField] private FloatReference _playerPowerUsage = null;
+        [SerializeField] private PowerFlowFactorList _powerFlowFactorList = null;
         [SerializeField, Range(0f, 0.5f)] private float _lowPowerSignalizationLevel = 0.2f;
         [SerializeField] private EquipmentTable _playerEquipment = null;
         [SerializeField, Range(0f, 50f)] private float _chargingPowerOnSurface = 10f;
-        private bool _onSurface = false;
+        private GroundLayer.EAreaType _currentlyVisitedAreaType = GroundLayer.EAreaType.Underground;
         private bool _lowPower = false;
         
 
@@ -26,23 +31,25 @@ namespace Miner.Gameplay
         {
             if(args is PlayerCameToLayerEA pctl)
             {
-                if(pctl.LayerNumber == 0)
+                if(pctl.GroundLayer.AreaType == GroundLayer.EAreaType.Surface)
                 {
-                    if (_onSurface == false)  //player came to surface
+                    if (_currentlyVisitedAreaType == GroundLayer.EAreaType.Underground)  //player came to surface
                     {
-                        _playerPowerUsage.Value -= _chargingPowerOnSurface;
+                        ChangePowerFlowFactorsEA cpff = new ChangePowerFlowFactorsEA();
+                        cpff.AddFactor(new PowerFlowFactor("Surface Charging", "Nearby star is charging your battery", _chargingPowerOnSurface));
+                        _changePowerFlowFactors.Raise(cpff);
                     }
-                    _onSurface = true;
                 }
                 else
                 {
-                    if(_onSurface)  //player came to underground
+                    if(_currentlyVisitedAreaType == GroundLayer.EAreaType.Surface)  //player came to underground
                     {
-                        _playerPowerUsage.Value += _chargingPowerOnSurface;
+                        ChangePowerFlowFactorsEA cpff = new ChangePowerFlowFactorsEA();
+                        cpff.RemoveFactor("Surface Charging");
+                        _changePowerFlowFactors.Raise(cpff);
                     }
-                    _onSurface = false;
                 }
-               
+                _currentlyVisitedAreaType = pctl.GroundLayer.AreaType;
             }
             else
             {
@@ -50,15 +57,38 @@ namespace Miner.Gameplay
             }
         }
 
+        public void OnChangePowerFlowFactors(EventArgs args)
+        {
+
+            if (args is ChangePowerFlowFactorsEA cpff)
+            {
+                foreach (var factor in cpff.AddedPowerFlowFactors)
+                {
+                    _powerFlowFactorList.Add(factor);
+                    _playerPowerUsage.Value -= factor.PowerFlow;
+                }
+
+                foreach (var factor in cpff.RemovedPowerFlowFactors)
+                {
+                    _playerPowerUsage.Value += _powerFlowFactorList[factor].PowerFlow;
+                    _powerFlowFactorList.Remove(factor);
+                }
+            }
+            else
+            {
+                GameManager.Instance.Log.WriteException(new InvalidEventArgsException());
+            }
+        }
+
+
         private void DisableAllPowerLoads()
         {
             foreach(EPartType partType in Enum.GetValues(typeof(EPartType)))
             {
                 Part part = _playerEquipment.GetEquippedPart(partType);
-                if (part.IsConfigurable())
+                if (part != null)
                 {
-                    if(part.GetConfigurableComponent().UsesPower == true)
-                        part.Enabled = false;
+                    part.DisableAllConfigurableLoads();
                 }
             }
         }

@@ -22,3 +22,4 @@ MonoBehaviour:
   _resistanceToHit: 300
   _thermalInsulation: 18
   _permaDamageThreshold: 0.4
+  _radiationTolerance: 5

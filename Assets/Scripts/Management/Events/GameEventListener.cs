@@ -4,7 +4,7 @@ using System;
 
 namespace Miner.Management.Events
 {
-    public class GameEventListener : MonoBehaviour
+    public class GameEventListener : MonoBehaviour, IGameEventListener
     {
         [SerializeField] private GameEvent _event = null;
         [SerializeField] private UnityEventWithParameter _response = null;

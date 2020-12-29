@@ -14,23 +14,21 @@ namespace Miner.Gameplay
         public int ThermalVulnerability => _thermalVulnerability;
         public int MaxPower => _maxPower;
 
-        public override string[] GetSpecificDescription()
+        public override string GetOfferDescription()
         {
-            return new string[2] {  "Maximum power: " + _maxPower.ToString(),
-                                    "Operating temp. up to " + _thermalVulnerability.ToString() + " C deg"};
+            return "Maximum power: " + _maxPower.ToString() + "\nOperating temp. up to " + _thermalVulnerability.ToString() + " C deg";
         }
 
-        public override string[] GetPerformanceDescription(float durability)
+        public override string GetPerformanceDescription(float durability)
         {
-            return new string[3] {  "Total performance: " + ((int)(durability * 100)).ToString() + " %",
-                                    "Maximum power: " + _maxPower.ToString() + " (" + (_maxPower * durability).ToString() + ")",
-                                    "Operating temp. up to " + _thermalVulnerability.ToString() + " C deg"
-                                 };
+            return   "Total performance: " + ((int)(durability * 100)).ToString() + "%" +
+                     "\nMaximum power: " + _maxPower.ToString() + " (" + (_maxPower * durability).ToString() + ")" +
+                     "\nOperating temp. up to " + _thermalVulnerability.ToString() + " C deg";
         }
 
         public override void Equip(IEquipmentOwner equipmentOwner, float durability)
         {
-            equipmentOwner.MaxPower += MaxPower * durability;
+            equipmentOwner.MaxPower += (int)(MaxPower * durability);
             if (durability == 1f)   //brand new
                 equipmentOwner.Power = equipmentOwner.MaxPower;
             else

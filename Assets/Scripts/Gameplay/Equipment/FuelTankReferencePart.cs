@@ -13,29 +13,28 @@ namespace Miner.Gameplay
         public float Volume => _volume;
         public float MaxLeaksDueToDamage => _maxLeaksDueToDamage;
 
-        public override string[] GetSpecificDescription()
+        public override string GetOfferDescription()
         {
-            return new string[1] { "Fuel tank volume: " + _volume.ToString() + " l" };
+            return "Fuel tank volume: " + _volume.ToString() + " l";
         }
 
-        public override string[] GetPerformanceDescription(float durability)
+        public override string GetPerformanceDescription(float durability)
         {
-            return new string[2] {  "Total performance: " + ((int)(durability * 100)).ToString() + " %",
-                                    "Additional usage of fuel due to leaks: " + (_maxLeaksDueToDamage * (1 - durability)).ToString("0.00") + " l/s",
-                                 };
+            return "Total performance: " + ((int)(durability * 100)).ToString() + " %" +
+                   "\nAdditional usage of fuel due to leaks: " + (_maxLeaksDueToDamage * (1 - durability)).ToString("0.00") + " l/s";
         }
 
         public override void Equip(IEquipmentOwner equipmentOwner, float durability)
         {
             equipmentOwner.MaxFuel += Volume;
             equipmentOwner.Fuel = Mathf.Clamp(equipmentOwner.Fuel, 0, equipmentOwner.MaxFuel);
-            equipmentOwner.FuelUsage += (_maxLeaksDueToDamage * (1 - durability));
+            equipmentOwner.FuelUsage += _maxLeaksDueToDamage * (1f - durability);
         }
 
         public override void Unequip(IEquipmentOwner equipmentOwner, float durability)
         {
             equipmentOwner.MaxFuel -= Volume;
-            equipmentOwner.FuelUsage -= (_maxLeaksDueToDamage * (1 - durability));
+            equipmentOwner.FuelUsage -= _maxLeaksDueToDamage * (1f - durability);
         }
     }
 }

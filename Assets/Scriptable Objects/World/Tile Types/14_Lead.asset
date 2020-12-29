@@ -23,6 +23,5 @@ MonoBehaviour:
   _isCollectible: 1
   _isDestroyable: 1
   _mass: 300
-  _changePlayerRadiation: {fileID: 11400000, guid: 9d884807d1d48ae469f813869ebcba96,
-    type: 2}
+  _playerRadiation: {fileID: 11400000, guid: 57997f42424f29745a05e4339c49c5dd, type: 2}
   _radiationChange: -1

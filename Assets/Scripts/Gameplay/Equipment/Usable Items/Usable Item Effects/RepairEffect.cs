@@ -17,7 +17,7 @@ namespace Miner.Gameplay
         public override void Execute()
         {
             _soundOnUse.Play();
-            _playerRepaired.Raise(new PlayerRepairedEA(_repairValue));
+            _playerRepaired.Raise(new RepairPlayerEA(_repairValue));
         }
     }
 }

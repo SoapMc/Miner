@@ -38,11 +38,11 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 17.5}
   m_SizeDelta: {x: 0, y: 35}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3462136870835800877
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.07943218, g: 0.1981132, b: 0.07943218, a: 1}
     m_HighlightedColor: {r: 0.18743324, g: 0.33962262, b: 0.18743324, a: 1}
@@ -159,6 +159,8 @@ MonoBehaviour:
   _name: {fileID: 4382118975352681357}
   _amount: {fileID: 855788622507119747}
   _price: {fileID: 7461499404186459496}
+  _normalColor: {r: 0, g: 1, b: 0.13692284, a: 1}
+  _selectedColor: {r: 1, g: 1, b: 1, a: 1}
   _tryChangeResourcesInPlayerCargo: {fileID: 11400000, guid: 260866b41d939914c91dce708dd05a08,
     type: 2}
   _updatePlayerData: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
@@ -260,7 +262,7 @@ PrefabInstance:
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 325
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
@@ -300,7 +302,7 @@ PrefabInstance:
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}
       propertyPath: m_Pivot.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2481891251780316840, guid: bf993dcefe9cb244689d27ae2e3af530,
         type: 3}

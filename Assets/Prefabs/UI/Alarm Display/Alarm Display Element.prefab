@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 2711772191392328255}
+  _image: {fileID: 784999222816247143}
   _blinkPeriod: 0.5
 --- !u!1001 &3288515131171698939
 PrefabInstance:

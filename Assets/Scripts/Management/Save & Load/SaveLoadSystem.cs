@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using System.IO;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Miner.Management
 {
-    public static class SaveLoadSystem
+    public class SaveLoadSystem
     {
+        private BlockingCollection<string> _outputQueue = new BlockingCollection<string>();
         private const string _directoryName = "/My Games/Miner/";
-
+        
         public static void SaveToFile<T>(T obj, string fileName, EFormat format = EFormat.Json)
         {
+
             if (format == EFormat.Json)
             {
                 if (!Directory.Exists(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + _directoryName))
@@ -99,3 +103,35 @@ namespace Miner.Management
         }
     }
 }
+
+/*
+void SomeMethod()
+{
+    var outputTask = Task.Factory.StartNew(() => WriteOutput(outputFilename),
+        TaskCreationOptions.LongRunning);
+
+    OutputQueue.Add("A simulated entry");
+    OutputQueue.Add("more stuff");
+
+    // when the program is done,
+    // set the queue as complete so the task can exit
+    OutputQueue.CompleteAdding();
+
+    // and wait for the task to finish
+    outputTask.Wait();
+}
+
+void WriteOutput(string fname)
+{
+    using (var strm = File.AppendText(filename))
+    {
+        foreach (var s in OutputQueue.GetConsumingEnumerable())
+        {
+            strm.WriteLine(s);
+            // if you want to make sure it's written to disk immediately,
+            // call Flush. This will slow performance, however.
+            strm.Flush();
+        }
+    }
+}
+*/

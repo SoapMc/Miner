@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1638e405703514d4999ba6215f62a5cf, type: 3}
-  m_Name: Basic Battery
+  m_Name: Battery lv 1
   m_EditorClassIdentifier: 
   _name: Battery lv 1
   _sprite: {fileID: -3772189510138672571, guid: b9dc27e656e818248911db90ba7d9f4e,
@@ -19,5 +19,6 @@ MonoBehaviour:
   _id: 0
   _cost: 1000
   _shortDescription: 
+  _configurableModules: []
   _maxPower: 25
   _thermalVulnerability: 100

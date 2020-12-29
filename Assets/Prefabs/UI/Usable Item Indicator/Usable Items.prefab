@@ -66,12 +66,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _event: {fileID: 11400000, guid: 26568597b7ecd4847b1be63ad2bb9eff, type: 2}
+  _event: {fileID: 11400000, guid: c08a1d45078effb4eabaedb72c4df761, type: 2}
   _response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2946579048776378173}
-        m_MethodName: OnUpdatePlayerData
+        m_MethodName: OnUsableItemsChanged
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -4,163 +4,179 @@ using UnityEngine;
 using System;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
+using Miner.Gameplay;
+using System.Linq;
 
-namespace Miner.Gameplay
+using RemoveSkyEA = Miner.Management.Events.ChangeSkyEA;
+
+namespace Miner.FX
 {
     public class SkyController : MonoBehaviour
     {
         [SerializeField] private IntReference _timeOfDay = null;
-        [SerializeField] private DayTable _dayTable = null;
-        [SerializeField] private GameObject _daySky = null;
-        [SerializeField] private GameObject _nightSky = null;
+        [SerializeField] private Sky _dayAndNightSkyPrefab = null;
 
-        private SpriteRenderer[] _daySkySprites = null;
-        private SpriteRenderer[] _nightSkySprites = null;
-        private GameObject _overridingSky = null;
-        private bool _enabled = true;
+        private List<Sky> _skies = new List<Sky>();
+        private List<string> _skiesToRemove = new List<string>();
         private Color _transparent = new Color(1f, 1f, 1f, 0f);
-        private float _lerpCoeff = 0f;
-        private Coroutine _overridingSkyCoroutine = null;
-
-        private void MinuteElapsed(int oldVal, int timeOfDay)
+        private Coroutine _changeSkyCoroutine = null;
+        
+        public void OnChangeSky(EventArgs args)
         {
-            if (!_enabled) return;
-            if (_overridingSky != null) return;
+            if(args is ChangeSkyEA cs)
+            {
+                if(cs.Sky == null)
+                {
+                    Management.Log.Instance.WriteException(new ArgumentNullException());
+                    return;
+                }
 
-            if(_dayTable.Day.IsInRange(timeOfDay))
-            {
-                SetSkyColor(_nightSkySprites, _transparent);
-                SetSkyColor(_daySkySprites, Color.white);
-            }
-            else if(_dayTable.Morning.IsInRange(timeOfDay))
-            {
-                float lerpCoeff = (timeOfDay - _dayTable.Morning.minValue) / (float)(_dayTable.Morning.maxValue - _dayTable.Morning.minValue);
-                SetSkyColor(_nightSkySprites, Color.Lerp(Color.white, _transparent, lerpCoeff));
-                SetSkyColor(_daySkySprites, Color.Lerp(_transparent, Color.white, lerpCoeff));
-            }
-            else if(_dayTable.Evening.IsInRange(timeOfDay))
-            {
-                float lerpCoeff = (timeOfDay - _dayTable.Evening.minValue) / (float)(_dayTable.Evening.maxValue - _dayTable.Evening.minValue);
-                SetSkyColor(_daySkySprites, Color.Lerp(Color.white, _transparent, lerpCoeff));
-                SetSkyColor(_nightSkySprites, Color.Lerp(_transparent, Color.white, lerpCoeff));
+                if(!_skies.Exists(x => x.Name == cs.Sky.Name))
+                {
+                    Sky newSky = Instantiate(cs.Sky, transform);
+                    newSky.Color = _transparent;
+                    _skies.Add(newSky);
+                }
+
+                SelectProperSky();
             }
             else
             {
-                SetSkyColor(_daySkySprites, _transparent);
-                SetSkyColor(_nightSkySprites, Color.white);
+                Management.Log.Instance.WriteException(new InvalidEventArgsException(args.ToString()));
             }
         }
 
-        private void OnPlayerCameToLayer(EventArgs args)
+        public void OnRemoveSky(EventArgs args)
         {
-            if (args is PlayerCameToLayerEA pctl)
+            if (args is RemoveSkyEA cs)
             {
-                if (pctl.LayerNumber > 0)
+                if (cs.Sky == null)
                 {
-                    _enabled = false;
+                    Management.Log.Instance.WriteException(new ArgumentNullException());
+                    return;
                 }
-                else
-                    _enabled = true;
+
+                if(cs.Sky.Name == _dayAndNightSkyPrefab.Name)
+                {
+                    Management.Log.Instance.Write(_dayAndNightSkyPrefab.Name + " cannot be removed from " + GetType().ToString());
+                    return;
+                }
+
+                if (_skies.Exists(x => x.Name == cs.Sky.Name) && !_skiesToRemove.Exists(x => x == cs.Sky.Name))
+                {
+                    _skiesToRemove.Add(cs.Sky.Name);
+                }
+
+                SelectProperSky();
             }
             else
             {
-                throw new InvalidEventArgsException();
+                Management.Log.Instance.WriteException(new InvalidEventArgsException(args.ToString()));
             }
         }
 
-        public void OnOverrideSky(EventArgs args)
+        public void OnPlayerReset()
         {
-            if(args is OverrideSkyEA os)
+            if(_changeSkyCoroutine != null)
             {
-                if (_overridingSky == null)
-                {
-                    if (os.Sky != null)
-                    {
-                        _overridingSky = Instantiate(os.Sky, transform);
-                        SpriteRenderer[] sprites = _overridingSky.GetComponentsInChildren<SpriteRenderer>();
-                        for (int i = 0; i < sprites.Length; ++i)
-                        {
-                            sprites[i].color = _transparent;
-                        }
-                        _overridingSkyCoroutine = StartCoroutine(ChangeSkyFluently(sprites));
-                    }
-                }
-                else if (_overridingSky != null)
-                {
-                    _overridingSkyCoroutine = StartCoroutine(RestoreDefaultSky(os.Sky));
-                }
+                StopCoroutine(_changeSkyCoroutine);
+                _changeSkyCoroutine = null;
             }
-            else
+
+            for (int i = _skies.Count - 1; i >= 0; --i)
             {
-                throw new InvalidEventArgsException();
+                if (_skies[i].Name != _dayAndNightSkyPrefab.Name)
+                {
+                    _skiesToRemove.Remove(_skies[i].Name);
+                    _timeOfDay.ValueChanged -= _skies[i].OnMinuteElapsed;
+                    Destroy(_skies[i].gameObject);
+                    _skies.Remove(_skies[i]);
+                }
             }
         }
 
-        private void SetSkyColor(SpriteRenderer[] sprites, Color color)
+        public void OnPlayerInstantiated()
         {
-            foreach(var sprite in sprites)
+            AddSkyImmediately(_dayAndNightSkyPrefab);
+        }
+
+        private void AddSkyImmediately(Sky sky)
+        {
+            if (!_skies.Exists(x => x.Name == sky.Name))
             {
-                sprite.color = color;
+                Sky instantiatedSky = Instantiate(sky, transform);
+                _timeOfDay.ValueChanged += instantiatedSky.OnMinuteElapsed;
+                _skies.Add(instantiatedSky);
+            }
+            SelectProperSky();
+        }
+
+        private void SelectProperSky()
+        {
+            Sky currentlySelectedSky = _skies.FirstOrDefault();
+            _skies = _skies.OrderByDescending(x => x.Priority).ToList();
+            Sky nextSelectedSky = currentlySelectedSky;
+
+            for(int i = 0; i < _skies.Count; ++i)
+            {
+                if (IsSkyToRemove(_skies[i].Name)) continue;
+                nextSelectedSky = _skies[i];
+                break;
+            }
+
+            if (currentlySelectedSky != null && nextSelectedSky != null && currentlySelectedSky != nextSelectedSky && _changeSkyCoroutine == null)
+            {
+                _timeOfDay.ValueChanged -= currentlySelectedSky.OnMinuteElapsed;
+                _timeOfDay.ValueChanged += nextSelectedSky.OnMinuteElapsed;
+                _changeSkyCoroutine = StartCoroutine(ChangeSkyFluently(currentlySelectedSky, nextSelectedSky));
             }
         }
 
-        private IEnumerator ChangeSkyFluently(SpriteRenderer[] skySprites)
+        private bool IsSkyToRemove(string name)
         {
-            while(_lerpCoeff < 1f)
+            for(int i = 0; i < _skiesToRemove.Count; ++i)
             {
-                _lerpCoeff += Time.deltaTime;
-                Color c = Color.Lerp(_transparent, Color.white, _lerpCoeff);
-                for (int i = 0; i < skySprites.Length; ++i)
-                {
-                    skySprites[i].color = c;
-                }
+                if (name == _skiesToRemove[i])
+                    return true;
+            }
+            return false;
+        }
+
+        #region COROUTINES
+        private IEnumerator ChangeSkyFluently(Sky previousSky, Sky nextSky)
+        {
+            float lerpCoeff = 0f;
+            while (lerpCoeff < 1f)
+            {
+                lerpCoeff += Time.deltaTime;
+                nextSky.Color = Color.Lerp(_transparent, Color.white, lerpCoeff);
+                previousSky.Color = Color.Lerp(Color.white, _transparent, lerpCoeff);
                 yield return null;
             }
-            _lerpCoeff = 1f;
-        }
 
-        private IEnumerator RestoreDefaultSky(GameObject newSky = null)
-        {
-            SpriteRenderer[] skySprites = _overridingSky.GetComponentsInChildren<SpriteRenderer>();
-            while (_lerpCoeff > 0f)
+            for (int i = _skies.Count - 1; i >= 0; --i)
             {
-                _lerpCoeff -= Time.deltaTime;
-                Color c = Color.Lerp(_transparent, Color.white, _lerpCoeff);
-                for (int i = 0; i < skySprites.Length; ++i)
+                if (IsSkyToRemove(_skies[i].Name) && _skies[i] != nextSky)
                 {
-                    skySprites[i].color = c;
+                    _skiesToRemove.Remove(_skies[i].Name);
+                    _timeOfDay.ValueChanged -= _skies[i].OnMinuteElapsed;
+                    Destroy(_skies[i].gameObject);
+                    _skies.Remove(_skies[i]);
                 }
-                yield return null;
             }
-            Destroy(_overridingSky);
-            _overridingSky = null;
-            _lerpCoeff = 0f;
 
-            if (newSky != null)
-            {
-                skySprites = newSky.GetComponentsInChildren<SpriteRenderer>();
-                yield return StartCoroutine(ChangeSkyFluently(skySprites));
-            }
+            _changeSkyCoroutine = null;
+            SelectProperSky();
         }
+        #endregion
 
-        private void Awake()
-        {
-            _daySkySprites = _daySky.GetComponentsInChildren<SpriteRenderer>();
-            _nightSkySprites = _nightSky.GetComponentsInChildren<SpriteRenderer>();
-            _timeOfDay.ValueChanged += MinuteElapsed;
-        }
-
-        private void Start()
-        {
-            MinuteElapsed(0, _timeOfDay.Value);
-        }
+        #region UNITY CALLBACKS
 
         private void OnDestroy()
         {
-            _timeOfDay.ValueChanged -= MinuteElapsed;
-            if(_overridingSkyCoroutine != null)
-                StopCoroutine(_overridingSkyCoroutine);
+            if(_changeSkyCoroutine != null)
+                StopCoroutine(_changeSkyCoroutine);
         }
-
+        #endregion
     }
 }

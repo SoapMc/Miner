@@ -11,6 +11,7 @@ namespace Miner.Gameplay
         public int TimeOfDay;
         public int ElapsedDays;
         public int Seed;
-        [NonSerialized] public TilemapData TilemapData;
+        public WorldController.WorldControllerData WorldControllerData = new WorldController.WorldControllerData();
+        public MissionController.MissionControllerData MissionControllerData = new MissionController.MissionControllerData();
     }
 }

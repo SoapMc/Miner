@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eecdf44fda402d8459c67cd381d28b79, type: 3}
+  m_Name: Ground Layer 14
+  m_EditorClassIdentifier: 
+  _playMusic: {fileID: 11400000, guid: 0742c78ce3196e045bae63de8e7ca9e9, type: 2}
+  LayerNumber: 14
+  AreaType: 1
+  Depth: 400
+  ProbabilityOfEmptySpaces: 0
+  AmbientLight: {fileID: 11400000, guid: 9618f4537309e1d41bd7e4dd5c685532, type: 2}
+  BackgroundColorSet:
+    TopColor: {r: 0.8113208, g: 0.41617095, b: 0.14925243, a: 1}
+    BottomColor: {r: 0.8018868, g: 0.33522275, b: 0.26855645, a: 1}
+  PredefinedWorldObjects: []
+  NaturalDisasters:
+  - {fileID: 11400000, guid: 96c647ab455906846a4b5f27f2987b4b, type: 2}
+  - {fileID: 11400000, guid: 070461372ed194646a9c259fbb847125, type: 2}
+  Music:
+  - {fileID: 8300000, guid: 8786509bce399d541acb0d7b2245c93f, type: 3}
+  DefaultTile: {fileID: 11400000, guid: 9ff7f8d79aca5fa40ade35db79270221, type: 2}
+  Resources:
+  - Type: {fileID: 11400000, guid: a7b09043ee34bbd46b261319aa468893, type: 2}
+    Probability: 0.02
+  - Type: {fileID: 11400000, guid: 625eb82cbdd7b5c4f938507e3382e18b, type: 2}
+    Probability: 0.07
+  - Type: {fileID: 11400000, guid: 1e838999d0025324a873c49cd6183c50, type: 2}
+    Probability: 0.13
+  - Type: {fileID: 11400000, guid: 67cf28642d695844f86bca18c4fc507a, type: 2}
+    Probability: 0.01
+  - Type: {fileID: 11400000, guid: 0d9c09ec3b8b15341bde3793e965b415, type: 2}
+    Probability: 0.0005
+  - Type: {fileID: 11400000, guid: 1fce12824cf738c48a8a202419ebb8d9, type: 2}
+    Probability: 0.3

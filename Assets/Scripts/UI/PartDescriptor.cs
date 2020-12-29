@@ -42,14 +42,14 @@ namespace Miner.UI
             }
         }
 
-        public void CreateDescription(ReferencePart part, PartGridElement.State state)
+        public void CreateDescription(ReferencePart part, EOfferState state)
         {
             _descriptionBuilder.Clear();
-            if(state == PartGridElement.State.Available)
+            if(state == EOfferState.Available)
             {
                 _name.text = part.Name;
             }
-            else if(state == PartGridElement.State.Bought)
+            else if(state == EOfferState.Bought)
             {
                 _name.text = "<color=yellow>" + part.Name + "</color>";
             }
@@ -60,17 +60,15 @@ namespace Miner.UI
             
             _image.sprite = part.Sprite;
             _descriptionBuilder.Append("<size=14>" + part.ShortDescription + "</size>\n");
-            if(state == PartGridElement.State.Available)
+            if(state == EOfferState.Available)
                 _descriptionBuilder.Append("Cost: " + part.Cost.ToString() + " $\n");
-            else if(state == PartGridElement.State.Unavailable)
+            else if(state == EOfferState.Unavailable)
                 _descriptionBuilder.Append("<color=red>Cost: " + part.Cost.ToString() + " $</color>\n");
 
-            string[] specDesc = part.GetSpecificDescription();
-            for (int i = 0; i < specDesc.Length; ++i)
-            {
-                _descriptionBuilder.Append("\n" + specDesc[i]);
-            }
-            if (state == PartGridElement.State.Bought)
+            string specDesc = part.GetOfferDescription();
+            _descriptionBuilder.Append("\n" + specDesc);
+            
+            if (state == EOfferState.Bought)
             {
                 _descriptionBuilder.Append("\n\n<color=yellow>Owned!</color>");
                 _descriptionBuilder.Append("\n<size=14><color=yellow>Buy again to get brand new part - fully performant.</color></size>");

@@ -1,7 +1,40 @@
 fileFormatVersion: 2
 guid: 20898e79ed2cf2447902688ca127f7e4
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 8651358696210019075
+    second: Building_ProcessingPlant_0
+  - first:
+      213: -4992422145441069212
+    second: Building_ProcessingPlant_1
+  - first:
+      213: -699995835780091599
+    second: Building_ProcessingPlant_2
+  - first:
+      213: 572798091519050229
+    second: Building_ProcessingPlant_3
+  - first:
+      213: -5506251438177504166
+    second: Building_ProcessingPlant_4
+  - first:
+      213: 2980263811843583391
+    second: Building_ProcessingPlant_5
+  - first:
+      213: 1458942463445335242
+    second: Building_ProcessingPlant_6
+  - first:
+      213: 7658870926121903213
+    second: Building_ProcessingPlant_7
+  - first:
+      213: 6644331844031444684
+    second: Building_ProcessingPlant_8
+  - first:
+      213: -1817948789378850710
+    second: Building_ProcessingPlant_9
+  - first:
+      213: 5191818155562543584
+    second: Building_ProcessingPlant_10
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,14 +73,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -84,7 +117,238 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12
+        width: 233
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc0f476fdc14d094eb98be64fc1db48b
+      internalID: 8651358696210019075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_1
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 12
+        width: 61
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec913d37cc2001d4894c10f22125d891
+      internalID: -4992422145441069212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_2
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 115
+        width: 142
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f47c50c0023acd45be23a0d46145248
+      internalID: -699995835780091599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_3
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 12
+        width: 61
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0b9b7c5df2a81a43b4366133ff9a2e4
+      internalID: 572798091519050229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_4
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 75
+        width: 35
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c68af1b2496cc64aa01c63bffcf2f32
+      internalID: -5506251438177504166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_5
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 93
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2344679f85d3347b3628733ebfe12e
+      internalID: 2980263811843583391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_6
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 97
+        width: 14
+        height: 12
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab8af506397075840b0b2fea3032177e
+      internalID: 1458942463445335242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_7
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 84
+        width: 84
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d649eb04d31317748a654395d8c93028
+      internalID: 7658870926121903213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_8
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 75
+        width: 84
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 397fbbf9397903e47ab90d0d0a03b6fa
+      internalID: 6644331844031444684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_9
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 13
+        width: 144
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52ffbc2fe9436914d8860ec9d532a3c1
+      internalID: -1817948789378850710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_ProcessingPlant_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 479
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0056385ff177a04b86bf60b8d82adb9
+      internalID: 5191818155562543584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

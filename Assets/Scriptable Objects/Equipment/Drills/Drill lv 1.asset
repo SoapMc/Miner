@@ -19,4 +19,5 @@ MonoBehaviour:
   _id: 300
   _cost: 0
   _shortDescription: 
+  _configurableModules: []
   _sharpness: 0.8

@@ -18,9 +18,9 @@ MonoBehaviour:
   _id: 405
   _cost: 90000
   _shortDescription: 
-  _power: 280
+  _configurableModules:
+  - {fileID: 11400000, guid: 572f85c877d11dd4185fd1b3f3ab550b, type: 2}
+  _power: 260
   _fuelUsage: 0.3
-  _powerCharging: 0
-  _additionalFuelUsageWhenCharging: 0.07
   _maximumOperatingTemeprature: 100
   _permaDamageLoadThreshold: 0

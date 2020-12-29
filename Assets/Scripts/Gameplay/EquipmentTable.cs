@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
     [CreateAssetMenu(menuName = "Equipment Table")]
     public class EquipmentTable : ScriptableObject
     {
-        private IEquipmentOwner _owner = null;
         private Dictionary<EPartType, Part> _equipment = new Dictionary<EPartType, Part>();
 
         private void OnEnable()
@@ -27,12 +27,32 @@ namespace Miner.Gameplay
 
         public Part GetEquippedPart(EPartType partType)
         {
-            return _equipment[partType];
+            if(_equipment.ContainsKey(partType))
+                return _equipment[partType];
+            else
+                return null;
         }
 
         public void SetEquippedPart(Part part)
         {
-            _equipment[part.Type] = part;
+            if (part != null)
+            {
+                if (!_equipment.ContainsKey(part.Type))
+                    Log.Instance.WriteException(new KeyNotFoundException("Key: " + part.Type));
+                _equipment[part.Type] = part;
+            }
+        }
+
+        public void UnequipPart(EPartType partType)
+        {
+            try
+            {
+                _equipment[partType] = null;
+            }
+            catch
+            {
+                Log.Instance.WriteException(new KeyNotFoundException("Key: " + partType));
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
@@ -39,6 +40,11 @@ namespace Miner.Gameplay
             return _layers.GetEnumerator();
         }
 
+        public List<GroundLayer> GetRange(int index, int count)
+        {
+            return _layers.GetRange(index, count);
+        }
+
         public bool Remove(GroundLayer item)
         {
             return _layers.Remove(item);
@@ -64,7 +70,7 @@ namespace Miner.Gameplay
                 }
                 catch(IndexOutOfRangeException e)
                 {
-                    Management.GameManager.Instance.Log.Write(GetType() + " : " + e.Message);
+                    Log.Instance.Write(GetType() + " : " + e.Message);
                     if(_layers.Count > 0)
                         return _layers[0];
                     return null;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9071abee017648419f9d38c6497aa97, type: 3}
   m_Name: Natural Explosions
   m_EditorClassIdentifier: 
-  _disasterEvent: {fileID: 0}
+  _disasterEvent: {fileID: 11400000, guid: 89b0cf57a577490438aa6d20926beb6f, type: 2}
   _happeningType: 1
   _naturalExplosionsGeneratorPrefab: {fileID: 1837791645633224690, guid: 965c39e4ad26b6349ab39b73376e88df,
     type: 3}

@@ -25,6 +25,7 @@ namespace Miner.UI
         {
             if(_indicateCoroutine != null)
                 _owner.StopCoroutine(_indicateCoroutine);
+            RestoreDefaultColors();
         }
 
         private IEnumerator IndicateLowLevel()

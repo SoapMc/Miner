@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
@@ -41,7 +42,7 @@ namespace Miner.Gameplay
             }
             catch(KeyNotFoundException)
             {
-                Management.GameManager.Instance.Log.Write(GetType().Name + " : Requested tile id is not present in collection [tileid:" + id.ToString() + "]");
+                Log.Instance.Write(GetType().Name + " : Requested tile id is not present in collection [tileid:" + id.ToString() + "]");
                 return _tilesById[0];
             }
         }

@@ -10,6 +10,13 @@ using Miner.Management.Exceptions;
 
 namespace Miner.Management.Events
 {
+    public class AcceptMissionEA : EventArgs
+    {
+        public readonly Mission Mission;
+
+        public AcceptMissionEA(Mission mission) { Mission = mission; }
+    }
+
     public class CameraShakeEA : EventArgs
     {
         public readonly float Amplitude;
@@ -24,7 +31,7 @@ namespace Miner.Management.Events
         }
     }
 
-   public class CameraTranslatedEA : EventArgs
+    public class CameraTranslatedEA : EventArgs
     {
         public readonly Vector2Int oldGridPosition;
         public readonly Vector2Int newGridPosition;
@@ -34,6 +41,13 @@ namespace Miner.Management.Events
             oldGridPosition = oldPos;
             newGridPosition = newPos;
         }
+    }
+
+    public class CancelMissionEA : EventArgs
+    {
+        public readonly Mission Mission;
+
+        public CancelMissionEA(Mission mission) { Mission = mission; }
     }
 
     public class ChangeAlarmsEA : EventArgs
@@ -59,7 +73,7 @@ namespace Miner.Management.Events
         public readonly string Message;
         public readonly Message.EType Type;
         public readonly float Time = 10f;
-        
+
         public CreateMessageEA(string title, string message, Message.EType type = UI.Message.EType.Statement)
         {
             Title = title;
@@ -67,7 +81,7 @@ namespace Miner.Management.Events
             Type = type;
         }
 
-        
+
     }
 
     public class CreateParticleEA : EventArgs
@@ -116,21 +130,13 @@ namespace Miner.Management.Events
     {
         public readonly IDescriptableElement DescriptableElement;
         public readonly RectTransform RectTransform;
-        public readonly EState State;
+        public readonly EOfferState State;
 
-        public DescriptOfferEA(IDescriptableElement element, RectTransform rectTransform, EState state)
+        public DescriptOfferEA(IDescriptableElement element, RectTransform rectTransform, EOfferState state)
         {
             DescriptableElement = element;
             RectTransform = rectTransform;
             State = state;
-        }
-
-        public enum EState
-        {
-            Available,
-            Unavailable,
-            Bought,
-            Locked
         }
     }
 
@@ -175,31 +181,54 @@ namespace Miner.Management.Events
         }
     }
 
-    public class OverrideAmbientLightEA : EventArgs
+    public class MissionCompletedEA : EventArgs
     {
-        public Color Color;
-        public bool Surface;
-        public bool Underground;
+        public readonly Mission Mission;
 
-        public OverrideAmbientLightEA(Color col, bool surface, bool underground)
+        public MissionCompletedEA(Mission mission)
         {
-            Color = col;
-            Surface = surface;
-            Underground = underground;
+            Mission = mission;
+        }
+    }
+
+    public class MissionFailedEA : EventArgs
+    {
+        public readonly Mission Mission;
+
+        public MissionFailedEA(Mission mission)
+        {
+            Mission = mission;
+        }
+    }
+
+    public class ChangeAmbientLightEA : EventArgs
+    {
+        public AmbientLightSetting SurfaceLighting = null;
+        public AmbientLightSetting UndergroundLighting = null;
+
+        public enum EChangeMode
+        {
+            Override,
+            Stack
+        }
+
+        public class AmbientLightSetting
+        {
+            public AmbientLight LightToAdd = null;
+            public EChangeMode ChangeMode = EChangeMode.Stack;
+            public AmbientLight LightToRemove = null;
         }
     }
 
 
-    public class OverrideSkyEA : EventArgs
+    public class ChangeSkyEA : EventArgs
     {
-        public GameObject Sky;
+        public Sky Sky;
 
-        public OverrideSkyEA(GameObject sky)
+        public ChangeSkyEA(Sky sky)
         {
             Sky = sky;
         }
-
-        public static OverrideSkyEA Default => new OverrideSkyEA(null);
     }
     
 
@@ -212,8 +241,6 @@ namespace Miner.Management.Events
             Coordinates = coords;
         }
     }
-
-    
 
     public class PlayMusicEA : EventArgs
     {
@@ -253,69 +280,49 @@ namespace Miner.Management.Events
         }
     }
 
+    public class ShowBriefInfoEA : EventArgs
+    {
+        public readonly string Message;
+        public readonly EType Type;
+
+        public ShowBriefInfoEA(string message, EType type = EType.Info)
+        {
+            Message = message;
+            Type = type;
+        }
+
+        public enum EType
+        {
+            Info,
+            Warning
+        }
+    }
+
+    public class ShowInputHelpEA : EventArgs
+    {
+        public readonly Dictionary<EInputType, string> Elements = null;
+
+        public ShowInputHelpEA(Dictionary<EInputType, string> inputHelpFields)
+        {
+            Elements = inputHelpFields;
+        }
+    }
+
     public class ShowPartDescriptionEA : EventArgs
     {
         public readonly ReferencePart Part;
-        public readonly PartGridElement.State State;
+        public readonly EOfferState State;
 
-        public ShowPartDescriptionEA(ReferencePart part, PartGridElement.State state)
+        public ShowPartDescriptionEA(ReferencePart part, EOfferState state)
         {
             Part = part;
             State = state;
         }
     }
 
-    public class TriggerStatusPanelEA : EventArgs
-    {
-        public List<Element> EnableIcons = new List<Element>();
-        public List<ESymbol> DisableIcons = new List<ESymbol>();
-
-        public bool IsEmpty()
-        {
-            if (EnableIcons.Count == 0 && DisableIcons.Count == 0)
-                return true;
-            return false;
-        }
-
-        public class Element
-        {
-            public ESymbol Symbol;
-            public EMode Mode;
-            public float Time; //in seconds, 0 means unlimited time
-        }
-
-        public enum ESymbol
-        {
-            Engine,
-            Temperature,
-            Fuel,
-            Cargo,
-            Drill,
-            Battery
-        }
-
-        public enum EMode
-        {
-            Warning,
-            Failure
-        }
-    }
-
-    
-
     public class UpdateInfrastructureEA : EventArgs
     {
         public int FuelSupplyChange;
-    }
-
-    public class WindowCreatedEA : EventArgs
-    {
-        public readonly Window CreatedWindow;
-
-        public WindowCreatedEA(Window createdWindow)
-        {
-            CreatedWindow = createdWindow;
-        }
     }
 
     public class WorldLoadedEA : EventArgs

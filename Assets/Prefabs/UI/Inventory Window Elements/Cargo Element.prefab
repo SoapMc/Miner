@@ -88,6 +88,22 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 6907504392168134982}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4171236597146341558}
+        m_MethodName: RemoveSingleResourceFromCargo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _tryChangePlayerResources: {fileID: 11400000, guid: 260866b41d939914c91dce708dd05a08,
+    type: 2}
   _descriptInventoryElement: {fileID: 11400000, guid: ad09d8b22e404084a9f2835d631b7d72,
     type: 2}
   _icon: {fileID: 2090703225299201}

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3851017711861178354}
   - component: {fileID: 1953614929953975760}
   - component: {fileID: 6110942315271937361}
-  - component: {fileID: 1549656569888673264}
   m_Layer: 5
   m_Name: Alarm Display
   m_TagString: Untagged
@@ -53,6 +52,8 @@ MonoBehaviour:
   _alarmElementPrefab: {fileID: 8436099641561501081, guid: f86d553516efc9741a3f23181c238a3a,
     type: 3}
   _spacing: {x: 0, y: 10}
+  _criticalImportanceColor: {r: 0.7169812, g: 0.1694062, b: 0.091313645, a: 1}
+  _warningImportanceColor: {r: 1, g: 0.7411765, b: 0, a: 1}
 --- !u!114 &6110942315271937361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,33 +73,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1953614929953975760}
         m_MethodName: OnChangeAlarms
         m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1549656569888673264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6460184754630593210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 622b46003b06c564288702d65cee1f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _event: {fileID: 11400000, guid: 85b0de0052cda534f83aa019d8e93852, type: 2}
-  _response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1953614929953975760}
-        m_MethodName: OnPlayerUnloaded
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

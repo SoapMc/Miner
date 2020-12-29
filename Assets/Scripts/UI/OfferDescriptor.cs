@@ -33,8 +33,11 @@ namespace Miner.UI
             if (args is DescriptOfferEA doe)
             {
                 _description.text = "<size=18>" + doe.DescriptableElement.Name + "</size>\n" + doe.DescriptableElement.Description;
-                Rect rect = doe.RectTransform.rect;
-                transform.position = (Vector2)doe.RectTransform.position + rect.position;
+                if (doe.RectTransform != null)
+                {
+                    Rect rect = doe.RectTransform.rect;
+                    transform.position = (Vector2)doe.RectTransform.position + rect.position;
+                }
                 if (_appearingCoroutine != null)
                     StopCoroutine(_appearingCoroutine);
                 _appearingCoroutine = StartCoroutine(TriggerAppearingCoroutine());
@@ -46,20 +49,20 @@ namespace Miner.UI
             }
         }
 
-        private void AdjustToType(DescriptOfferEA.EState state)
+        private void AdjustToType(EOfferState state)
         {
             switch (state)
             {
-                case DescriptOfferEA.EState.Available:
+                case EOfferState.Available:
                     StyleSheet = _availableStyle;
                     break;
-                case DescriptOfferEA.EState.Bought:
+                case EOfferState.Bought:
                     StyleSheet = _boughtStyle;
                     break;
-                case DescriptOfferEA.EState.Locked:
+                case EOfferState.Locked:
                     StyleSheet = _unavailableStyle;
                     break;
-                case DescriptOfferEA.EState.Unavailable:
+                case EOfferState.Unavailable:
                     StyleSheet = _unavailableStyle;
                     break;
                 default:

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Miner.Management.Events;
+using UsableItemsChangedEA = Miner.Management.Events.ChangeUsableItemsEA;
 
 namespace Miner.Gameplay
 {
     [CreateAssetMenu(menuName = "Usable Item Table")]
     public class UsableItemTable : ScriptableObject, ICollection<UsableItemTable.Element>, ISerializationCallbackReceiver
     {
-
+        [SerializeField] private GameEvent _UsableItemsChanged = null;
         private List<Element> _content = new List<Element>();
 
         public int Count => _content.Count;
@@ -23,9 +24,11 @@ namespace Miner.Gameplay
                 if (item.Item.Id == elem.Item.Id)
                 {
                     elem.Amount += item.Amount;
+                    _UsableItemsChanged.Raise(new UsableItemsChangedEA() { AddedUsableItems = new List<Element>() { new Element() { Item = item.Item, Amount = item.Amount } } });
                     return;
                 }
             }
+            _UsableItemsChanged.Raise(new UsableItemsChangedEA() { AddedUsableItems = new List<Element>() { new Element() { Item = item.Item, Amount = item.Amount } } });
             _content.Add(item);
         }
 
@@ -65,11 +68,15 @@ namespace Miner.Gameplay
             {
                 if (item.Item.Id == elem.Item.Id)
                 {
+                    _UsableItemsChanged.Raise(new UsableItemsChangedEA() { RemovedUsableItems = new List<Element>() { new Element() { Item = item.Item, Amount = item.Amount } } });
                     if (elem.Amount >= item.Amount)
                     {
                         elem.Amount -= item.Amount;
+                        
                         if (elem.Amount <= 0)
+                        {
                             _content.Remove(elem);
+                        }
                         return true;
                     }
                     else

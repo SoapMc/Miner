@@ -71,5 +71,11 @@ namespace Miner.FX
             TriggerAppearing();
         }
 
+        private void OnDestroy()
+        {
+            if (_triggeringCoroutine != null)
+                StopCoroutine(_triggeringCoroutine);
+        }
+
     }
 }

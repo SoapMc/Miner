@@ -44,6 +44,11 @@ namespace Miner.Gameplay
             return _content.Remove(item);
         }
 
+        public List<TileType> FindAll(System.Predicate<TileType> match)
+        {
+            return _content.FindAll(match);
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _content.GetEnumerator();

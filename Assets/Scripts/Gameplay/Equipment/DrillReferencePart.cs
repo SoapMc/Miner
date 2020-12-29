@@ -11,16 +11,15 @@ namespace Miner.Gameplay
 
         public float Sharpness => _sharpness;
 
-        public override string[] GetSpecificDescription()
+        public override string GetOfferDescription()
         {
-            return new string[1] { "Drill sharpness: " + _sharpness.ToString() };
+            return "Drill sharpness: " + _sharpness.ToString();
         }
 
-        public override string[] GetPerformanceDescription(float durability)
+        public override string GetPerformanceDescription(float durability)
         {
-            return new string[2] {  "Total performance: " + ((int)(durability * 100)).ToString() + " %",
-                                    "Drill sharpness: " + _sharpness.ToString() + " (" + (_sharpness * durability).ToString() + ")"
-                                 };
+            return "Total performance: " + ((int)(durability * 100)).ToString() + " %" +
+                   "\nDrill sharpness: " + _sharpness.ToString() + " (" + (_sharpness * durability).ToString() + ")";
         }
 
         public override void Equip(IEquipmentOwner playerStats, float durability)

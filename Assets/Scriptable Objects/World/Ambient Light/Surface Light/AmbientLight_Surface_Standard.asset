@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d626cc2e776a46647a8fd4f616373a39, type: 3}
+  m_Name: AmbientLight_Surface_Standard
+  m_EditorClassIdentifier: 
+  _priority: 0
+  _nightColor: {r: 0.09291563, g: 0.16767533, b: 0.2264151, a: 1}
+  _dayColor: {r: 0.35969207, g: 0.47157377, b: 0.5566038, a: 1}
+  _timeOfDay: {fileID: 11400000, guid: e9ea844b6f181da40a7286db117eee88, type: 2}
+  _dayTable: {fileID: 11400000, guid: 22e3cb233a7be8546a2c5ddfd951d145, type: 2}

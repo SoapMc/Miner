@@ -7,7 +7,6 @@ namespace Miner.Gameplay
 {
     public class LavaBehaviour : MonoBehaviour, IDigCompletedHandler, ITemperatureOffsetSource
     {
-        private static LavaBehaviour _lava = null;
         private static float _externalTemperatureIncreasing = 100f;
         [SerializeField] private GameEvent _damagePlayer = null;
         [SerializeField] private DamageType _damageType = null;

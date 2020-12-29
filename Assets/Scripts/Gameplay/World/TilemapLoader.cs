@@ -6,6 +6,7 @@ using System.Linq;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
 using System;
+using Miner.Management;
 
 namespace Miner.Gameplay
 {
@@ -19,6 +20,7 @@ namespace Miner.Gameplay
         public void Initialize(TilemapController controller)
         {
             _tilemapController = controller;
+            _cameraGridPosition.ValueChanged += OnChangeCameraGridPosition;
         }
 
         public void OnChangeCameraGridPosition(Vector2Int oldVal, Vector2Int newVal)
@@ -108,24 +110,26 @@ namespace Miner.Gameplay
             if(args is PlayerTranslatedEA pt)
             {
                 {
-                    int yTopPos = (int)Mathf.Clamp(pt.OldGridPosition.y + _loadedFrameHalfSize.y + 3, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
-                    int yBotPos = (int)Mathf.Clamp(pt.OldGridPosition.y - _loadedFrameHalfSize.y - 3, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
-                    int xLeftPos = (int)Mathf.Clamp(pt.OldGridPosition.x - _loadedFrameHalfSize.x - 3, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
-                    int xRightPos = (int)Mathf.Clamp(pt.OldGridPosition.x + _loadedFrameHalfSize.x + 3, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
+                    int yTopPos = (int)Mathf.Clamp(pt.OldGridPosition.y + _loadedFrameHalfSize.y + 2, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
+                    int yBotPos = (int)Mathf.Clamp(pt.OldGridPosition.y - _loadedFrameHalfSize.y - 2, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
+                    int xLeftPos = (int)Mathf.Clamp(pt.OldGridPosition.x - _loadedFrameHalfSize.x - 2, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
+                    int xRightPos = (int)Mathf.Clamp(pt.OldGridPosition.x + _loadedFrameHalfSize.x + 2, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
                     UnloadArea(xLeftPos, yTopPos, Mathf.Abs(xRightPos - xLeftPos), Mathf.Abs(yTopPos - yBotPos));
                 }
 
                 {
-                    int yTopPos = (int)Mathf.Clamp(pt.NewGridPostion.y + _loadedFrameHalfSize.y + 3, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
-                    int yBotPos = (int)Mathf.Clamp(pt.NewGridPostion.y - _loadedFrameHalfSize.y - 3, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
-                    int xLeftPos = (int)Mathf.Clamp(pt.NewGridPostion.x - _loadedFrameHalfSize.x - 3, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
-                    int xRightPos = (int)Mathf.Clamp(pt.NewGridPostion.x + _loadedFrameHalfSize.x + 3, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
+                    int yTopPos = (int)Mathf.Clamp(pt.NewGridPostion.y + _loadedFrameHalfSize.y + 1, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
+                    int yBotPos = (int)Mathf.Clamp(pt.NewGridPostion.y - _loadedFrameHalfSize.y - 1, _worldInfo.LoadableGridVerticalRange.x, _worldInfo.LoadableGridVerticalRange.y);
+                    int xLeftPos = (int)Mathf.Clamp(pt.NewGridPostion.x - _loadedFrameHalfSize.x - 1, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
+                    int xRightPos = (int)Mathf.Clamp(pt.NewGridPostion.x + _loadedFrameHalfSize.x + 1, _worldInfo.LoadableGridHorizontalRange.x, _worldInfo.LoadableGridHorizontalRange.y);
                     LoadArea(xLeftPos, yTopPos, Mathf.Abs(xRightPos - xLeftPos), Mathf.Abs(yTopPos - yBotPos));
                 }
+
+                StartCoroutine(SuspendTilemapLoadingForSingleFrame());
             }
             else
             {
-                throw new InvalidEventArgsException();
+                Log.Instance.WriteException(new InvalidEventArgsException());
             }
         }
 
@@ -152,6 +156,17 @@ namespace Miner.Gameplay
             }
         }
 
+        /// <summary>
+        /// The method prevents from loading tilemap areas between old and new position when player is translated.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator SuspendTilemapLoadingForSingleFrame()
+        {
+            _cameraGridPosition.ValueChanged -= OnChangeCameraGridPosition;
+            yield return null;
+            _cameraGridPosition.ValueChanged += OnChangeCameraGridPosition;
+        }
+
         public bool IsTileLoaded(Vector2Int pos)
         {
             if (pos.x >= _cameraGridPosition.Value.x - _loadedFrameHalfSize.x && pos.x <= _cameraGridPosition.Value.x + _loadedFrameHalfSize.x &&
@@ -160,12 +175,7 @@ namespace Miner.Gameplay
             return false;
         }
 
-        private void Awake()
-        {
-            _cameraGridPosition.ValueChanged += OnChangeCameraGridPosition;
-        }
-
-        private void OnDestroy()
+        private void OnDisable()
         {
             _cameraGridPosition.ValueChanged -= OnChangeCameraGridPosition;
         }

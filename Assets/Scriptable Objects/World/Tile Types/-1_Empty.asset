@@ -32,7 +32,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e80b5a748d651304787e25c0a7fe27df, type: 2}
   - {fileID: 11400000, guid: a5a3d7a74cf57e34b93291646df080d4, type: 2}
   - {fileID: 11400000, guid: 8eaf816d2deb94943993c1caaf9c2fb2, type: 2}
-  _hardiness: 1
+  _hardiness: 100
   _value: 0
   _isFuel: 0
   _isCollectible: 0

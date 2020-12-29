@@ -364,6 +364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5352556722729004947}
   - component: {fileID: 5352556722729004946}
+  - component: {fileID: 7852693716245818944}
   m_Layer: 12
   m_Name: Burning Sky
   m_TagString: Untagged
@@ -435,3 +436,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7852693716245818944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5352556722729004948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9697ffd3df90854f9d2638ca90c0fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Burning Sky
+  _priority: 1

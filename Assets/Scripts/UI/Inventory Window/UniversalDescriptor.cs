@@ -5,6 +5,7 @@ using System;
 using Miner.Management.Events;
 using Miner.Management.Exceptions;
 using TMPro;
+using Miner.Management;
 
 namespace Miner.UI
 {
@@ -22,15 +23,20 @@ namespace Miner.UI
             if(args is DescriptElementEA die)
             {
                 _description.text = "<size=18>" + die.DescriptableElement.Name + "</size>\n" + die.DescriptableElement.Description;
-                Rect rect = die.RectTransform.rect;
-                transform.position = (Vector2)die.RectTransform.position + rect.position;
+
+                if (die.RectTransform != null)
+                {
+                    Rect rect = die.RectTransform.rect;
+                    transform.position = (Vector2)die.RectTransform.position + rect.position;
+                }
+
                 if (_appearingCoroutine != null)
                     StopCoroutine(_appearingCoroutine);
                 _appearingCoroutine = StartCoroutine(TriggerAppearingCoroutine());
             }
             else
             {
-                throw new InvalidEventArgsException();
+                Log.Instance.WriteException(new InvalidEventArgsException());
             }
         }
 

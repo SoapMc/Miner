@@ -1,7 +1,28 @@
 fileFormatVersion: 2
 guid: c986b9f8a9114f74cac79d997c10b214
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 230012482707087926
+    second: Building_Workshop_0
+  - first:
+      213: 8791222024121301594
+    second: Building_Workshop_1
+  - first:
+      213: -2466296575087719252
+    second: Building_Workshop_2
+  - first:
+      213: 4992272089239146749
+    second: Building_Workshop_3
+  - first:
+      213: 5912657405051141008
+    second: Building_Workshop_4
+  - first:
+      213: -6277239841946400692
+    second: Building_Workshop_5
+  - first:
+      213: 1798759515478762813
+    second: Building_Workshop_6
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,14 +61,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -84,7 +105,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Building_Workshop_0
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 685
+        height: 287
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f317390221ca3b441930e50f5157ef1a
+      internalID: 230012482707087926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Workshop_1
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 312
+        width: 345
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7c09afff3178974ebd95f066806254a
+      internalID: 8791222024121301594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Workshop_2
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 0
+        width: 83
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f303272eb82494e4c936b52c608ced73
+      internalID: -2466296575087719252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Workshop_3
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 112
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0d1fc02ebe6f0e42b63c3445de546ab
+      internalID: 4992272089239146749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Workshop_4
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 120
+        width: 28
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 394b66df8bb77f34894b41dfa4aa5c46
+      internalID: 5912657405051141008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Workshop_5
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 151
+        width: 55
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3715e6136e603b459db68cfeee08ebf
+      internalID: -6277239841946400692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Building_Workshop_6
+      rect:
+        serializedVersion: 2
+        x: 843
+        y: 0
+        width: 44
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84a110b97bf9d42498f0bef9faf79e3a
+      internalID: 1798759515478762813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

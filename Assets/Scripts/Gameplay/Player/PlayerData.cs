@@ -13,6 +13,7 @@ namespace Miner.Gameplay
         public float Fuel;
         public float Power;
         public int MaxAchievedDepth;
+        public int MaxAchievedLayerNumber;
         public List<EquipmentElementSaveData> Equipment = new List<EquipmentElementSaveData>();
         public List<UsableItemSaveData> UsableItems = new List<UsableItemSaveData>();
         public List<CargoElementSaveData> CargoElements = new List<CargoElementSaveData>();

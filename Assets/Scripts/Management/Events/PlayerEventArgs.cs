@@ -30,14 +30,32 @@ namespace Miner.Management.Events
         }
     }
 
-    public class ChangePlayerRadiationEA : EventArgs
+    public class ChangeEquipmentEA : EventArgs
     {
-        public readonly int RadiationChange;
+        public List<Part> PartsToEquip = new List<Part>();
+        public List<Part> PartsToRemove = new List<Part>();
+    }
 
-        public ChangePlayerRadiationEA(int radiationChange)
+    public class ChangePowerFlowFactorsEA : EventArgs
+    {
+        public List<PowerFlowFactor> AddedPowerFlowFactors = new List<PowerFlowFactor>();
+        public List<string> RemovedPowerFlowFactors = new List<string>();
+
+        public void AddFactor(PowerFlowFactor pff)
         {
-            RadiationChange = radiationChange;
+            AddedPowerFlowFactors.Add(pff);
         }
+
+        public void RemoveFactor(string factorName)
+        {
+            RemovedPowerFlowFactors.Add(factorName);
+        }
+    }
+
+    public class ChangeUsableItemsEA : EventArgs
+    {
+        public List<UsableItemTable.Element> AddedUsableItems = new List<UsableItemTable.Element>();
+        public List<UsableItemTable.Element> RemovedUsableItems = new List<UsableItemTable.Element>();
     }
 
     public class ChooseUsableItemEA : EventArgs
@@ -78,21 +96,13 @@ namespace Miner.Management.Events
 
     public class PlayerCameToLayerEA : EventArgs
     {
-        public readonly int LayerNumber;
+        public readonly GroundLayer GroundLayer;
 
-        public PlayerCameToLayerEA(int layerNumber)
+        public PlayerCameToLayerEA(GroundLayer groundLayer)
         {
-            LayerNumber = layerNumber;
-        }
-    }
+            if (groundLayer == null) Management.Log.Instance.WriteException(new ArgumentNullException());
 
-    public class PlayerRadiationChangedEA : EventArgs
-    {
-        public readonly int Radiation;
-        
-        public PlayerRadiationChangedEA(int radiation)
-        {
-            Radiation = radiation;
+            GroundLayer = groundLayer;
         }
     }
 
@@ -100,7 +110,7 @@ namespace Miner.Management.Events
     {
         public readonly int Damage;
         public readonly DamageType Type;
-        public Dictionary<EPartType, int> PermaDamage = new Dictionary<EPartType, int>();
+        public Dictionary<EPartType, float> PermaDamage = new Dictionary<EPartType, float>();
 
         public DamagePlayerEA() { }
 
@@ -110,7 +120,7 @@ namespace Miner.Management.Events
             Type = type;
         }
 
-        public void DealPermaDamage(params Tuple<EPartType, int>[] permaDamages)
+        public void DealPermaDamage(params Tuple<EPartType, float>[] permaDamages)
         {
             foreach(var tuple in permaDamages)
             {
@@ -120,11 +130,14 @@ namespace Miner.Management.Events
         }
     }
 
-    public class PlayerRepairedEA : EventArgs
+    public class RepairPlayerEA : EventArgs
     {
         public readonly int Repair;
+        public Dictionary<EPartType, float> PermaRepair = new Dictionary<EPartType, float>();
 
-        public PlayerRepairedEA(int repair)
+        public RepairPlayerEA() { }
+
+        public RepairPlayerEA(int repair)
         {
             Repair = repair;
         }

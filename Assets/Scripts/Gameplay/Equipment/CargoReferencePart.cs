@@ -20,18 +20,18 @@ namespace Miner.Gameplay
             return 1f - durability;
         }
 
-        public override string[] GetSpecificDescription()
+        public override string GetOfferDescription()
         {
-            return new string[2] { "Capacity: " + _maxMass.ToString() + " kg",
-                                   "Radiation Tolerance: " + GetRadiationToleranceText(RadiationTolerance) };
+            return  "Capacity: " + _maxMass.ToString() + " kg" + 
+                    "\nRadiation Tolerance: " + GetRadiationToleranceText(RadiationTolerance);
         }
 
-        public override string[] GetPerformanceDescription(float durability)
+        public override string GetPerformanceDescription(float durability)
         {
-            return new string[3] {  "Capacity: " + _maxMass.ToString() + " kg",
-                                    "Chance for lose resource when gathered: " + ((int)(ChanceForLoseResource(durability) * 100)).ToString() + " %",
-                                    "Radiation Tolerance: " + GetRadiationToleranceText((int)(RadiationTolerance * durability))
-                                 };
+            return "Capacity: " + _maxMass.ToString() + " kg" +
+                   "\nChance for lose resource when gathered: " + ((int)(ChanceForLoseResource(durability) * 100)).ToString() + " %" +
+                   "\nRadiation Tolerance: " + GetRadiationToleranceText((int)(RadiationTolerance * durability));
+                                 
         }
 
         public override void Equip(IEquipmentOwner playerStats, float durability)
